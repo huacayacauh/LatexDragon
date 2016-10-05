@@ -1,0 +1,14 @@
+.navbar {
+	background-color: #FFFFFF;
+}
+
+.sidebar {
+	position: fixed;
+	margin-top: 100px;
+}
+
+.main {
+	padding-top: 100px;
+	overflow: hidden;
+}
+
