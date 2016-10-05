@@ -14,8 +14,8 @@ public class Test {
 	public String returnTitle () {
 		if(Data.getTree() == null)
 			Data.setDefault();
-		return ""+Data.getTree().getRoot().generateExpression("");
-		//return "$$ax+b+\\sqrt(z)=y$$";
+		return "$"+Data.getTree().getRoot().generateExpression("")+"$";
+		//return "$\\cssId{exp}{a+b}$";
 	}
 	
 	public String getFormule () {
