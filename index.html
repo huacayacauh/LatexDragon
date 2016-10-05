@@ -5,6 +5,8 @@
     <title>LibreDragon Client</title>
     <!-- Bootstrap css -->
     <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <!-- css -->
+    <link href="css/index.css" rel="stylesheet">
     <!-- Pour faire fonctionner Jquery avec electron -->
     <script>
       window.nodeRequire = require;
@@ -29,6 +31,7 @@
     <script src="js/application.js"></script>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -42,13 +45,30 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Paramètres</a></li>
-            <li><a href="#about">Aide</a></li>
+            <li class="active"><a href="#">Jeu</a></li>
+            <li><a href="#about">Paramètres</a></li>
             <li><a href="#about">Aide</a></li>
           </ul>
         </div>
       </div>
     </nav>
-    <button onclick="requete()">faire la requete</button>
+    <div class="container-fluid main">
+			<div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">formule1</a></li>
+            <li><a href="#">formule2</a></li>
+            <li><a href="#">formule3</a></li>
+            <li><a href="#">formule4</a></li>
+    		  </ul>
+    	  </div>
+        <!-- Main content -->
+        <div id="main_content" class="col-md-10 col-md-offset-2">
+          <h1 id="title">jkdhsjkf</h1>
+          <button onclick="requete()">faire la requete</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

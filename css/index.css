@@ -1,0 +1,9 @@
+.main {
+  margin-top: 60px;
+}
+
+.sidebar {
+	position: fixed;
+  height: 100%;
+  border-right: 1px solid;
+}
