@@ -1,9 +1,80 @@
+html {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to bottom, #136a8a, #267871);
+}
+
+body {
+  background-color: transparent;
+}
+
 .main {
-  margin-top: 60px;
+  margin-top: 50px;
 }
 
 .sidebar {
-	position: fixed;
-  height: 100%;
-  border-right: 1px solid;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 991px) {
+  .sidebar {
+  	position: fixed;
+    height: 100%;
+    border-right: 1px solid #e7e7e7;
+    padding-top: 20px;
+  }
+}
+
+
+.sidebar > ul {
+  width: 100%;
+  margin: 0;
+  padding: 0px;
+}
+
+.sidebar > ul > li {
+  margin-top: 5px;
+  background-color: #f8f8f8;
+}
+
+.sidebar > ul > li > a {
+  color: #777777;
+}
+
+.sidebar > ul > li > a:hover {
+  background-color: #136a8a;
+  color: #3b3b3b;
+  transition: background-color 500ms linear;
+}
+
+#main_formule {
+  text-align: center;
+}
+
+.navbar-custom {
+	background-color: #34495E;
+    color: #3498DB;
+}
+
+.navbar-custom .navbar-nav > li > a {
+  	color: #FFFFFF;
+}
+
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus, .navbar .nav > li.dropdown.open > a {
+    background-color: #2C3E50;
+    color: #FFFFFF;
+}
+
+.navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #2C3E50;
+}
+
+.navbar-custom .navbar-brand {
+  	color: #EEEEEE;
+}
+
+.navbar-custom .navbar-toggle {
+  	background-color: #EEEEEE;
 }
