@@ -1,15 +1,11 @@
-/**
- * Request object, used to send request to the Java rest api
- * @this{Request}
- */
+/** Class Request, used to send request to the Java rest api */
 class Request {
   /**
    * @constructor
-   * @this{Request}
-   * @param{serverUrl} server url to which the request is send to
-   * @param{type} type of the http request (GET, POST ...)
-   * @param{dataType} type of the response (HTML, JSON, TEXT ...)
-   * @param{responseHandler} function called when the request is completed, can be omitted
+   * @param {string} sesrverUrl server url to which the request is send to
+   * @param {string} type type of the http request (GET, POST ...)
+   * @param {string} dataType type of the response (HTML, JSON, TEXT ...)
+   * @param {function} [responseHandler] function called when the request is completed, can be omitted
    */
   constructor (serverUrl, type, dataType, responseHandler) {
     this.serverUrl = serverUrl;
@@ -32,7 +28,7 @@ class Request {
       type:this.type,
       dataType:this.dataType,
       complete: function (response, status) {
-        console.log("[Request] "+ new Date().toString() + "\nUrl:" + self.serverUrl + "\nRetrurned status : " +  status);
+        console.log("[REQUEST]: "+ new Date().toString() + "\nUrl:" + self.serverUrl + "\nRetrurned status : " +  status);
         self.response(response);
       }
     });
@@ -40,11 +36,21 @@ class Request {
 
   /**
    * store the response from the request, and if defined call the responseHandler function
-   * @param{response} response from the request
+   * @param {Object} response response from the request
    */
   response (response) {
+    console.log("[REQUEST]: Message : " + response.responseText);
     this.responseMessage = response;
     if (this.responseHandler != undefined)
       this.responseHandler(response);
+  }
+  /**
+   * Static method that create a request using EnumHelper
+   * @param {string} requestName name of the request defined in EnumHelper
+   * @param {function} [responseHandler] function called when the request is completed, can be omitted
+   * @returns {Object}
+   */
+  static buildRequest (requestName, responseHandler) {
+      return new Request (EnumHelper.REQUESTS[requestName].url, EnumHelper.REQUESTS[requestName].type, EnumHelper.REQUESTS[requestName].dataType, responseHandler);
   }
 }

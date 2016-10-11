@@ -65,10 +65,19 @@
     	  </div>
         <!-- Main content -->
         <div id="main_content" class="col-md-10 col-md-offset-2">
-          <h1 id="main_formule">jkdhsjkf</h1>
+          <div class="progress">
+            <div class="progress-bar progress-bar-success" id="loadbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+              0%
+            </div>
+          </div>
+          <div id="main_formule">jkdhsjkf</div>
           <button onclick="requete()">faire la requete</button>
         </div>
       </div>
+    </div>
+    <div class="alert alert-info" id="tooltip">
+      <ul class="nav nav-sidebar" id="tooltipList">
+      </ul>
     </div>
   </body>
 </html>
