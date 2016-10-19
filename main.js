@@ -11,7 +11,7 @@ function createWindow () {
   //  Remove the default menubar
   win.setMenu(null);
 
-  // and load the index.html of the app.
+  // load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.

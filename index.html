@@ -7,15 +7,9 @@
     <link href="lib/css/bootstrap.min.css" rel="stylesheet">
     <!-- css -->
     <link href="css/index.css" rel="stylesheet">
-    <!-- Pour faire fonctionner Jquery avec electron -->
-    <script>
-      window.nodeRequire = require;
-      delete window.require;
-      delete window.exports;
-      delete window.module;
-    </script>
     <!-- Jquery -->
-    <script type="text/javascript" src="lib/js/jquery.min.js"></script>
+    <script>window.$ = window.jQuery = require('./lib/js/jquery.min.js');</script>
+    <!-- <script type="text/javascript" src="lib/js/jquery.min.js"></script> -->
     <!-- Bootstrap -->
     <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
     <!-- MathJax de merde -->
@@ -44,40 +38,17 @@
           <a class="navbar-brand" href="#">LibreDragon</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Jeu</a></li>
-            <li><a href="#about">Paramètres</a></li>
-            <li><a href="#about">Aide</a></li>
+          <ul class="nav navbar-nav" id="headerMenu">
+            <li class="active" id="game"><a onclick="requestHtml('GAME')">Jeu</a></li>
+            <li id="settings"><a onclick="requestHtml('SETTINGS')">Paramètres</a></li>
+            <li id="help"><a onclick="requestHtml('HELP')">Aide</a></li>
+            <li id="doc"><a onclick="showDoc()">Documentation</a></li>
           </ul>
         </div>
       </div>
     </nav>
+    <!-- Container -->
     <div class="container-fluid main">
-			<div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">formule1</a></li>
-            <li><a href="#">formule2</a></li>
-            <li><a href="#">formule3</a></li>
-            <li><a href="#">formule4</a></li>
-    		  </ul>
-    	  </div>
-        <!-- Main content -->
-        <div id="main_content" class="col-md-10 col-md-offset-2">
-          <div class="progress">
-            <div class="progress-bar progress-bar-success" id="loadbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-              0%
-            </div>
-          </div>
-          <div id="main_formule">jkdhsjkf</div>
-          <button onclick="requete()">faire la requete</button>
-        </div>
-      </div>
-    </div>
-    <div class="alert alert-info" id="tooltip">
-      <ul class="nav nav-sidebar" id="tooltipList">
-      </ul>
     </div>
   </body>
 </html>

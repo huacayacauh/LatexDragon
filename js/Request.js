@@ -28,7 +28,7 @@ class Request {
       type:this.type,
       dataType:this.dataType,
       complete: function (response, status) {
-        console.log("[REQUEST]: "+ new Date().toString() + "\nUrl:" + self.serverUrl + "\nRetrurned status : " +  status);
+        console.log("[REQUEST]: "+ new Date().toString() + "\nUrl:" + self.serverUrl + "\nRetrurned status : " + response.status + "|" + status);
         self.response(response);
       }
     });
@@ -36,10 +36,11 @@ class Request {
 
   /**
    * store the response from the request, and if defined call the responseHandler function
-   * @param {Object} response response from the request
+   * @param {Object} response response from the request (jQuery ajax response)
    */
   response (response) {
-    console.log("[REQUEST]: Message : " + response.responseText);
+    if (this.dataType == "text")
+      console.log("[REQUEST]: Message : " + response.responseText);
     this.responseMessage = response;
     if (this.responseHandler != undefined)
       this.responseHandler(response);

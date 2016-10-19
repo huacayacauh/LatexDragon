@@ -84,7 +84,6 @@ class MouseClickHandler {
    * @param {Event} event jQuery Event object
    */
   static bodyTooltipHandler (event) {
-    event.stopPropagation();
     if ($("#tooltip").is(":visible")) {
       $("#tooltip").hide();
       MouseClickHandler.setEvents(req);

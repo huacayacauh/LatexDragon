@@ -1,13 +1,3 @@
-/*class EnumHelper {
-
-  constructor () {
-    this.REQUESTS_URLS = {
-      TEST1:"http://localhost:8080/LibreDragon/api/test",
-      TEST2:"http://localhost:8080/LibreDragon/api/test"
-    };
-  }
-}*/
-
 var EnumHelper = {
   REQUESTS:{
     "TEST1":{
@@ -15,10 +5,20 @@ var EnumHelper = {
       "type":"GET",
       "dataType":"text"
     },
-    "TEST2":{
-      "url":"http://localhost:8080/LibreDragon/api/test",
+    "GAME":{
+      "url":"./html/game.html",
       "type":"GET",
-      "dataType":"text"
+      "dataType":"html"
+    },
+    "SETTINGS":{
+      "url":"./html/settings.html",
+      "type":"GET",
+      "dataType":"html"
+    },
+    "HELP":{
+      "url":"./html/help.html",
+      "type":"GET",
+      "dataType":"html"
     }
   }
 }

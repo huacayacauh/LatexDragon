@@ -8,6 +8,15 @@ html {
 
 body {
   background-color: transparent;
+  cursor: default;
+}
+
+a {
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .main {
@@ -16,7 +25,7 @@ body {
 
 .sidebar {
   padding: 0;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(248, 248, 248, 0.2);
 }
 
 @media (min-width: 991px) {
@@ -50,9 +59,27 @@ body {
   transition: background-color 500ms linear;
 }
 
+.loadbar_container {
+  width: 100%;
+  background-color: transparent;
+  height: 8px;
+}
+
+.settings_tab .help_tab {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#loadbar {
+  width: 0%;
+  background-color: #5bc0de;
+  height: 8px;
+}
+
 #main_formule {
   text-align: center;
   font-size: 100px;
+  background-color: transparent;
 }
 
 #tooltip {
@@ -68,6 +95,10 @@ body {
 
 #tooltip > ul > li > a:hover {
   background-color: #136a8a;
+}
+
+#main_content {
+  padding: 0;
 }
 
 .navbar-custom {
