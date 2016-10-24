@@ -6,6 +6,7 @@ import java.util.List;
 public class UnaryExpression implements Expression {
 
 	String type;
+	String id;
 	Expression sub_expression;
 	
 	Expression father;
@@ -22,6 +23,7 @@ public class UnaryExpression implements Expression {
 
 	@Override
 	public String generateExpression(String id) {
+		this.id = id;
 		return Configuration.graphic.generateUnaryExpression(
 					this,
 					type,
@@ -94,6 +96,10 @@ public class UnaryExpression implements Expression {
 		List<Expression> list = father.generatePathList();
 		list.add(this);
 		return list;
+	}
+	
+	public String getId(){
+		return this.id;
 	}
 
 }

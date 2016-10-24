@@ -17,7 +17,6 @@ import latexConfigurationParser.GraphicExpressionFactory;
  */
 public class KrakenTree {
 	private Expression root;
-	
 	/**
 	 * Ce constructeur initialise la librairie en utilisant la factory utilisateur.
 	 * Cette factory permet de faire le lein entre le support physique et l'interface

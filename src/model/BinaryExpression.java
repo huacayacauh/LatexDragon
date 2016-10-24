@@ -14,6 +14,7 @@ import java.util.List;
 public class BinaryExpression implements Expression {
 
 	String type;
+	String id;
 	Expression first_expression;
 	Expression second_expression;
 	
@@ -35,6 +36,7 @@ public class BinaryExpression implements Expression {
 	 */
 	@Override
 	public String generateExpression(String id) {
+		this.id = id;
 		return Configuration.graphic.generateBinaryExpression(
 					this,
 					type,
@@ -134,5 +136,9 @@ public class BinaryExpression implements Expression {
 		List<Expression> list = father.generatePathList();
 		list.add(this);
 		return list;
+	}
+	
+	public String getId(){
+		return this.id;
 	}
 }

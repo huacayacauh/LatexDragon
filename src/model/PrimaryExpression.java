@@ -9,6 +9,7 @@ public class PrimaryExpression implements Expression{
 	
 	String type;
 	String name;
+	String id;
 	
 	Expression father;
 	
@@ -32,6 +33,7 @@ public class PrimaryExpression implements Expression{
 
 	@Override
 	public String generateExpression(String id) {
+		this.id = id;
 		return Configuration.graphic.generatePrimaryExpression(this, type, name, id);
 	}
 
@@ -87,6 +89,10 @@ public class PrimaryExpression implements Expression{
 		List<Expression> list = father.generatePathList();
 		list.add(this);
 		return list;
+	}
+	
+	public String getId(){
+		return this.id;
 	}
 
 

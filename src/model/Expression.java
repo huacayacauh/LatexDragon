@@ -81,4 +81,6 @@ public interface Expression {
 	 * @return la liste
 	 */
 	List<Expression> generatePathList();
+
+	String getId();
 }
