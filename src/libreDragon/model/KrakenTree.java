@@ -3,7 +3,7 @@ package libreDragon.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import latexConfigurationParser.GraphicExpressionFactory;
+import libreDragon.latexParser.GraphicExpressionFactory;
 
 //import view.GraphicExpressionFactory;
 

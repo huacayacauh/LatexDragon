@@ -1,6 +1,6 @@
 package libreDragon.model;
 
-import latexConfigurationParser.GraphicExpressionFactory;
+import libreDragon.latexParser.GraphicExpressionFactory;
 
 public class Configuration {
 	

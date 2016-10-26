@@ -3,7 +3,7 @@ package libreDragon.api;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import latexConfigurationParser.LatexConfiguration;
+import libreDragon.latexParser.LatexConfiguration;
 import libreDragon.model.BinaryExpression;
 import libreDragon.model.KrakenTree;
 import libreDragon.model.PrimaryExpression;
@@ -49,6 +49,10 @@ public class Data {
 
 	public static LatexConfiguration getConfig() {
 		return config;
+	}
+	
+	public static void cleanexpr(){
+		ids.clear();
 	}
 
 	public static KrakenTree getTree() {

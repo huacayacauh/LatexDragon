@@ -20,21 +20,18 @@ public class Test {
 		Iterator<Rule> iterator;
 		if(Data.getTree() == null)
 			Data.setDefault();
-		//Data.getConfig().generateRuleExpression(rule
-		for (String mapKey : Configuration.rules.getRules().keySet()) {
-			iterator =  Configuration.rules.getRules().get(mapKey).iterator();
-			while (iterator.hasNext()) {
-				System.out.println(iterator.next().toString());
-			}
-		}
+		System.out.println("config"+Data.getConfig().getConfiguration("ROOT").getOperators().toString());
 		
 		return getJSon();
 			}
 	
 	public String getJSon () {
+		Object temp1 =  Data.getTree().getRoot().generateExpression("0");
+		String temp = Data.getexpr();
+		Data.cleanexpr();
 		return 	"{"
-				+ "\"math\": \"$$"+Data.getTree().getRoot().generateExpression("0")+"$$\","
-				+ "\"ids\":["+Data.getexpr()+"],"
+				+ "\"math\": \"$$"+temp1+"$$\","
+				+ "\"ids\":["+temp+"],"
 				+ "\"list\":[]"
 				+"}";
 	}

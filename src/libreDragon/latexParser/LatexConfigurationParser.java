@@ -1,4 +1,4 @@
-package latexConfigurationParser;
+package libreDragon.latexParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;

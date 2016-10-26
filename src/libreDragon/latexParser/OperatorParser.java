@@ -1,4 +1,4 @@
-package latexConfigurationParser;
+package libreDragon.latexParser;
 
 public class OperatorParser {
 	
