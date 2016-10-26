@@ -7,8 +7,10 @@ class MouseClickHandler {
    */
   static setEvents (obj) {
     for (var i in obj.ids) {
-        $("#"+obj.ids[i]).on("mouseenter", { value:obj.list }, MouseClickHandler.mouseenterHandler);
+        console.log(obj.ids[i]);
+        $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseenterHandler);
         $("#"+obj.ids[i]).on("mouseleave", MouseClickHandler.mouseleaveHandler);
+        $("#"+obj.ids[i]).on("mousemove", MouseClickHandler.mouseMoveHandler);
         $("#"+obj.ids[i]).on("contextmenu", { value:obj }, MouseClickHandler.contextmenuHandler);
     }
   }
@@ -18,7 +20,9 @@ class MouseClickHandler {
    * @param {Event} event jQuery Event object
    */
   static mouseenterHandler (event) {
-    var id = $(this).attr("id")
+    var id = $(this).attr("id");
+
+    console.log(id);
 
     MouseClickHandler.getTooltipList(event.data.value, id);
 
@@ -34,13 +38,20 @@ class MouseClickHandler {
    * @param {Event} event jQuery Event object
    */
   static mouseleaveHandler (event) {
-    event.stopPropagation();
+    //event.stopPropagation();
+    console.log("leave");
     $("#tooltip").hide();
+  }
+
+  static mouseMoveHandler (event) {
+    //event.stopPropagation();
+    $("#tooltip:visible").css("top", event.pageY+20);
+    $("#tooltip:visible").css("left", event.pageX+10);
   }
 
   /**
    * Handler of the contextmenu event, when triggered create the tooltip and displays it
-   * but also deactivate the mouseenter and mouseleave handlers
+   * but also deactivate the mouseenter, mouseleave and mousemove handlers
    * @param {Event} event jQuery Event object
    */
   static contextmenuHandler (event) {
@@ -55,8 +66,9 @@ class MouseClickHandler {
     $("#tooltip").css("left", event.pageX+10);
 
     for (var i in event.data.value.ids) {
-      $("#" + event.data.value.ids[i]).off("mouseenter");
+      $("#" + event.data.value.ids[i]).off("mouseover");
       $("#" + event.data.value.ids[i]).off("mouseleave");
+      $("#" + event.data.value.ids[i]).off("mousemove");
     }
   }
 

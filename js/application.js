@@ -30,6 +30,10 @@ function requete () {
 function set_response (response) {
   req = JSON.parse(response.responseText);
 
+  //Temporaire
+  req.ids = Array.from(new Set(req.ids));
+  console.log(req.ids);
+
   $("#main_formule").text(req.math).hide();
 
   MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
