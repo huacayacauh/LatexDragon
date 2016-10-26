@@ -1,4 +1,4 @@
-package model;
+package libreDragon.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class KrakenTree {
 	 * puis remplacer le fils adécquat par le résultat de la règle.
 	 * @param expression : l'expression sur laquelle appliquer la règle
 	 * @param rule : la règle à appliquer
-	 * @see model.Rule
+	 * @see libreDragon.model.Rule
 	 */
 	public void applicRule(Expression expression, Rule rule) {
 		if(expression == root) {

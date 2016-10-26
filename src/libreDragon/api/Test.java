@@ -7,8 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import model.Configuration;
-import model.Rule;
+import libreDragon.model.Configuration;
+import libreDragon.model.Rule;
 
 
 @Path("/test")
@@ -20,6 +20,7 @@ public class Test {
 		Iterator<Rule> iterator;
 		if(Data.getTree() == null)
 			Data.setDefault();
+		//Data.getConfig().generateRuleExpression(rule
 		for (String mapKey : Configuration.rules.getRules().keySet()) {
 			iterator =  Configuration.rules.getRules().get(mapKey).iterator();
 			while (iterator.hasNext()) {
@@ -37,5 +38,6 @@ public class Test {
 				+ "\"list\":[]"
 				+"}";
 	}
+	//public String get
 	
 }

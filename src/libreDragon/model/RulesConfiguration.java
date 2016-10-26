@@ -1,4 +1,4 @@
-package model;
+package libreDragon.model;
 
 import java.util.HashMap;
 import java.util.LinkedList;

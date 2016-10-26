@@ -1,4 +1,4 @@
-package model;
+package libreDragon.model;
 
 /**
  * Cette classe représente une règle.

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import libreDragon.api.Data;
-import model.BinaryExpression;
-import model.Expression;
-import model.Pair;
-import model.Rule;
+import libreDragon.model.BinaryExpression;
+import libreDragon.model.Expression;
+import libreDragon.model.Pair;
+import libreDragon.model.Rule;
 
 public class LatexConfiguration implements GraphicExpressionFactory {
 	
@@ -36,7 +36,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 		BinaryExpression bexpression = (BinaryExpression) expression;
 		String operator = getConfiguration(expression.getType()).getOperators().first;
 		Data.addexpr("\"exp"+id+"\"");
-		return bexpression.firstExpression().generateExpression(id+"0") + "\\\\cssId{exp"+id +"}"+ "{" +operator.substring(1, operator.length()-1)+ "}"+ bexpression.secondExpression().generateExpression(id+"1");
+		return "\\\\cssId{exp"+id +"}" +"{" +bexpression.firstExpression().generateExpression(id+"0") + operator.substring(1, operator.length()-1)+bexpression.secondExpression().generateExpression(id+"1")+ "}";
 	}
 
 	@Override

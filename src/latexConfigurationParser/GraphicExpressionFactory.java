@@ -1,7 +1,7 @@
 package latexConfigurationParser;
 
-import model.Expression;
-import model.Rule;
+import libreDragon.model.Expression;
+import libreDragon.model.Rule;
 
 /**
  * Cette interface décrit le pont entre le modèle physique et le modèle graphique.

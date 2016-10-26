@@ -1,7 +1,7 @@
 package latexConfigurationParser;
 
 
-import model.Pair;
+import libreDragon.model.Pair;
 
 public class LatexExpressionConfiguration {
 	private Pair<String, String> operators;
