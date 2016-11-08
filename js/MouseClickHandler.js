@@ -1,58 +1,61 @@
-/** Class handling all mouse click related events */
+/** Class containing handler for all mouse click related events in the game tab */
 class MouseClickHandler {
 
   /**
-   * Set the events for the elements in obj
+   * Set the events for the elements in obj.
    * @param {Object} obj json object recieved from a request
+   * @static
    */
   static setEvents (obj) {
     for (var i in obj.ids) {
-        console.log(obj.ids[i]);
-        $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseenterHandler);
+        $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseoverHandler);
         $("#"+obj.ids[i]).on("mouseleave", MouseClickHandler.mouseleaveHandler);
-        $("#"+obj.ids[i]).on("mousemove", MouseClickHandler.mouseMoveHandler);
+        $("#"+obj.ids[i]).on("mousemove", MouseClickHandler.mousemoveHandler);
         $("#"+obj.ids[i]).on("contextmenu", { value:obj }, MouseClickHandler.contextmenuHandler);
     }
   }
 
   /**
-   * Handler of the mouseenter event, when triggered create the tooltip and displays it
+   * Handler of the mouseenter event, when triggered create the tooltip and displays it.
    * @param {Event} event jQuery Event object
+   * @static
    */
-  static mouseenterHandler (event) {
-    var id = $(this).attr("id");
-
-    console.log(id);
+  static mouseoverHandler (event) {
+    var id = $(this).attr("id")
 
     MouseClickHandler.getTooltipList(event.data.value, id);
 
     event.stopPropagation();
 
-    $("#tooltip").show();
+    $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
   }
 
   /**
-   * Handler of the mouseleave event, when triggered hide the tooltip
+   * Handler of the mouseleave event, when triggered hide the tooltip.
    * @param {Event} event jQuery Event object
+   * @static
    */
   static mouseleaveHandler (event) {
-    //event.stopPropagation();
-    console.log("leave");
-    $("#tooltip").hide();
+    $("#tooltip").hide(100);
   }
 
-  static mouseMoveHandler (event) {
-    //event.stopPropagation();
+  /**
+   * Handler of the mousemove event, when triggered update the position of the tooltip.
+   * @param {Event} event jQuery Event object
+   * @static
+   */
+  static mousemoveHandler (event) {
     $("#tooltip:visible").css("top", event.pageY+20);
     $("#tooltip:visible").css("left", event.pageX+10);
   }
 
   /**
    * Handler of the contextmenu event, when triggered create the tooltip and displays it
-   * but also deactivate the mouseenter, mouseleave and mousemove handlers
+   * but also deactivate the mouseover, mouseleave and mousemove handlers.
    * @param {Event} event jQuery Event object
+   * @static
    */
   static contextmenuHandler (event) {
     var id = $(this).attr("id");
@@ -61,7 +64,7 @@ class MouseClickHandler {
 
     event.stopPropagation();
 
-    $("#tooltip").show();
+    $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
 
@@ -73,9 +76,10 @@ class MouseClickHandler {
   }
 
   /**
-   * Create the list of elements that the tooltip displays
+   * Create the list of elements that the tooltip displays.
    * @param {Object} list list of elements to be displayed in the tooltip
    * @param {string} id id of the elment who triggered the event, used to display the correct informations
+   * @static
    */
   static getTooltipList (list, id) {
     var options;
@@ -92,12 +96,13 @@ class MouseClickHandler {
 
   /**
    * Function handling the closing of the tooltip after the oncontextmenu event
-   * and reseting the handlers
+   * and reseting the handlers.
    * @param {Event} event jQuery Event object
+   * @static
    */
   static bodyTooltipHandler (event) {
     if ($("#tooltip").is(":visible")) {
-      $("#tooltip").hide();
+      $("#tooltip").hide(100);
       MouseClickHandler.setEvents(req);
     }
   }

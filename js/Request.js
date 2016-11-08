@@ -1,8 +1,7 @@
 /** Class Request, used to send request to the Java rest api */
 class Request {
   /**
-   * @constructor
-   * @param {string} sesrverUrl server url to which the request is send to
+   * @param {string} serverUrl server url to which the request is send to
    * @param {string} type type of the http request (GET, POST ...)
    * @param {string} dataType type of the response (HTML, JSON, TEXT ...)
    * @param {function} [responseHandler] function called when the request is completed, can be omitted
@@ -19,7 +18,7 @@ class Request {
   }
 
   /**
-   * Execute an asynchronous HTTP request to the server and call this.response() when complete
+   * Execute an asynchronous HTTP request to the server and call this.response() when complete.
    */
   send () {
     var self = this;
@@ -35,7 +34,7 @@ class Request {
   }
 
   /**
-   * store the response from the request, and if defined call the responseHandler function
+   * Store the response from the request, and if defined call the responseHandler function.
    * @param {Object} response response from the request (jQuery ajax response)
    */
   response (response) {
@@ -46,10 +45,11 @@ class Request {
       this.responseHandler(response);
   }
   /**
-   * Static method that create a request using EnumHelper
+   * Static method that create a request using EnumHelper.
    * @param {string} requestName name of the request defined in EnumHelper
    * @param {function} [responseHandler] function called when the request is completed, can be omitted
-   * @returns {Object}
+   * @returns {Request}
+   * @static
    */
   static buildRequest (requestName, responseHandler) {
       return new Request (EnumHelper.REQUESTS[requestName].url, EnumHelper.REQUESTS[requestName].type, EnumHelper.REQUESTS[requestName].dataType, responseHandler);

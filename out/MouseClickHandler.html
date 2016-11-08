@@ -30,7 +30,7 @@
     
         <h2>MouseClickHandler</h2>
         
-            <div class="class-description">Class handling all mouse click related events</div>
+            <div class="class-description">Class containing handler for all mouse click related events in the game tab</div>
         
     
 </header>
@@ -147,7 +147,7 @@
 
 
 <div class="description">
-    Function handling the closing of the tooltip after the oncontextmenu eventand reseting the handlers
+    Function handling the closing of the tooltip after the oncontextmenu eventand reseting the handlers.
 </div>
 
 
@@ -240,7 +240,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line86">line 86</a>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -278,7 +278,7 @@
 
 
 <div class="description">
-    Handler of the contextmenu event, when triggered create the tooltip and displays itbut also deactivate the mouseenter and mouseleave handlers
+    Handler of the contextmenu event, when triggered create the tooltip and displays itbut also deactivate the mouseover, mouseleave and mousemove handlers.
 </div>
 
 
@@ -371,7 +371,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line46">line 46</a>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -409,7 +409,7 @@
 
 
 <div class="description">
-    Create the list of elements that the tooltip displays
+    Create the list of elements that the tooltip displays.
 </div>
 
 
@@ -525,138 +525,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line68">line 68</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mouseenterHandler"><span class="type-signature">(static) </span>mouseenterHandler<span class="signature">(event)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Handler of the mouseenter event, when triggered create the tooltip and displays it
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Event</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">jQuery Event object</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line20">line 20</a>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -694,7 +563,7 @@
 
 
 <div class="description">
-    Handler of the mouseleave event, when triggered hide the tooltip
+    Handler of the mouseleave event, when triggered hide the tooltip.
 </div>
 
 
@@ -787,7 +656,269 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line36">line 36</a>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mousemoveHandler"><span class="type-signature">(static) </span>mousemoveHandler<span class="signature">(event)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Handler of the mousemove event, when triggered update the position of the tooltip.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Event</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">jQuery Event object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mouseoverHandler"><span class="type-signature">(static) </span>mouseoverHandler<span class="signature">(event)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Handler of the mouseenter event, when triggered create the tooltip and displays it.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Event</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">jQuery Event object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -825,7 +956,7 @@
 
 
 <div class="description">
-    Set the events for the elements in obj
+    Set the events for the elements in obj.
 </div>
 
 
@@ -918,7 +1049,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line8">line 8</a>
+        <a href="MouseClickHandler.js.html">MouseClickHandler.js</a>, <a href="MouseClickHandler.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -960,13 +1091,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadHtml">loadHtml</a></li><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#requestHtml">requestHtml</a></li><li><a href="global.html#setNavbarActive">setNavbarActive</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#showDoc">showDoc</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri Oct 14 2016 13:27:48 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Oct 27 2016 18:46:58 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

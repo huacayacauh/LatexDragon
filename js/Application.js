@@ -1,37 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: Application.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: Application.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>const {BrowserWindow} = require('electron').remote;
+const {BrowserWindow} = require('electron').remote;
 var req;
 var loadedScripts = 0, scriptsToLoad = 6;
-let doc;
-var application;
 loadScripts();
+
+//TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord)
 
 /**
  * Class controlling the different tab of the application.
@@ -51,6 +23,12 @@ class Application {
       this.settings = Settings.useDefault();
       this.currentTab = "GAME";
       this.tabContainer = $(".main")[0];
+      this.windows = {
+        "app" : BrowserWindow.getFocusedWindow(),
+        "doc" : null
+      };
+      this.loader = $("<div></div>").addClass("spinner");
+      //this.json = null;
       Application.instance = this;
     }
 
@@ -65,6 +43,7 @@ class Application {
    */
   requestHtml (string) {
     var request = Request.buildRequest(string, this.loadHtml);
+    $(".main").html(this.loader);
     request.send();
     this.currentTab = string;
   }
@@ -80,6 +59,7 @@ class Application {
     $(".main").html("");
     $(".main").append(htmlpage);
     $(".main").show(400);
+    console.log("[CLIENT]: Tab " + Application.getInstance().currentTab + " loaded");
     //Need to use this since in the context when the function is called "this" reference the request object and not the appliction object
     Application.getInstance().setNavbarActive();
     Application.getInstance().loaded();
@@ -101,20 +81,48 @@ class Application {
    * also apply the settings to the tab newly loaded.
    */
   loaded () {
-    if (this.currentTab == "SETTINGS")
+    if (this.currentTab == "GAME")
+      DragNDropHandler.setEvents();
+    else if (this.currentTab == "SETTINGS")
       SettingsHandler.setEvents();
 
     this.settings.applySettings();
   }
 
   /**
-   * Return the only instance of Application
+   * Return the only instance of Application.
    * @static
    */
   static getInstance () {
     return Application.instance;
   }
 
+  /**
+   * Display chromium dev tools on the app window.
+   */
+  displayConsole() {
+    this.windows["app"].webContents.openDevTools();
+  }
+
+  /**
+   * Create a new window and use it to display the documentation.
+   * Will focus on the doc window if already open.
+   */
+  showDoc () {
+    if (this.windows["doc"] == null) {
+      this.windows["doc"] = new BrowserWindow({width:1280, height:640});
+
+      this.windows["doc"].setMenu(null);
+
+      this.windows["doc"].loadURL(`file://${__dirname}/out/index.html`);
+
+      this.windows["doc"].on('closed', () => {
+        this.windows["doc"] = null;
+      });
+    }
+    else
+      this.windows["doc"].focus();
+  }
 }
 
 /**
@@ -127,7 +135,7 @@ $(document).ready (function () {
   if (loadedScripts != scriptsToLoad)
       console.log("[CLIENT]: Failed to load all scripts");
   console.log("[CLIENT]: Scripts loading complete (loaded "+loadedScripts+"/"+scriptsToLoad+")");
-  application = new Application();
+  var application = new Application();
   application.requestHtml("GAME");
 });
 
@@ -136,7 +144,6 @@ function requete () {
   //Set body handler for tooltip
   $("body").on("contextmenu", MouseClickHandler.bodyTooltipHandler);
   $("body").on("click", MouseClickHandler.bodyTooltipHandler);
-  $("#title").text("hjghjgjh");
   var request = Request.buildRequest("TEST1", set_response);
   request.send();
 }
@@ -163,46 +170,7 @@ function loadScripts () {
   $.getScript("js/Request.js").done(function () { loadedScripts++; });
   $.getScript("js/EnumHelper.js").done(function () { loadedScripts++; });
   $.getScript("js/MouseClickHandler.js").done(function () { loadedScripts++; });
-  $.getScript("js/LoadBar.js").done(function () { loadedScripts++; });
   $.getScript("js/Settings.js").done(function () { loadedScripts++; });
   $.getScript("js/SettingsHandler.js").done(function () { loadedScripts++; });
+  $.getScript("js/DragNDropHandler.js").done(function () { loadedScripts++; });
 }
-
-
-/**
- * Create a new window and use it to display the documentation.
- */
-function showDoc () {
-  doc = new BrowserWindow({width:1280, height:640});
-
-  doc.setMenu(null);
-
-  doc.loadURL(`file://${__dirname}/out/index.html`)
-
-  doc.on('closed', () => {
-    doc = null
-  });
-}
-</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#showDoc">showDoc</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Oct 27 2016 18:46:58 GMT+0200 (Paris, Madrid (heure d’été))
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>
