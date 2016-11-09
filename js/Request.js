@@ -19,11 +19,17 @@ class Request {
 
   /**
    * Execute an asynchronous HTTP request to the server and call this.response() when complete.
+   * @param {string} item string of arguments that need to be sent
    */
-  send () {
+  send (item) {
     var self = this;
+    var url = this.serverUrl;
+
+    if (item != undefined)
+      url = this.serverUrl + item;
+
     $.ajax({
-      url:this.serverUrl,
+      url:url,
       type:this.type,
       dataType:this.dataType,
       complete: function (response, status) {
