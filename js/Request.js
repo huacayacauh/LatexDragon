@@ -19,7 +19,7 @@ class Request {
 
   /**
    * Execute an asynchronous HTTP request to the server and call this.response() when complete.
-   * @param {string} item string of arguments that need to be sent
+   * @param {string} [item] string of arguments that need to be sent
    */
   send (item) {
     var self = this;

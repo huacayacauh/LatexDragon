@@ -15,7 +15,7 @@ loadScripts();
 class Application {
 
   /**
-   * There can be only one instance of Application, if no instance exist a new
+   * There can be only one instance of Application, if no instance exist a new one
    * is created, if one instance already exist then it's the one returned.
    */
   constructor () {
