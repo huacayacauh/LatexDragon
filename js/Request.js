@@ -34,7 +34,7 @@ class Request {
       dataType:this.dataType,
       complete: function (response, status) {
         console.log("[REQUEST]: "+ new Date().toString() + "\nUrl:" + self.serverUrl + "\nRetrurned status : " + response.status + "|" + status);
-        self.response(response);
+        self.response(response, status);
       }
     });
   }
@@ -42,13 +42,16 @@ class Request {
   /**
    * Store the response from the request, and if defined call the responseHandler function.
    * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status status response from the request
    */
-  response (response) {
+  response (response, status) {
     if (this.dataType == "text")
       console.log("[REQUEST]: Message : " + response.responseText);
+
     this.responseMessage = response;
+
     if (this.responseHandler != undefined)
-      this.responseHandler(response);
+      this.responseHandler(response, status);
   }
   /**
    * Static method that create a request using EnumHelper.

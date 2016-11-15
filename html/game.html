@@ -15,15 +15,28 @@
     	  </div>
         <!-- Main content -->
         <div id="main-content" class="col-md-10 col-md-offset-2">
+          <!-- Notification div -->
+          <div id="gameNotification">
+          </div>
           <!-- Start button -->
           <div class="jumbotron">
             <p>Clique sur start pour commencer</p>
-            <p><a class="btn btn-primary btn-lg" role="button" onclick="requete()">Start</a></p>
+            <p><a class="btn btn-success btn-lg" role="button" onclick="requete()">Start</a></p>
+          </div>
+          <div id="tools">
+            <!-- Timer -->
+            <div id="gameTimer">
+            </div>
+            <!-- Bouton recommencer -->
+            <button class="btn btn-success" id="restartButton">
+              <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            </button>
           </div>
           <!-- Formule -->
           <div id="main-formule">
           </div>
           <button onclick="faireOperation()">faire la requete</button>
+          <button onclick="GameHandler.startNewGame('1')">start</button>
           <span class="dragndrop" id="1">Drag</span><span class="dragndrop" id="2">Drop</span>
         </div>
       </div>

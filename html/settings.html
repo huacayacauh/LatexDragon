@@ -10,22 +10,21 @@
           <div class="page-header">
             <h1>Paramètres</h1>
           </div>
-          <!-- Success alert -->
-          <div class="alert alert-success alert-dismissible" role="alert" style="display:none">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Paramètres :</strong> nouveau paramètres enregistré.
+          <!-- Notification div -->
+          <div id="settingsNotification">
           </div>
           <!-- Color select -->
           <div class="col-md-6 col-sm-6">
             <h2>Couleur</h2>
             <select class="form-control" id="settings-color">
-              <option value="linear-gradient(to bottom, #136a8a, #267871)">Bleu/Vert</option>
-              <option value="linear-gradient(to bottom, #3d72b4, #525252)">Noir/Bleu</option>
-              <option value="linear-gradient(to bottom, #135058, #F1F2B5)">Vert/Vert</option>
-              <option value="linear-gradient(to bottom, #8e9eab, #eef2f3)">Blanc/Gris</option>
-              <option value="linear-gradient(to bottom, #517fa4, #243949)">Bleu/Bleu</option>
-              <option value="linear-gradient(to bottom, #FFA17F, #00223E)">Bleu/Saumon</option>
-              <option value="linear-gradient(to bottom, #948E99, #2E1437)">Violet/Gris</option>
+              <option value="linear-gradient(to bottom, #52EDC7, #5AC8FB)">Vert/Cyan</option>
+              <option value="linear-gradient(to bottom, #FF5E3A, #FF2A68)">Orange/Magenta</option>
+              <option value="linear-gradient(to bottom, #FFDB4C, #FFCD02)">Jaune</option>
+              <option value="linear-gradient(to bottom, #87FC70, #0BD318)">Vert</option>
+              <option value="linear-gradient(to bottom, #1AD6FD, #1D62F0)">Bleu</option>
+              <option value="linear-gradient(to bottom, #DBDDDE, #898C90)">Gris</option>
+              <option value="linear-gradient(to bottom, #C86EDF, #E4B7F0)">Rose</option>
+              <option value="linear-gradient(to bottom, #1D77EF, #81F3FD)">Bleu/Cyan</option>
             </select>
           </div>
           <!-- Font size select -->
@@ -37,7 +36,14 @@
               <button type="button" class="btn btn-default settings-mathSize">200px</button>
             </div>
           </div>
-          <div>a</div>
+          <!-- Timer on/off select -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Timer</h2>
+            <label class="switch">
+              <input type="checkbox" id="settings-timer">
+              <div class="slider round"></div>
+            </label>
+          </div>
           <div>a</div>
           <div>a</div>
           <div>a</div>

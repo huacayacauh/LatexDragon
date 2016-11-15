@@ -21,7 +21,12 @@ var EnumHelper = {
       "dataType":"html"
     },
     "OPERATION":{
-      "url":"http://localhost:8080/LibreDragon/api/test/operation",
+      "url":"http://localhost:8080/LibreDragon/api/rule",
+      "type":"GET",
+      "dataType":"text"
+    },
+    "START":{
+      "url":"http://localhost:8080/LibreDragon/api/start",
       "type":"GET",
       "dataType":"text"
     }

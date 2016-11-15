@@ -1,9 +1,9 @@
-const {BrowserWindow} = require('electron').remote;
 var req;
-var loadedScripts = 0, scriptsToLoad = 6;
+var loadedScripts = 0, scriptsToLoad = 8;
 loadScripts();
 
-//TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord)
+//TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord) et finir la doc que ta pas fini
+//DONE: début de gameHandler, timer et notifications
 
 /**
  * Class controlling the different tab of the application.
@@ -20,15 +20,24 @@ class Application {
    */
   constructor () {
     if (!Application.instance) {
+      //Reference to electron
+      this.remote = require('electron').remote;
+      //Application settings
       this.settings = Settings.useDefault();
+      //Name of the tab the app is currently on (GAME by default)
       this.currentTab = "GAME";
-      this.tabContainer = $(".main")[0];
-      this.windows = {
-        "app" : BrowserWindow.getFocusedWindow(),
-        "doc" : null
-      };
+      //Main dom element who contain the tab content
+      this.tabContainer = $(".main");
+      //Array containing the app windows (app & doc)
+      this.windows = this.remote.getGlobal("windowsArray");
+      //Dom element of the spinner used during tab loading
       this.loader = $("<div></div>").addClass("spinner");
       //this.json = null;
+      //Id of the client on the server
+      this.gameId = null;
+      //Id of which formula the game is using
+      this.formulaId = null;
+      //Only instance of Application
       Application.instance = this;
     }
 
@@ -53,14 +62,19 @@ class Application {
    * Load the html file recieved onto the main element.
    * @param {Object} response response from the request (jQuery ajax response)
    */
-  loadHtml (response) {
+  loadHtml (response, status) {
+    if (status != "success")
+      Application.getInstance().displayErrorNotification(".main", "Erreur lors du chargment de la page, status : " + response.status + "|" + status + ".")
+
     var htmlpage = $(response.responseText);
     $(".main").hide();
     $(".main").html("");
     $(".main").append(htmlpage);
-    $(".main").show(400);
+    $(".main").fadeIn("800");
+
     console.log("[CLIENT]: Tab " + Application.getInstance().currentTab + " loaded");
-    //Need to use this since in the context when the function is called "this" reference the request object and not the appliction object
+
+    //Need to use this since in the context when the function is called "this" reference the request object and not the application object
     Application.getInstance().setNavbarActive();
     Application.getInstance().loaded();
   }
@@ -83,8 +97,10 @@ class Application {
   loaded () {
     if (this.currentTab == "GAME")
       DragNDropHandler.setEvents();
-    else if (this.currentTab == "SETTINGS")
+    else if (this.currentTab == "SETTINGS") {
       SettingsHandler.setEvents();
+      SettingsHandler.setValues();
+    }
 
     this.settings.applySettings();
   }
@@ -105,23 +121,48 @@ class Application {
   }
 
   /**
-   * Create a new window and use it to display the documentation.
-   * Will focus on the doc window if already open.
+   * Send a message/event to the main process to display the documentation
    */
-  showDoc () {
-    if (this.windows["doc"] == null) {
-      this.windows["doc"] = new BrowserWindow({width:1280, height:640});
+  displayDoc () {
+    const {ipcRenderer} = require('electron');
+    ipcRenderer.send('display-doc');
+  }
 
-      this.windows["doc"].setMenu(null);
+  /**
+   * Display an error notification.
+   * Call displayNotification who handle the creation and display of the
+   * notification.
+   * @param {String} element identifier of the dom element who will append the notification
+   * @param {String} message message to be displayed on the notification
+   */
+  displayErrorNotification (element, message) {
+    this.displayNotification(element, message, "danger");
+  }
 
-      this.windows["doc"].loadURL(`file://${__dirname}/out/index.html`);
+  /**
+   * Display a success notification.
+   * Call displayNotification who handle the creation and display of the
+   * notification.
+   * @param {String} element identifier of the dom element who will append the notification
+   * @param {String} message message to be displayed on the notification
+   */
+  displaySuccessNotification (element, message) {
+    this.displayNotification (element, message, "success");
+  }
 
-      this.windows["doc"].on('closed', () => {
-        this.windows["doc"] = null;
-      });
-    }
-    else
-      this.windows["doc"].focus();
+  /**
+   * Display a notification.
+   * Create the notification of type type and message message and append it to
+   * the dom element element.
+   * Create a dismissible notification that won't close unless the user close it.
+   * @param {String} element identifier of the dom element who will append the notification
+   * @param {String} message message to be displayed on the notification
+   * @param {String} type type of the notification (error, success ...) correspond to bootsrap 4 color (danger, warning, success and info)
+   */
+  displayNotification (element, message, type) {
+    var error = $("<div></div>").addClass("alert").addClass("alert-" + type).addClass("alert-dismissible").attr("role", "alert").css("display", "none").text(message);
+    $("<span></span>").addClass("glyphicon").addClass("glyphicon-remove").attr("aria-hidden", "true").appendTo($("<button></button>").addClass("close").attr("data-dismiss", "alert").appendTo(error));
+    error.appendTo(element).show(500);
   }
 }
 
@@ -148,8 +189,11 @@ function requete () {
   request.send();
 }
 
-function set_response (response) {
-  req = JSON.parse(response.responseText);
+function set_response (response, status) {
+  if (status == "success")
+    req = JSON.parse(response.responseText);
+  else
+    Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + response.status + "|" + status + ".");
 
   $(".jumbotron:visible").hide();
 
@@ -182,4 +226,6 @@ function loadScripts () {
   $.getScript("js/Settings.js").done(function () { loadedScripts++; });
   $.getScript("js/SettingsHandler.js").done(function () { loadedScripts++; });
   $.getScript("js/DragNDropHandler.js").done(function () { loadedScripts++; });
+  $.getScript("js/GameHandler.js").done(function () { loadedScripts++; });
+  $.getScript("js/Countdown.js").done(function () { loadedScripts++; });
 }

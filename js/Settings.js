@@ -4,10 +4,12 @@ class Settings {
   /**
    * @param {string} color color of the background (grandient)
    * @param {string} mathSize font size of the mathJax contained in the div #main-formule
+   * @param {bool} timer boolean used to determine if we use a timer or not during the game
    */
-  constructor (color, mathSize) {
+  constructor (color, mathSize, timer) {
     this.color = color;
     this.mathSize = mathSize;
+    this.timer = timer;
   }
 
   /**
@@ -16,7 +18,7 @@ class Settings {
    * @static
    */
   static useDefault () {
-    return new Settings ("linear-gradient(to bottom, #136a8a, #267871)", "100px");
+    return new Settings ("linear-gradient(to bottom, #1AD6FD, #1D62F0)", "100px", false);
   }
 
   /**
@@ -36,7 +38,7 @@ class Settings {
   setColor (value) {
     this.color = value;
     this.applySettings();
-    this.settingsChanged();
+    Application.getInstance().displaySuccessNotification("#settingsNotification", "Nouveaux paramètres enregistré.");
   }
 
   /**
@@ -45,16 +47,14 @@ class Settings {
   setMathSize (value) {
     this.mathSize = value;
     this.applySettings();
-    this.settingsChanged();
+    Application.getInstance().displaySuccessNotification("#settingsNotification", "Nouveaux paramètres enregistré.");
   }
 
   /**
-   * Called when an attribute has been changed, display a message for 1500ms and then removes it.
+   * Set the timer attribute and display a message.
    */
-  settingsChanged () {
-    $(".alert").show(500);
-    setTimeout (function () {
-      $(".alert").hide(500);
-    }, 1500);
+  setTimer (value) {
+    this.timer = value;
+    Application.getInstance().displaySuccessNotification("#settingsNotification", "Nouveaux paramètres enregistré.");
   }
 }
