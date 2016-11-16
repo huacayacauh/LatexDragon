@@ -117,7 +117,7 @@ class Application {
    * Display chromium dev tools on the app window.
    */
   displayConsole() {
-    this.windows["app"].webContents.openDevTools();
+    this.windows["app"].webContents.toggleDevTools();
   }
 
   /**
@@ -153,16 +153,21 @@ class Application {
   /**
    * Display a notification.
    * Create the notification of type type and message message and append it to
-   * the dom element element.
+   * the DOM element element.
    * Create a dismissible notification that won't close unless the user close it.
-   * @param {String} element identifier of the dom element who will append the notification
+   * If a notification was already present in the DOM element it will remove it.
+   * @param {String} element identifier of the DOM element who will append the notification
    * @param {String} message message to be displayed on the notification
    * @param {String} type type of the notification (error, success ...) correspond to bootsrap 4 color (danger, warning, success and info)
    */
   displayNotification (element, message, type) {
-    var error = $("<div></div>").addClass("alert").addClass("alert-" + type).addClass("alert-dismissible").attr("role", "alert").css("display", "none").text(message);
-    $("<span></span>").addClass("glyphicon").addClass("glyphicon-remove").attr("aria-hidden", "true").appendTo($("<button></button>").addClass("close").attr("data-dismiss", "alert").appendTo(error));
-    error.appendTo(element).show(500);
+    var existingNotif = $(element).children(".notif");
+    if (existingNotif.length != 0)
+      existingNotif.remove();
+
+    var notification = $("<div></div>").addClass("notif").addClass("alert").addClass("alert-" + type).addClass("alert-dismissible").attr("role", "alert").css("display", "none").text(message);
+    $("<span></span>").addClass("glyphicon").addClass("glyphicon-remove").attr("aria-hidden", "true").appendTo($("<button></button>").addClass("close").attr("data-dismiss", "alert").appendTo(notification));
+    notification.appendTo(element).show(500);
   }
 }
 
