@@ -36,6 +36,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 		BinaryExpression bexpression = (BinaryExpression) expression;
 		String operator = getConfiguration(expression.getType()).getOperators().first;
 		Data.addexpr("\"exp"+id+"\"");
+		Data.addrules("\"exp"+id+"\"", Data.addrules(bexpression));
 		return "\\\\cssId{exp"+id +"}" +"{" +bexpression.firstExpression().generateExpression(id+"0") + operator.substring(1, operator.length()-1)+bexpression.secondExpression().generateExpression(id+"1")+ "}";
 	}
 
@@ -49,6 +50,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	@Override
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id) {
 		Data.addexpr("\"exp"+id+"\"");
+		Data.addrules("\"exp"+id+"\"", Data.addrules(expression));
 		return "\\\\cssId{exp"+id+"}{"+ name +"}";
 	}
 	
