@@ -29,7 +29,7 @@ class MouseClickHandler {
 
     var id = $(this).attr("id");
 
-    //MouseClickHandler.getTooltipList(event.data.value, id);
+    MouseClickHandler.getTooltipList(event.data.value, id);
 
     $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
