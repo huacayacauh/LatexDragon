@@ -87,8 +87,10 @@ class GameHandler {
   static gameRuleRequest (event) {
     event.stopPropagation();
     var request = Request.buildRequest("APPLYRULE", GameHandler.gameStateResponse);
-    console.log(event.data.value);
     request.send("/" + Application.getInstance().gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
+
+    if ($("#tooltip").is(":visible"))
+      $("#tooltip").hide(100);
   }
 
   static typesetMath (callback) {
