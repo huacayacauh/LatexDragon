@@ -1,6 +1,6 @@
 var EnumHelper = {
   REQUESTS:{
-    "TEST1":{
+    "GAMESTATE":{
       "url":"http://localhost:8080/LibreDragon/api/test",
       "type":"GET",
       "dataType":"text"
@@ -20,7 +20,7 @@ var EnumHelper = {
       "type":"GET",
       "dataType":"html"
     },
-    "OPERATION":{
+    "APPLYRULE":{
       "url":"http://localhost:8080/LibreDragon/api/rule",
       "type":"GET",
       "dataType":"text"

@@ -2,6 +2,16 @@
 class GameHandler {
 
   /**
+   * Set the events for the elements in obj.
+   * @static
+   */
+  static setEvents (obj) {
+    MouseClickHandler.setEvents(obj);
+    DragNDropHandler.setEvents();
+    console.log(obj);
+  }
+
+  /**
    * Request used to start a new game, will ask the server to start a new game
    * with the mathId formula.
    * @param {String} mathId id of the formula the user want to play with
@@ -9,6 +19,9 @@ class GameHandler {
    */
   static startNewGame (mathId) {
     var request = Request.buildRequest("START", GameHandler.startNewGameResponse);
+
+    Application.getInstance().formulaId = mathId;
+
     request.send("/" + mathId);
   }
 
@@ -41,6 +54,48 @@ class GameHandler {
     $("#tools").fadeIn(800);
 
     //TODO: add id to application.gameId
+    Application.getInstance().gameId = obj.id;
+  }
+
+  static gameStateRequest () {
+      var request = Request.buildRequest("GAMESTATE", GameHandler.gameStateResponse);
+      request.send();
+  }
+
+  static gameStateResponse (response, status) {
+    if (status == "success")
+      Application.getInstance().json = JSON.parse(response.responseText);
+    else {
+      Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    //Hide start button
+    $(".jumbotron:visible").hide();
+
+    //Set new math
+    $("#main-formule").text(Application.getInstance().json.math).hide();
+
+    //Call mathJax typeset and show the formule once it's done
+    GameHandler.typesetMath(() => {
+      $("#main-formule").show();
+      //Set events
+      GameHandler.setEvents(Application.getInstance().json);
+    });
+  }
+
+  static gameRuleRequest (event) {
+    event.stopPropagation();
+    var request = Request.buildRequest("APPLYRULE", GameHandler.gameStateResponse);
+    console.log(event.data.value);
+    request.send("/" + Application.getInstance().gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
+  }
+
+  static typesetMath (callback) {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
+    if (callback != undefined)
+      MathJax.Hub.Queue(callback);
   }
 
   static timerOver () {

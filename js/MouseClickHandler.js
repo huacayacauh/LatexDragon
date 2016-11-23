@@ -7,10 +7,12 @@ class MouseClickHandler {
    * @static
    */
   static setEvents (obj) {
+    //Set body handler for tooltip
+    $("body").on("contextmenu", MouseClickHandler.bodyTooltipHandler);
+    $("body").on("click", MouseClickHandler.bodyTooltipHandler);
+
     for (var i in obj.ids) {
-        console.log("#"+obj.ids[i]);
-        var test = $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseoverHandler);
-        console.log(test);
+        var test = $("#"+obj.ids[i]).on("mouseover", { value:obj.rules }, MouseClickHandler.mouseoverHandler);
         $("#"+obj.ids[i]).on("mouseleave", MouseClickHandler.mouseleaveHandler);
         $("#"+obj.ids[i]).on("mousemove", MouseClickHandler.mousemoveHandler);
         $("#"+obj.ids[i]).on("contextmenu", { value:obj }, MouseClickHandler.contextmenuHandler);
@@ -27,7 +29,7 @@ class MouseClickHandler {
 
     var id = $(this).attr("id");
 
-    MouseClickHandler.getTooltipList(event.data.value, id);
+    //MouseClickHandler.getTooltipList(event.data.value, id);
 
     $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
@@ -64,11 +66,11 @@ class MouseClickHandler {
    * @static
    */
   static contextmenuHandler (event) {
+    event.stopPropagation();
+    console.log("menu");
     var id = $(this).attr("id");
 
-    MouseClickHandler.getTooltipList(event.data.value.list, id);
-
-    event.stopPropagation();
+    MouseClickHandler.getTooltipList(event.data.value.rules, id);
 
     $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
@@ -88,15 +90,22 @@ class MouseClickHandler {
    * @static
    */
   static getTooltipList (list, id) {
-    var options;
+    var options = new Array();
+
     for (var i in list) {
-      if (list[i][id] != undefined)
-        options = list[i][id];
+      if (list[i][id] != undefined) {
+        for (var j in list[i][id]) {
+          if (list[i][id][j].type == "contextMenu")
+            options.push(list[i][id][j]);
+        }
+      }
     }
 
     $("#tooltipList").html("");
     for (var i in options) {
-      $("#tooltipList").append("<li><a>" + options[i] + "</a></li>");
+      var obj = {expId:id, ruleId:options[i].ruleId, context:options[i].type};
+      var tmp = $("<li><a>" + options[i].text + "</a></li>").on("click", { value:obj }, GameHandler.gameRuleRequest);
+      $("#tooltipList").append(tmp);
     }
   }
 
@@ -109,7 +118,9 @@ class MouseClickHandler {
   static bodyTooltipHandler (event) {
     if ($("#tooltip").is(":visible")) {
       $("#tooltip").hide(100);
-      MouseClickHandler.setEvents(req);
+      for (var i in Application.getInstance().json.ids)
+        $("#" + Application.getInstance().json.ids[i]).off("contextmenu");
+      MouseClickHandler.setEvents(Application.getInstance().json);
     }
   }
 }

@@ -1,9 +1,9 @@
 /** Class Request, used to send request to the Java rest api */
 class Request {
   /**
-   * @param {string} serverUrl server url to which the request is send to
-   * @param {string} type type of the http request (GET, POST ...)
-   * @param {string} dataType type of the response (HTML, JSON, TEXT ...)
+   * @param {String} serverUrl server url to which the request is send to
+   * @param {String} type type of the http request (GET, POST ...)
+   * @param {String} dataType type of the response (HTML, JSON, TEXT ...)
    * @param {function} [responseHandler] function called when the request is completed, can be omitted
    */
   constructor (serverUrl, type, dataType, responseHandler) {
@@ -19,7 +19,7 @@ class Request {
 
   /**
    * Execute an asynchronous HTTP request to the server and call this.response() when complete.
-   * @param {string} [item] string of arguments that need to be sent
+   * @param {String} [item] string of arguments that need to be sent
    */
   send (item) {
     var self = this;

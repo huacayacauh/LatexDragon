@@ -1,8 +1,7 @@
-var req;
 var loadedScripts = 0, scriptsToLoad = 8;
 loadScripts();
 
-//TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord) et finir la doc que ta pas fini
+//TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord)
 //DONE: début de gameHandler, fini timer et notifications
 
 /**
@@ -32,7 +31,8 @@ class Application {
       this.windows = this.remote.getGlobal("windowsArray");
       //Dom element of the spinner used during tab loading
       this.loader = $("<div></div>").addClass("spinner");
-      //this.json = null;
+      //Json object of the last/current game request to the server
+      this.json = null;
       //Id of the client on the server
       this.gameId = null;
       //Id of which formula the game is using
@@ -195,31 +195,9 @@ $(document).ready (function () {
 });
 
 
-function requete () {
-  //Set body handler for tooltip
-  $("body").on("contextmenu", MouseClickHandler.bodyTooltipHandler);
-  $("body").on("click", MouseClickHandler.bodyTooltipHandler);
-  var request = Request.buildRequest("TEST1", set_response);
-  request.send();
-}
 
-function set_response (response, status) {
-  if (status == "success")
-    req = JSON.parse(response.responseText);
-  else
-    Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
 
-  $(".jumbotron:visible").hide();
 
-  $("#main-formule").text(req.math).hide();
-
-  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-  MathJax.Hub.Queue(function () {
-    $("#main-formule").show();
-    MouseClickHandler.setEvents(req);
-  });
-}
 
 function faireOperation () {
   var request = Request.buildRequest("OPERATION", operationResponse);
