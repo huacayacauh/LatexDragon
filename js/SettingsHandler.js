@@ -12,6 +12,8 @@ class SettingsHandler {
     $(".settings-mathSize").click(SettingsHandler.mathSizeHandler);
     //Timer on/off
     $("#settings-timer").change(SettingsHandler.timerHandler);
+    //Auto close notification on/off
+    $("#settings-notifOnOff").change(SettingsHandler.autoCloseNotifHandler);
   }
 
   /**
@@ -22,6 +24,7 @@ class SettingsHandler {
   static setValues () {
     $("#settings-color").val(Application.getInstance().settings.color);
     $("#settings-timer").attr("checked", Application.getInstance().settings.timer);
+    $("#settings-notifOnOff").attr("checked", Application.getInstance().settings.autoCloseNotif);
   }
 
   /**
@@ -46,5 +49,13 @@ class SettingsHandler {
    */
   static timerHandler () {
     Application.getInstance().settings.setTimer($(this).is(":checked"));
+  }
+
+  /**
+   * Handler for the notif close on/off select.
+   * @static
+   */
+  static autoCloseNotifHandler () {
+    Application.getInstance().settings.setAutoCloseNotif($(this).is(":checked"));
   }
 }

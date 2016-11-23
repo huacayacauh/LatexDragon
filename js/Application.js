@@ -3,7 +3,7 @@ var loadedScripts = 0, scriptsToLoad = 8;
 loadScripts();
 
 //TODO: gameHandler qui s'occupe de DragNDropHandler et MouseClickHandler et cleanup les requetes (bessoin de finir les règles côté serveur d'abord) et finir la doc que ta pas fini
-//DONE: début de gameHandler, timer et notifications
+//DONE: début de gameHandler, fini timer et notifications
 
 /**
  * Class controlling the different tab of the application.
@@ -61,10 +61,11 @@ class Application {
    * Callback function of the requestHtml request.
    * Load the html file recieved onto the main element.
    * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
    */
   loadHtml (response, status) {
     if (status != "success")
-      Application.getInstance().displayErrorNotification(".main", "Erreur lors du chargment de la page, status : " + response.status + "|" + status + ".")
+      Application.getInstance().displayErrorNotification(".main", "Erreur lors du chargment de la page, status : " + status + " (" + response.status + ").")
 
     var htmlpage = $(response.responseText);
     $(".main").hide();
@@ -91,7 +92,7 @@ class Application {
 
   /**
    * Called when the tab is loaded.
-   * Initialize everything the tab need in order to running,
+   * Initialize everything the tab need in order to run,
    * also apply the settings to the tab newly loaded.
    */
   loaded () {
@@ -114,10 +115,10 @@ class Application {
   }
 
   /**
-   * Display chromium dev tools on the app window.
+   * Toggle chromium dev tools on the app window.
    */
-  displayConsole() {
-    this.windows["app"].webContents.openDevTools();
+  toggleConsole() {
+    this.windows["app"].webContents.toggleDevTools({mode: 'bottom'});
   }
 
   /**
@@ -153,16 +154,29 @@ class Application {
   /**
    * Display a notification.
    * Create the notification of type type and message message and append it to
-   * the dom element element.
+   * the DOM element element.
    * Create a dismissible notification that won't close unless the user close it.
-   * @param {String} element identifier of the dom element who will append the notification
+   * If autoCloseNotif is true the notif will close automatically in notifTimer milliseconds.
+   * If a notification was already present in the DOM element it will replace it.
+   * @param {String} element identifier of the DOM element who will append the notification
    * @param {String} message message to be displayed on the notification
    * @param {String} type type of the notification (error, success ...) correspond to bootsrap 4 color (danger, warning, success and info)
    */
   displayNotification (element, message, type) {
-    var error = $("<div></div>").addClass("alert").addClass("alert-" + type).addClass("alert-dismissible").attr("role", "alert").css("display", "none").text(message);
-    $("<span></span>").addClass("glyphicon").addClass("glyphicon-remove").attr("aria-hidden", "true").appendTo($("<button></button>").addClass("close").attr("data-dismiss", "alert").appendTo(error));
-    error.appendTo(element).show(500);
+    $(element).children(".notif").hide("fast", () => {
+      $(this).remove();
+    });
+
+    var notification = $("<div></div>").addClass("notif").addClass("alert").addClass("alert-" + type).addClass("alert-dismissible").attr("role", "alert").css("display", "none").text(message);
+    $("<span></span>").addClass("glyphicon").addClass("glyphicon-remove").attr("aria-hidden", "true").appendTo($("<button></button>").addClass("close").attr("data-dismiss", "alert").appendTo(notification));
+    notification.appendTo(element).show("fast");
+
+    if (this.settings.autoCloseNotif)
+      setTimeout(() => {
+        $(element).children(".notif").hide("fast", () => {
+          $(this).remove();
+        });
+      }, this.settings.notifTimer);
   }
 }
 
@@ -193,7 +207,7 @@ function set_response (response, status) {
   if (status == "success")
     req = JSON.parse(response.responseText);
   else
-    Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + response.status + "|" + status + ".");
+    Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
 
   $(".jumbotron:visible").hide();
 
@@ -220,12 +234,12 @@ function operationResponse (response) {
  * Load all the needed javascript scripts.
  */
 function loadScripts () {
-  $.getScript("js/Request.js").done(function () { loadedScripts++; });
-  $.getScript("js/EnumHelper.js").done(function () { loadedScripts++; });
-  $.getScript("js/MouseClickHandler.js").done(function () { loadedScripts++; });
-  $.getScript("js/Settings.js").done(function () { loadedScripts++; });
-  $.getScript("js/SettingsHandler.js").done(function () { loadedScripts++; });
-  $.getScript("js/DragNDropHandler.js").done(function () { loadedScripts++; });
-  $.getScript("js/GameHandler.js").done(function () { loadedScripts++; });
-  $.getScript("js/Countdown.js").done(function () { loadedScripts++; });
+  $.getScript("./js/Request.js").done(function () { loadedScripts++; });
+  $.getScript("./js/EnumHelper.js").done(function () { loadedScripts++; });
+  $.getScript("./js/MouseClickHandler.js").done(function () { loadedScripts++; });
+  $.getScript("./js/Settings.js").done(function () { loadedScripts++; });
+  $.getScript("./js/SettingsHandler.js").done(function () { loadedScripts++; });
+  $.getScript("./js/DragNDropHandler.js").done(function () { loadedScripts++; });
+  $.getScript("./js/GameHandler.js").done(function () { loadedScripts++; });
+  $.getScript("./js/Countdown.js").done(function () { loadedScripts++; });
 }

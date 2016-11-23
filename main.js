@@ -18,7 +18,7 @@ function createMainWindow () {
   global.windowsArray.app.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.
-  global.windowsArray.app.webContents.openDevTools()
+  global.windowsArray.app.webContents.openDevTools({mode: 'bottom'})
 
   // Emitted when the window is closed.
   global.windowsArray.app.on('closed', () => {

@@ -5,11 +5,15 @@ class Settings {
    * @param {string} color color of the background (grandient)
    * @param {string} mathSize font size of the mathJax contained in the div #main-formule
    * @param {bool} timer boolean used to determine if we use a timer or not during the game
+   * @param {bool} autoCloseNotif boolean used to determine if the app notifications are closed automatically or not
+   * @param {int} notifTimer value (in milliseconds) used for the notif lifespan if autoCloseNotif is true
    */
-  constructor (color, mathSize, timer) {
+  constructor (color, mathSize, timer, autoCloseNotif, notifTimer) {
     this.color = color;
     this.mathSize = mathSize;
     this.timer = timer;
+    this.autoCloseNotif = autoCloseNotif;
+    this.notifTimer = notifTimer;
   }
 
   /**
@@ -18,7 +22,7 @@ class Settings {
    * @static
    */
   static useDefault () {
-    return new Settings ("linear-gradient(to bottom, #1AD6FD, #1D62F0)", "100px", false);
+    return new Settings ("linear-gradient(to bottom, #1AD6FD, #1D62F0)", "100px", false, false, 1500);
   }
 
   /**
@@ -55,6 +59,14 @@ class Settings {
    */
   setTimer (value) {
     this.timer = value;
+    Application.getInstance().displaySuccessNotification("#settingsNotification", "Nouveaux paramètres enregistré.");
+  }
+
+  /**
+   * Set the autoCloseNotif attribute and display a message.
+   */
+  setAutoCloseNotif (value) {
+    this.autoCloseNotif = value;
     Application.getInstance().displaySuccessNotification("#settingsNotification", "Nouveaux paramètres enregistré.");
   }
 }

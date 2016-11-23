@@ -8,7 +8,9 @@ class MouseClickHandler {
    */
   static setEvents (obj) {
     for (var i in obj.ids) {
-        $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseoverHandler);
+        console.log("#"+obj.ids[i]);
+        var test = $("#"+obj.ids[i]).on("mouseover", { value:obj.list }, MouseClickHandler.mouseoverHandler);
+        console.log(test);
         $("#"+obj.ids[i]).on("mouseleave", MouseClickHandler.mouseleaveHandler);
         $("#"+obj.ids[i]).on("mousemove", MouseClickHandler.mousemoveHandler);
         $("#"+obj.ids[i]).on("contextmenu", { value:obj }, MouseClickHandler.contextmenuHandler);
@@ -21,11 +23,11 @@ class MouseClickHandler {
    * @static
    */
   static mouseoverHandler (event) {
-    var id = $(this).attr("id")
+    event.stopPropagation();
+
+    var id = $(this).attr("id");
 
     MouseClickHandler.getTooltipList(event.data.value, id);
-
-    event.stopPropagation();
 
     $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
@@ -38,6 +40,8 @@ class MouseClickHandler {
    * @static
    */
   static mouseleaveHandler (event) {
+    event.stopPropagation();
+
     $("#tooltip").hide(100);
   }
 
@@ -47,6 +51,8 @@ class MouseClickHandler {
    * @static
    */
   static mousemoveHandler (event) {
+    event.stopPropagation();
+
     $("#tooltip:visible").css("top", event.pageY+20);
     $("#tooltip:visible").css("left", event.pageX+10);
   }

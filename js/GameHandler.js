@@ -17,18 +17,30 @@ class GameHandler {
    * Will display an error message if the server can't create a new game.
    * If it's a success, ...
    * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
    * @static
    */
-  static startNewGameResponse (response) {
+  static startNewGameResponse (response, status) {
+    //Request error
+    if (status != "success")
+      Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+
     var obj = JSON.parse(response.responseText);
+
+    //Server error
     if (obj.status == "FAILURE")
       Application.getInstance().displayErrorNotification("#gameNotification", obj.complementaryInfo);
 
+    //Start timer
     if (Application.getInstance().settings.timer) {
       var timer = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOver, GameHandler.updateTimer);
       timer.startCountdown();
     }
+
+    //Show game tools
     $("#tools").fadeIn(800);
+
+    //TODO: add id to application.gameId
   }
 
   static timerOver () {
