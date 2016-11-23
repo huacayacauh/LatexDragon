@@ -63,7 +63,7 @@ public class Data {
 			for(int i = 0; i < liste.size(); i++){
 				if (liste.get(i).canApplic(expression)){
 					System.out.println(expression.expressionToString());
-					res.add(key+": "+liste.get(i).getInputModel().expressionToString() + " = "+liste.get(i).getResultModel());
+					res.add("{\"text\": "+"\""+liste.get(i).getInputModel().expressionToString() + " => "+liste.get(i).getResultModel()+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
 				}
 			}
 		}
@@ -80,9 +80,9 @@ public class Data {
 			temp += "{"+key +":[";
 			ArrayList<String> liste = rules.get(key);
 			if(liste.size() > 0)
-				temp += "\""+liste.get(0)+"\"";
+				temp += "\""+liste.get(0);;
 			for(int i = 1; i < liste.size(); i++){
-				temp += ",\""+liste.get(i)+"\"";
+				temp += ","+liste.get(i);
 			}
 			if(iterateur.hasNext())
 				temp+="]},";
