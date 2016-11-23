@@ -3,6 +3,9 @@ package libreDragon.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import libreDragon.api.Data;
+import libreDragon.latexParser.OperatorParser;
+
 /**
  * Cette classe représente un noeud à deux fils.
  * Exemple : + dans 1 + 2
@@ -144,5 +147,10 @@ public class BinaryExpression implements Expression {
 	
 	public int getSize(){
 		return first_expression.getSize() + second_expression.getSize()+1;
+	}
+
+	@Override
+	public String getExpr() {
+		return "( "+first_expression.getExpr() +" "+ Operator.convert(type)  +" "+  second_expression.getExpr() +" )";
 	}
 }

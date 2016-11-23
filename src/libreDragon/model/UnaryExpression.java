@@ -105,5 +105,9 @@ public class UnaryExpression implements Expression {
 	public int getSize(){
 		return sub_expression.getSize()+1;
 	}
+	
+	public String getExpr(){
+		return sub_expression.getExpr();
+	}
 
 }

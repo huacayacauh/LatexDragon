@@ -97,6 +97,10 @@ public class PrimaryExpression implements Expression{
 	public int getSize(){
 		return 1;
 	}
+	
+	public String getExpr(){
+		return name;
+	}
 
 
 }

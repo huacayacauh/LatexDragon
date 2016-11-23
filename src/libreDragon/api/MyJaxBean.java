@@ -38,7 +38,7 @@ public class MyJaxBean {
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"ids\":"+ids+","
-				+ "\"list\":["+list
+				+ "\"rule\":["+list
 				+"}";
 	}
 }
