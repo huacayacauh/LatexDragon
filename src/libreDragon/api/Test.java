@@ -22,9 +22,6 @@ public class Test {
 		MyJaxBean myjaxbean = new MyJaxBean();
 		if(Data.getTree() == null)
 			Data.setDefault();
-		System.out.println("config"+Data.getConfig().getConfiguration("ROOT").getOperators().toString());
 		return myjaxbean.getMyJaxBean();
-			}
-	//public String get
-	
+		}
 }

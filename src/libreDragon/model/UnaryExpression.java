@@ -101,5 +101,9 @@ public class UnaryExpression implements Expression {
 	public String getId(){
 		return this.id;
 	}
+	
+	public int getSize(){
+		return sub_expression.getSize()+1;
+	}
 
 }

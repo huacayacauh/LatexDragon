@@ -141,4 +141,8 @@ public class BinaryExpression implements Expression {
 	public String getId(){
 		return this.id;
 	}
+	
+	public int getSize(){
+		return first_expression.getSize() + second_expression.getSize()+1;
+	}
 }

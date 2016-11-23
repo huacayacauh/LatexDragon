@@ -32,12 +32,16 @@ public class Rule {
 	 * @return un booléen
 	 */
 	public boolean canApplic(Expression input) {
-		if( ! input.doesMatchModel(input_model) ) return false;
-		
+		if(input.getSize() != input_model.getSize()) return false;
+		if( ! input.doesMatchModel(input_model)){
+			return false;
+		}
+		System.out.println("<"+input.getSize() + " : "+input.expressionToString());
+		System.out.println(input_model.getSize() + " : "+input_model.expressionToString()+">");
 		Memory memory = new Memory();
 		
 		if( ! memory.init(input_model, input) ) return false;
-		
+		System.out.println("OK!!!!");
 		return true;
 	}
 	

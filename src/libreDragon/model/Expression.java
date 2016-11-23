@@ -9,6 +9,7 @@ import java.util.List;
  * @author Pacôme
  */
 public interface Expression {
+	int getSize();
 	/**
 	 * Cette fonction génère l'équivalent graphique du noeud.
 	 * A noter que dans l'implémentation MathJax, on a rajouté un argument identifiant.

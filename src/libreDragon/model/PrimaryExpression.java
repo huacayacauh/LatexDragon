@@ -94,6 +94,9 @@ public class PrimaryExpression implements Expression{
 	public String getId(){
 		return this.id;
 	}
+	public int getSize(){
+		return 1;
+	}
 
 
 }

@@ -61,9 +61,9 @@ public class Data {
 			Object key= iterateur.next();
 			liste = rules.get(key);
 			for(int i = 0; i < liste.size(); i++){
-				System.out.println("Rule "+liste.get(i));
 				if (liste.get(i).canApplic(expression)){
-					res.add(liste.get(i).getInputModel().expressionToString());
+					System.out.println(expression.expressionToString());
+					res.add(key+": "+liste.get(i).getInputModel().expressionToString() + " = "+liste.get(i).getResultModel());
 				}
 			}
 		}
@@ -79,7 +79,8 @@ public class Data {
 			String key= iterateur.next();
 			temp += "{"+key +":[";
 			ArrayList<String> liste = rules.get(key);
-			temp += "\""+liste.get(0)+"\"";
+			if(liste.size() > 0)
+				temp += "\""+liste.get(0)+"\"";
 			for(int i = 1; i < liste.size(); i++){
 				temp += ",\""+liste.get(i)+"\"";
 			}
