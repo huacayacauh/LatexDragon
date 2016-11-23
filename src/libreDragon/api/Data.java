@@ -28,7 +28,56 @@ public class Data {
 	private static KrakenTree tree;
 	private static ArrayList<String> ids = new ArrayList<>();
 	private static HashMap<String,ArrayList<String>> rules = new HashMap<>();
+	private static String exprid = "";
+	private static String contexe="";
+	private static int idrule = -1;
 	
+	public static Expression applicRule(Expression expression){
+		Rule rule = Configuration.rules.getRules().get(contexe).get(idrule);
+		contexe = "";
+		idrule = -1;
+		exprid = "";
+		System.out.println("APPLIC");
+		System.out.println(expression.expressionToString());
+		return rule.applic(expression);
+	}
+	
+	
+	
+	public static void setTree(Expression tree) {
+		Data.tree.setRoot(tree);
+	}
+
+
+
+	public static String getExprid() {
+		return exprid;
+	}
+
+
+	public static void setExprid(String exprid) {
+		Data.exprid = exprid;
+	}
+
+
+	public static String getContexe() {
+		return contexe;
+	}
+
+
+	public static void setContexe(String contexe) {
+		Data.contexe = contexe;
+	}
+
+
+	public static int getIdrule() {
+		return idrule;
+	}
+
+	public static void setIdrule(int idrule) {
+		Data.idrule = idrule;
+	}
+
 	public static void addexpr(String id){
 		ids.add(id);
 	}

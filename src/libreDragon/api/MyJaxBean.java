@@ -35,10 +35,11 @@ public class MyJaxBean {
 		setIds(Data.getexpr());
 		list = Data.getrules();
 		Data.cleanexpr();
+		Data.setTree(resultat);
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"ids\":"+ids+","
-				+ "\"rule\":["+list
+				+ "\"rules\":["+list
 				+"}";
 	}
 }
