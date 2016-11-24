@@ -29,12 +29,12 @@ public class MyJaxBean {
 		this.list = list;
 	}
     
-	public String getMyJaxBean () {
-		Data.cleanexpr();
-		Expression resultat = Data.getTree().getRoot();
-		setMath((String) resultat.generateExpression("0"));
-		setIds(Data.getexpr());
-		list = Data.getrules();
+	public String getMyJaxBean (String gameId) {
+		Data.getSession(gameId).cleanexpr();
+		Expression resultat = Data.getSession(gameId).getTree().getRoot();
+		setMath((String) resultat.generateExpression("0",gameId));
+		setIds(Data.getSession(gameId).getexpr());
+		list = Data.getSession(gameId).getrules();
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"ids\":"+ids+","

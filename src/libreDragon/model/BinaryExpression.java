@@ -38,14 +38,14 @@ public class BinaryExpression implements Expression {
 	 * Génère un équivalent graphique en fonction de la factory de la configuration
 	 */
 	@Override
-	public String generateExpression(String id) {
+	public String generateExpression(String id,String gameId) {
 		this.id = id;
 		return Configuration.graphic.generateBinaryExpression(
 					this,
 					type,
 					first_expression,
 					second_expression,
-					id);
+					id,gameId);
 	}
 	/**
 	 * Compare ce noeud avec le noeud en paramètre.

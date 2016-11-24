@@ -22,13 +22,13 @@ public class UnaryExpression implements Expression {
 	}
 
 	@Override
-	public String generateExpression(String id) {
+	public String generateExpression(String id,String gameId) {
 		this.id = id;
 		return Configuration.graphic.generateUnaryExpression(
 					this,
 					type,
 					sub_expression,
-					id);
+					id,gameId);
 	}
 	
 	public Expression subExpression() {

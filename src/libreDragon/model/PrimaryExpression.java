@@ -32,9 +32,9 @@ public class PrimaryExpression implements Expression{
 	}
 
 	@Override
-	public String generateExpression(String id) {
+	public String generateExpression(String id,String gameId) {
 		this.id = id;
-		return Configuration.graphic.generatePrimaryExpression(this, type, name, id);
+		return Configuration.graphic.generatePrimaryExpression(this, type, name, id,gameId);
 	}
 
 	@Override

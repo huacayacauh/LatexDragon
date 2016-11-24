@@ -17,7 +17,7 @@ public interface Expression {
 	 * Ca permet de donner un tag à chaque expression.
 	 * @return L'objet graphique (le type dépend de la factory de la configuration)
 	 */
-	Object generateExpression(String id);
+	Object generateExpression(String id,String gameId);
 	
 	/**
 	 * Compare si une expression est équivalente à une autre.
