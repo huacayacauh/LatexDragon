@@ -39,7 +39,6 @@ public class Rule {
 		Memory memory = new Memory();
 		
 		if( ! memory.init(input_model, input) ) return false;
-		System.out.println("OK!!!!");
 		return true;
 	}
 	

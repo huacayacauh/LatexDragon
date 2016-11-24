@@ -33,11 +33,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	
 	@Override
 	public String generateBinaryExpression(Expression expression, String type, Expression first, Expression second, String id) {
-		Data.addexpr("\"exp"+id+"\"");
-		if(Data.getExprid().compareTo("exp"+id) == 0){
-			expression= Data.applicRule(expression);
-			return (String) expression.generateExpression(id);
-		}
+		Data.addexpr("\"exp"+id+"\"",expression);
 		BinaryExpression bexpression = (BinaryExpression) expression;
 		String operator = getConfiguration(expression.getType()).getOperators().first;
 		Data.addrules("\"exp"+id+"\"", Data.addrules(bexpression));
@@ -53,11 +49,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 
 	@Override
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id) {
-		Data.addexpr("\"exp"+id+"\"");
-		if(Data.getExprid().compareTo("exp"+id) == 0){
-			expression= Data.applicRule(expression);
-			return (String) expression.generateExpression(id);
-		}
+		Data.addexpr("\"exp"+id+"\"",expression);
 		Data.addrules("\"exp"+id+"\"", Data.addrules(expression));
 		return "\\\\cssId{exp"+id+"}{"+ name +"}";
 	}

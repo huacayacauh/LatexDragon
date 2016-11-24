@@ -30,12 +30,11 @@ public class MyJaxBean {
 	}
     
 	public String getMyJaxBean () {
+		Data.cleanexpr();
 		Expression resultat = Data.getTree().getRoot();
 		setMath((String) resultat.generateExpression("0"));
 		setIds(Data.getexpr());
 		list = Data.getrules();
-		Data.cleanexpr();
-		Data.setTree(resultat);
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"ids\":"+ids+","

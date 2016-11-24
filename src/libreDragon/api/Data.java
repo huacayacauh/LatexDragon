@@ -26,65 +26,28 @@ import libreDragon.ruleParser.RuleParser;
 public class Data {
 	private static LatexConfiguration config = new LatexConfiguration();
 	private static KrakenTree tree;
-	private static ArrayList<String> ids = new ArrayList<>();
+	private static HashMap<String,Expression> ids = new HashMap<>();
 	private static HashMap<String,ArrayList<String>> rules = new HashMap<>();
-	private static String exprid = "";
-	private static String contexe="";
-	private static int idrule = -1;
 	
-	public static Expression applicRule(Expression expression){
+	public static void applicRule(String exprid,int idrule, String contexe){
+		Expression expression = ids.get("\""+exprid+"\"");
 		Rule rule = Configuration.rules.getRules().get(contexe).get(idrule);
-		contexe = "";
-		idrule = -1;
-		exprid = "";
-		System.out.println("APPLIC");
-		System.out.println(expression.expressionToString());
-		return rule.applic(expression);
+		tree.applicRule(expression, rule);
 	}
-	
 	
 	
 	public static void setTree(Expression tree) {
 		Data.tree.setRoot(tree);
 	}
 
-
-
-	public static String getExprid() {
-		return exprid;
-	}
-
-
-	public static void setExprid(String exprid) {
-		Data.exprid = exprid;
-	}
-
-
-	public static String getContexe() {
-		return contexe;
-	}
-
-
-	public static void setContexe(String contexe) {
-		Data.contexe = contexe;
-	}
-
-
-	public static int getIdrule() {
-		return idrule;
-	}
-
-	public static void setIdrule(int idrule) {
-		Data.idrule = idrule;
-	}
-
-	public static void addexpr(String id){
-		ids.add(id);
+	public static void addexpr(String id,Expression expression){
+		ids.put(id,expression);
 	}
 	
 	public static String getexpr(){
 		String temp ="[";
-		Iterator<String> iterator = ids.iterator();
+		Set<String> listKeys=ids.keySet();
+		Iterator<String> iterator=listKeys.iterator();
 		if(iterator.hasNext()){
 			temp = temp+iterator.next();
 			while (iterator.hasNext()) {
@@ -111,7 +74,7 @@ public class Data {
 			liste = rules.get(key);
 			for(int i = 0; i < liste.size(); i++){
 				if (liste.get(i).canApplic(expression)){
-					System.out.println(expression.expressionToString());
+					//System.out.println(expression.expressionToString());
 					res.add("{\"text\": "+"\""+expression.getExpr() + " => "+liste.get(i).applic(expression).getExpr()+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
 				}
 			}
@@ -163,7 +126,7 @@ public class Data {
 		UnaryExpression parenthese_A_plus_B = new UnaryExpression("PARENTHESIS", divide_A_B.cloneExpression());
 		BinaryExpression fois_AB_C = new BinaryExpression("FOIS", parenthese_A_plus_B.cloneExpression(), expr_C.cloneExpression());
 		BinaryExpression egal_ABC_D = new BinaryExpression("EGAL", fois_AB_C.cloneExpression(), expr_D.cloneExpression());
-		tree.setRoot(egal_ABC_D );
+		tree.setRoot(egal_ABC_D);
 		readRules(tree);
 	}
 	public static void readRules(KrakenTree tree) {
