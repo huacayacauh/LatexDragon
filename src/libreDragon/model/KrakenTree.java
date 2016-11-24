@@ -28,6 +28,9 @@ public class KrakenTree {
 		Configuration.init(factory);
 		
 	}
+	public KrakenTree() {
+		
+	}
 	
 	/**
 	 * Affecte la racine à l'expression voulue.
