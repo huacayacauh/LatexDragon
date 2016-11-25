@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+			<div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">formule1</a></li>
+            <li><a href="#">formule2</a></li>
+            <li><a href="#">formule3</a></li>
+            <li><a href="#">formule4</a></li>
+    		  </ul>
+    	  </div>
+        <!-- Main content -->
+        <div id="main-content" class="col-md-10 col-md-offset-2">
+          <!-- Notification div -->
+          <div id="gameNotification">
+          </div>
+          <!-- Start button -->
+          <div class="jumbotron">
+            <p>Clique sur start pour commencer</p>
+            <p><a class="btn btn-success btn-lg" role="button" onclick="GameHandler.gameStateRequest()">Start</a></p>
+          </div>
+          <!-- Formule -->
+          <div id="main-formule">
+          </div>
+          <div id="tools">
+            <!-- Timer -->
+            <div id="gameTimer">
+            </div>
+            <!-- Bouton recommencer -->
+            <button class="btn btn-success" id="restartButton">
+              <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            </button>
+          </div>
+          <button onclick="Application.getInstance().getMemoryUsage()">memory</button>
+          <button onclick="GameHandler.startNewGame('1')">start</button>
+          <span class="dragndrop" id="1">Drag</span><span class="dragndrop" id="2">Drop</span>
+        </div>
+      </div>
+    <!-- Tooltip -->
+    <div class="alert alert-info" id="tooltip">
+      <ul class="nav nav-sidebar" id="tooltipList">
+      </ul>
+    </div>
+  </body>
+</html>

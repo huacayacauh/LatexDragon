@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+			<div class="row">
+        <!-- Main content -->
+        <div id="main-content" class="col-md-12 settings_tab">
+          <!-- Titre -->
+          <div class="page-header">
+            <h1>Paramètres</h1>
+          </div>
+          <!-- Notification div -->
+          <div id="settingsNotification">
+          </div>
+          <!-- Color select -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Couleur</h2>
+            <h5>Couleur du background de l'application.</h5>
+            <select class="form-control" id="settings-color">
+              <option value="linear-gradient(to bottom, #52EDC7, #5AC8FB)">Vert/Cyan</option>
+              <option value="linear-gradient(to bottom, #FF5E3A, #FF2A68)">Orange/Magenta</option>
+              <option value="linear-gradient(to bottom, #FFDB4C, #FFCD02)">Jaune</option>
+              <option value="linear-gradient(to bottom, #87FC70, #0BD318)">Vert</option>
+              <option value="linear-gradient(to bottom, #1AD6FD, #1D62F0)">Bleu</option>
+              <option value="linear-gradient(to bottom, #DBDDDE, #898C90)">Gris</option>
+              <option value="linear-gradient(to bottom, #C86EDF, #E4B7F0)">Rose</option>
+              <option value="linear-gradient(to bottom, #1D77EF, #81F3FD)">Bleu/Cyan</option>
+            </select>
+          </div>
+          <!-- Font size select -->
+          <div class="col-md-6 col-sm-6">
+            <h2>MathJax font size</h2>
+            <h5>Taille de la police de la formule en jeu.</h5>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default settings-mathSize">50px</button>
+              <button type="button" class="btn btn-default settings-mathSize">100px</button>
+              <button type="button" class="btn btn-default settings-mathSize">200px</button>
+            </div>
+          </div>
+          <!-- Timer on/off select -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Timer</h2>
+            <h5>Jouer avec ou sans un timer.</h5>
+            <label class="switch">
+              <input type="checkbox" id="settings-timer">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <!-- Auto close notification -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Notifications</h2>
+            <h5>Fermer automatiquement les notifications.</h5>
+            <label class="switch">
+              <input type="checkbox" id="settings-notifOnOff">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <!-- Memory usage -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Mémoire</h2>
+            <h5>Utilisation de la mémoire.</h5>
+            <div id="settings-memoryUsage">
+            </div>
+          </div>
+          <!-- Process info -->
+          <div class="col-md-6 col-sm-6">
+            <h2>Informations</h2>
+            <h5>Informations sur l'application.</h5>
+            <div id="settings-processInfo">
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>
