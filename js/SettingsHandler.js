@@ -91,14 +91,17 @@ class SettingsHandler {
    */
   static processInfoHandler () {
     var process = Application.getInstance().getProcess();
+    const app = Application.getInstance().remote.app;
     $("#settings-processInfo").append(
-      $("<div></div>").text("Process type : " + process.type)
+      $("<div></div>").text("LibreDragon Client version : ").append($("<b></b>").text(app.getVersion()))
     ).append(
-      $("<div></div>").text("Electron version : " + process.versions.electron)
+      $("<div></div>").text("Process type : ").append($("<b></b>").text(process.type))
     ).append(
-      $("<div></div>").text("Chrome version : " + process.versions.chrome)
+      $("<div></div>").text("Electron version : ").append($("<b></b>").text(process.versions.electron))
     ).append(
-      $("<div></div>").text("Node.js version : " + process.versions.node)
+      $("<div></div>").text("Chrome version : ").append($("<b></b>").text(process.versions.chrome))
+    ).append(
+      $("<div></div>").text("Node.js version : ").append($("<b></b>").text(process.versions.node))
     );
   }
 }

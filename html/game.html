@@ -7,10 +7,10 @@
         <!-- Sidebar -->
         <div class="col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">formule1</a></li>
-            <li><a href="#">formule2</a></li>
-            <li><a href="#">formule3</a></li>
-            <li><a href="#">formule4</a></li>
+            <li class="active"><a onclick="GameHandler.startNewGame('1')">$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$</a></li>
+            <li><a onclick="GameHandler.startNewGame('1')">$$\frac{d}{dx}\left( \int_{0}^{x} f(u)\,du\right)=f(x)$$</a></li>
+            <li><a onclick="GameHandler.startNewGame('1')">$$x_{1,2} = \frac{- b \pm \sqrt{\Delta}}{2a}$$</a></li>
+            <li><a onclick="GameHandler.startNewGame('1')">$$\frac{n!}{k!(n-k)!} = \binom{n}{k}$$</a></li>
     		  </ul>
     	  </div>
         <!-- Main content -->
@@ -21,7 +21,7 @@
           <!-- Start button -->
           <div class="jumbotron">
             <p>Clique sur start pour commencer</p>
-            <p><a class="btn btn-success btn-lg" role="button" onclick="GameHandler.gameStateRequest()">Start</a></p>
+            <p><a class="btn btn-success btn-lg" role="button" onclick="GameHandler.startNewGame('1')">Start</a></p>
           </div>
           <!-- Formule -->
           <div id="main-formule">
@@ -31,19 +31,15 @@
             <div id="gameTimer">
             </div>
             <!-- Bouton recommencer -->
-            <button class="btn btn-success" id="restartButton">
+            <button class="btn btn-success" id="restartButton" onclick="GameHandler.restartGame()">
+              Recommencer
               <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
             </button>
           </div>
-          <button onclick="Application.getInstance().getMemoryUsage()">memory</button>
-          <button onclick="GameHandler.startNewGame('1')">start</button>
-          <span class="dragndrop" id="1">Drag</span><span class="dragndrop" id="2">Drop</span>
         </div>
       </div>
     <!-- Tooltip -->
-    <div class="alert alert-info" id="tooltip">
-      <ul class="nav nav-sidebar" id="tooltipList">
-      </ul>
+    <div class="list-group" id="tooltip">
     </div>
   </body>
 </html>

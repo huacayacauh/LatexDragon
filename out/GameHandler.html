@@ -91,7 +91,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameHandler.js.html">GameHandler.js</a>, <a href="GameHandler.js.html#line2">line 2</a>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -134,6 +134,861 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameOverResponse"><span class="type-signature">(static) </span>gameOverResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function handling the end of the game clientside, restart the window by hidingthe formula and the tools and then show the start button.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response from the request (jQuery ajax response)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line169">line 169</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameRuleRequest"><span class="type-signature">(static) </span>gameRuleRequest<span class="signature">(event)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Send a request to the server to apply a rule to the formula.
+Call gameUpdateMathResponse to process the response.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Event</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">jQuery Event object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameStartResponse"><span class="type-signature">(static) </span>gameStartResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Response of the request to get the game state after a new game is created.
+Will start a timer if it's enabled and delegate the processing of the response
+to gameUpdateMathResponse.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response from the request (jQuery ajax response)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameStateRequest"><span class="type-signature">(static) </span>gameStateRequest<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Send a request to get the game state.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameUpdateMathResponse"><span class="type-signature">(static) </span>gameUpdateMathResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function that process the response from the server containing the formula state.
+Will throw an error if the request failed.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response from the request (jQuery ajax response)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        if the request fail and the function receive a status diffrent than success.
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".restartGame"><span class="type-signature">(static) </span>restartGame<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function handling the restart button.Send an OVER request then send a START request using the default handler forthose request.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line198">line 198</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setEvents"><span class="type-signature">(static) </span>setEvents<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Set the events for the elements in obj.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -240,7 +1095,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameHandler.js.html">GameHandler.js</a>, <a href="GameHandler.js.html#line10">line 10</a>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -271,14 +1126,14 @@
 
     
 
-    <h4 class="name" id=".startNewGameResponse"><span class="type-signature">(static) </span>startNewGameResponse<span class="signature">(response)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".startNewGameResponse"><span class="type-signature">(static) </span>startNewGameResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Response of the startNewGame request.Will display an error message if the server can't create a new game.If it's a success, ...
+    Response of the startNewGame request.Will display an error message if the server can't create a new game.If it's a success it will register the game ID and send a request to get thegame state.
 </div>
 
 
@@ -334,6 +1189,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -371,7 +1249,351 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameHandler.js.html">GameHandler.js</a>, <a href="GameHandler.js.html#line22">line 22</a>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".timerOnOver"><span class="type-signature">(static) </span>timerOnOver<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function handling the end of the countdown.When the countdown is over an OVER request is send to the serverto signal the game is over.When the request is over call gameOverResponse to handle the end of the gameclientside.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".timerOnUpdate"><span class="type-signature">(static) </span>timerOnUpdate<span class="signature">(countdown)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function handling the update of the countdown.Each time the countdown is updated the timer text on the windowd is updated too.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>countdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Countdown.html">Countdown</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">countdown object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line188">line 188</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".typesetMath"><span class="type-signature">(static) </span>typesetMath<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Call mathJax to typeset any latex elements in the window.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fonction to call after the typeset is done</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_GameHandler.js.html">js/GameHandler.js</a>, <a href="js_GameHandler.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -413,13 +1635,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadScripts">loadScripts</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="DragNDropHandler.html">DragNDropHandler</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 15 2016 15:39:57 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:29 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>

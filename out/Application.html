@@ -66,6 +66,288 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>remote</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Allow the use of module from the main process in the renderer process</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>settings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Settings.html">Settings</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Settings of the application</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currentTab</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String containing the name of the tab currently loaded</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tabContainer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">DOM element on which the tab is append to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>windows</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array of BrowserWindow containing all the windows of the app (app & doc)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>loader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">DOM element used to display while the tab is being loaded</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Object of the last/current game request to the server</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gameId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Sring</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Id of the client on the server</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>formulaId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Id of which formula the game is using (currently not used properly)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>countdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Countdown.html">Countdown</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Countdown object of the game (used to keep an eye on the countdown and not having multiple wountdown running at the same time)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Application.html">Application</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Reference to the only instance of Application</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 <dl class="details">
 
     
@@ -95,7 +377,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line15">line 15</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -195,89 +477,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line112">line 112</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="displayConsole"><span class="type-signature"></span>displayConsole<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Display chromium dev tools on the app window.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line119">line 119</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line126">line 126</a>
     </li></ul></dd>
     
 
@@ -359,7 +559,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line126">line 126</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -513,7 +713,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line138">line 138</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line152">line 152</a>
     </li></ul></dd>
     
 
@@ -551,7 +751,7 @@
 
 
 <div class="description">
-    Display a notification.Create the notification of type type and message message and append it tothe dom element element.Create a dismissible notification that won't close unless the user close it.
+    Display a notification.Create the notification of type type and message message and append it tothe DOM element element.Create a dismissible notification that won't close unless the user close it.If autoCloseNotif is true the notif will close automatically in notifTimer milliseconds.If a notification was already present in the DOM element it will replace it.
 </div>
 
 
@@ -603,7 +803,7 @@
 
             
 
-            <td class="description last">identifier of the dom element who will append the notification</td>
+            <td class="description last">identifier of the DOM element who will append the notification</td>
         </tr>
 
     
@@ -690,7 +890,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line162">line 162</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -844,7 +1044,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line149">line 149</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line163">line 163</a>
     </li></ul></dd>
     
 
@@ -875,14 +1075,14 @@
 
     
 
-    <h4 class="name" id="loaded"><span class="type-signature"></span>loaded<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getMemoryUsage"><span class="type-signature"></span>getMemoryUsage<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
 
 
 <div class="description">
-    Called when the tab is loaded.Initialize everything the tab need in order to running,also apply the settings to the tab newly loaded.
+    Return the memory usage of this process.Return only the memory usage of the renderer process and not the main process.
 </div>
 
 
@@ -926,7 +1126,215 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line97">line 97</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line200">line 200</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    memory usage object
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getProcess"><span class="type-signature"></span>getProcess<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Return the process object (renderer process).
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    process object
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="loaded"><span class="type-signature"></span>loaded<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Called when the tab is loaded.Initialize everything the tab need in order to run,also apply the settings to the tab newly loaded.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line111">line 111</a>
     </li></ul></dd>
     
 
@@ -957,7 +1365,7 @@
 
     
 
-    <h4 class="name" id="loadHtml"><span class="type-signature"></span>loadHtml<span class="signature">(response)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadHtml"><span class="type-signature"></span>loadHtml<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1020,6 +1428,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1057,7 +1488,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line65">line 65</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -1188,7 +1619,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line53">line 53</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -1270,7 +1701,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line86">line 86</a>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toggleConsole"><span class="type-signature"></span>toggleConsole<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Toggle chromium dev tools on the app window.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Application.js.html">js/Application.js</a>, <a href="js_Application.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -1312,13 +1825,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadScripts">loadScripts</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="DragNDropHandler.html">DragNDropHandler</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 15 2016 15:39:57 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:28 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>

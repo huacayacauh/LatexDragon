@@ -44,7 +44,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="Settings"><span class="type-signature"></span>new Settings<span class="signature">(color, mathSize, timer)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Settings"><span class="type-signature"></span>new Settings<span class="signature">(color, mathSize, timer, autoCloseNotif, notifTimer)</span><span class="type-signature"></span></h4>
 
     
 
@@ -149,6 +149,52 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>autoCloseNotif</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">boolean used to determine if the app notifications are closed automatically or not</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>notifTimer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">value (in milliseconds) used for the notif lifespan if autoCloseNotif is true</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -186,7 +232,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line2">line 2</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -286,7 +332,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line20">line 20</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -386,7 +432,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line27">line 27</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line31">line 31</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setAutoCloseNotif"><span class="type-signature"></span>setAutoCloseNotif<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Set the autoCloseNotif attribute and display a message.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -468,7 +596,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line38">line 38</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line42">line 42</a>
     </li></ul></dd>
     
 
@@ -550,7 +678,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line47">line 47</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -632,7 +760,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Settings.js.html">Settings.js</a>, <a href="Settings.js.html#line56">line 56</a>
+        <a href="js_Settings.js.html">js/Settings.js</a>, <a href="js_Settings.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -674,13 +802,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadScripts">loadScripts</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="DragNDropHandler.html">DragNDropHandler</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 15 2016 15:39:57 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:29 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>

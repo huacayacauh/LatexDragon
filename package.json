@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "main": "main.js",
   "devDependencies": {
+    "docdash": "^0.4.0",
     "electron": "^1.4.6",
-    "electron-packager": "^8.2.0"
+    "electron-packager": "^8.3.0"
   }
 }

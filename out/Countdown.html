@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Request</title>
+    <title>JSDoc: Class: Countdown</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Request</h1>
+    <h1 class="page-title">Class: Countdown</h1>
 
     
 
@@ -28,9 +28,9 @@
 
 <header>
     
-        <h2>Request</h2>
+        <h2>Countdown</h2>
         
-            <div class="class-description">Class Request, used to send request to the Java rest api</div>
+            <div class="class-description">Class managing a countdown</div>
         
     
 </header>
@@ -44,7 +44,7 @@
     <h2>Constructor</h2>
     
 
-    <h4 class="name" id="Request"><span class="type-signature"></span>new Request<span class="signature">(serverUrl, type, dataType, responseHandler<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Countdown"><span class="type-signature"></span>new Countdown<span class="signature">(duration, overHandler<span class="signature-attributes">opt</span>, updateHandler<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -85,13 +85,13 @@
 
         <tr>
             
-                <td class="name"><code>serverUrl</code></td>
+                <td class="name"><code>duration</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">int</span>
 
 
             
@@ -109,76 +109,14 @@
 
             
 
-            <td class="description last">server url to which the request is send to</td>
+            <td class="description last">duration of the ocuntdowns (in milliseconds)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">type of the http request (GET, POST ...)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dataType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">type of the response (HTML, JSON, TEXT ...)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseHandler</code></td>
+                <td class="name"><code>overHandler</code></td>
             
 
             <td class="type">
@@ -204,7 +142,40 @@
 
             
 
-            <td class="description last">function called when the request is completed, can be omitted</td>
+            <td class="description last">function called when the countdown is over</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">function called each time the countdown update</td>
         </tr>
 
     
@@ -245,7 +216,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line2">line 2</a>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -294,14 +265,14 @@
 
     
 
-    <h4 class="name" id=".buildRequest"><span class="type-signature">(static) </span>buildRequest<span class="signature">(requestName, responseHandler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Request.html">Request</a>}</span></h4>
+    <h4 class="name" id=".minutesToMilliseconds"><span class="type-signature">(static) </span>minutesToMilliseconds<span class="signature">(minutes)</span><span class="type-signature"> &rarr; {int}</span></h4>
 
     
 
 
 
 <div class="description">
-    Static method that create a request using EnumHelper.
+    Convert minutes in to milliseconds.
 </div>
 
 
@@ -325,8 +296,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -339,64 +308,23 @@
 
         <tr>
             
-                <td class="name"><code>requestName</code></td>
+                <td class="name"><code>minutes</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">int</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">name of the request defined in EnumHelper</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseHandler</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">function called when the request is completed, can be omitted</td>
+            <td class="description last">minutes to convert</td>
         </tr>
 
     
@@ -437,7 +365,430 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line63">line 63</a>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    milliseconds
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">int</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".updateCountdown"><span class="type-signature">(static) </span>updateCountdown<span class="signature">(countdown)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function updating the countdown, only if the countdown is started.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>countdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Countdown.html">Countdown</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">countdown object to update</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Will throw an error if the countdown is not started
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="startCountdown"><span class="type-signature"></span>startCountdown<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Funciton used to start the countdown if it's not already started.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Will throw an error if the countdown is already started
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="stopCountdown"><span class="type-signature"></span>stopCountdown<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Stop the countdown.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Convert the countdown in a readable string.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Countdown.js.html">js/Countdown.js</a>, <a href="js_Countdown.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -471,310 +822,13 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="Request.html">Request</a></span>
+<span class="param-type">String</span>
 
 
     </dd>
 </dl>
 
     
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="response"><span class="type-signature"></span>response<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Store the response from the request, and if defined call the responseHandler function.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>response</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">response from the request (jQuery ajax response)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>status</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">status response from the request</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line47">line 47</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="send"><span class="type-signature"></span>send<span class="signature">(item<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Execute an asynchronous HTTP request to the server and call this.response() when complete.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">string of arguments that need to be sent</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line24">line 24</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -800,7 +854,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:29 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:28 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>

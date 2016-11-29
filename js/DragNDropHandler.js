@@ -1,3 +1,7 @@
+/**
+ * Class responsible of handling the drag & drop event.
+ * Currently not used and not finished.
+ */
 class DragNDropHandler {
 
   static setEvents (obj) {
