@@ -31,7 +31,8 @@ class MouseClickHandler {
 
     MouseClickHandler.getTooltipList(event.data.value, id);
 
-    $("#tooltip").show(100);
+    //if (!$("#tooltip:visible"))
+      $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
   }
@@ -67,12 +68,12 @@ class MouseClickHandler {
    */
   static contextmenuHandler (event) {
     event.stopPropagation();
-    console.log("menu");
     var id = $(this).attr("id");
 
     MouseClickHandler.getTooltipList(event.data.value.rules, id);
 
-    $("#tooltip").show(100);
+    if (!$("#tooltip:visible"))
+      $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
 
@@ -94,18 +95,22 @@ class MouseClickHandler {
 
     for (var i in list) {
       if (list[i][id] != undefined) {
-        for (var j in list[i][id]) {
-          if (list[i][id][j].type == "contextMenu")
-            options.push(list[i][id][j]);
-        }
+        for (var j in list[i][id])
+          options.push(list[i][id][j]);
       }
     }
 
-    $("#tooltipList").html("");
+    $("#tooltip").html("");
     for (var i in options) {
       var obj = {expId:id, ruleId:options[i].ruleId, context:options[i].type};
-      var tmp = $("<li><a>" + options[i].text + "</a></li>").on("click", { value:obj }, GameHandler.gameRuleRequest);
-      $("#tooltipList").append(tmp);
+      var color = "info";
+
+      if (options[i].type == "contextMenu") color = "success";
+      else if (options[i].type == "drag_and_drop") color = "danger";
+
+      var tmp = $("<a>" + options[i].text + "</a>").on(
+        "click", { value:obj }, GameHandler.gameRuleRequest).addClass("list-group-item").addClass("list-group-item-" + color);
+      $("#tooltip").append(tmp);
     }
   }
 

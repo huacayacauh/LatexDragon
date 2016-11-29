@@ -36,7 +36,7 @@ class Application {
       //Id of the client on the server
       this.gameId = null;
       //Id of which formula the game is using
-      this.formulaId = null;
+      this.formulaId = "1";
       //State of the countdown
       Application.countdown = null;
       //Only instance of Application

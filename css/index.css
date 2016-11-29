@@ -81,15 +81,6 @@ a {
   position: absolute;
   display: none;
   z-index: 1000;
-  background-color: #f8f8f8;
-}
-
-#tooltip > ul > li > a {
-  color: #777777;
-}
-
-#tooltip > ul > li > a:hover {
-  background-color: #136a8a;
 }
 
 #main-content {
@@ -105,7 +96,6 @@ a {
 }
 
 #restartButton {
-  width: 50px;
   height: 50px;
   text-align: center;
 }

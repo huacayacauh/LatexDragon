@@ -31,17 +31,15 @@
             <div id="gameTimer">
             </div>
             <!-- Bouton recommencer -->
-            <h3>Recommencer</h3>
-            <button class="btn btn-success" id="restartButton" onclick="GameHandler.startNewGame(Application.getInstance().mathId)">
+            <button class="btn btn-success" id="restartButton" onclick="GameHandler.restartGame()">
+              Recommencer
               <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
             </button>
           </div>
         </div>
       </div>
     <!-- Tooltip -->
-    <div class="alert alert-info" id="tooltip">
-      <ul class="nav nav-sidebar" id="tooltipList">
-      </ul>
+    <div class="list-group" id="tooltip">
     </div>
   </body>
 </html>

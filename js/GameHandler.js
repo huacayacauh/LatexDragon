@@ -8,7 +8,6 @@ class GameHandler {
   static setEvents (obj) {
     MouseClickHandler.setEvents(obj);
     DragNDropHandler.setEvents(obj);
-    console.log(obj);
   }
 
   /**
@@ -63,10 +62,14 @@ class GameHandler {
     GameHandler.gameUpdateMathResponse(response, status);
     var app = Application.getInstance();
 
+    //Stop timer
+    if (app.countdown != null) {
+      app.countdown.stopCountdown();
+      $("#gameTimer").html("");
+    }
+
     //Start timer
     if (app.settings.timer) {
-      if (app.countdown != null)
-        app.countdown.stopCountdown();
       app.countdown = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOnOver, GameHandler.timerOnUpdate);
       app.countdown.startCountdown();
     }
@@ -116,8 +119,9 @@ class GameHandler {
 
   /**
    * Send a request to the server to apply a rule to the formula.
-   * Q
+   * Call gameUpdateMathResponse to process the response.
    * @param {Event} event jQuery Event object
+   * @static
    */
   static gameRuleRequest (event) {
     event.stopPropagation();
@@ -128,6 +132,11 @@ class GameHandler {
       $("#tooltip").hide(100);
   }
 
+  /**
+   * Call mathJax to typeset any latex elements in the window.
+   * @param {function} callback fonction to call after the typeset is done
+   * @static
+   */
   static typesetMath (callback) {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
@@ -135,29 +144,58 @@ class GameHandler {
       MathJax.Hub.Queue(callback);
   }
 
+  /**
+   * Function handling the end of the countdown.
+   * When the countdown is over an OVER request is send to the server
+   * to signal the game is over.
+   * When the request is over call gameOverResponse to handle the end of the game
+   * clientside.
+   * @static
+   */
   static timerOnOver () {
-    $("#tools").hide(800);
     $("#gameTimer").html("");
-    Application.getInstance().displaySuccessNotification("Temps écouler, partie finie.");
+    Application.getInstance().displaySuccessNotification("#gameNotification", "Temps écouler, partie finie.");
     Application.getInstance().countdown = null;
-    Request.buildRequest("OVER").send(GameHandler.gameOverResponse);
+    Request.buildRequest("OVER", GameHandler.gameOverResponse).send("/" + Application.getInstance().gameId);
   }
 
+  /**
+   * Function handling the end of the game clientside, restart the window by hiding
+   * the formula and the tools and then show the start button.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   * @static
+   */
   static gameOverResponse (response, status) {
     if (status != "success") {
       Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
       throw "[ERROR]: request response invalid, request might have failed.";
     }
 
-    $("#tools").hide();
+    $("#tools").hide("slow");
 
-    $("#main-formule").hide();
+    $("#main-formule").hide("slow");
 
-    $(".jumbotron:visible").show("slow");
-
+    $(".jumbotron:hidden").show("slow");
   }
 
+  /**
+   * Function handling the update of the countdown.
+   * Each time the countdown is updated the timer text on the windowd is updated too.
+   * @param {Countdown} countdown countdown object
+   * @static
+   */
   static timerOnUpdate (countdown) {
     $("#gameTimer").html($("<h1></h1>").text(countdown.toString()));
+  }
+
+  /**
+   * Function handling the restart button.
+   * Send an OVER request then send a START request using the default handler for
+   * those request.
+   * @static
+   */
+  static restartGame () {
+    Request.buildRequest("OVER", GameHandler.startNewGame(Application.getInstance().formulaId)).send("/" + Application.getInstance().gameId);
   }
 }
