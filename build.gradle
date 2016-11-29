@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile("javax.ws.rs:jsr311-api:1.1.1")
+	
+	compile 'com.sun.jersey:jersey-server:1.19.1'
+	compile 'com.sun.jersey:jersey-core:1.19.1'
+	compile 'com.sun.jersey:jersey-servlet:1.19.1'
+    testCompile "junit:junit-dep:4.10"
+}
+war {
+	archiveName 'LibreDragon.war'
+}
+
+task deploy (dependsOn: war){
+    copy {
+        from "build/libs"
+        into "server/webapps"
+        include "*.war"
+    }
+}
+
+task stopTom() {
+    executeCmd('./server/bin/shutdown.sh')
+}
+
+task startTom() {
+    executeCmd('./server/bin/startup.sh')
+}
+
+
+def executeCmd(command) {
+    command.execute()
+}
