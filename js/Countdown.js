@@ -51,8 +51,15 @@ class Countdown {
         setTimeout(Countdown.updateCountdown, 1000, countdown);
       }
     }
-    else
+    else if (countdown.state != "STOPED")
       throw "[ERROR]: Countdown not started."
+  }
+
+  /**
+   * Stop the countdown.
+   */
+  stopCountdown () {
+    this.state = "STOPED";
   }
 
   /**

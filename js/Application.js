@@ -37,6 +37,8 @@ class Application {
       this.gameId = null;
       //Id of which formula the game is using
       this.formulaId = null;
+      //State of the countdown
+      Application.countdown = null;
       //Only instance of Application
       Application.instance = this;
     }

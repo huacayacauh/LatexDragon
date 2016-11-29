@@ -11,6 +11,8 @@ function createMainWindow () {
   // Create the browser window.
   global.windowsArray.app = new BrowserWindow({width: 1280, height: 640})
 
+  global.windowsArray.app.maximize()
+
   //  Remove the default menubar
   global.windowsArray.app.setMenu(null);
 

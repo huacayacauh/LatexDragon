@@ -1,7 +1,7 @@
 html {
   height: 100%;
   width: 100%;
-  background-image: linear-gradient(to bottom, #136a8a, #267871);
+  background-image: linear-gradient(to bottom, #1AD6FD, #1D62F0);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -208,31 +208,4 @@ input:checked + .slider:before {
   border-color: #eee;
   background: #5cb85c;
   color: #fff;
-}
-
-.navbar-custom {
-	background-color: #34495E;
-    color: #3498DB;
-}
-
-.navbar-custom .navbar-nav > li > a {
-  	color: #FFFFFF;
-}
-
-.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus, .navbar .nav > li.dropdown.open > a {
-    background-color: #2C3E50;
-    color: #FFFFFF;
-}
-
-.navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
-    text-decoration: none;
-    background-color: #2C3E50;
-}
-
-.navbar-custom .navbar-brand {
-  	color: #EEEEEE;
-}
-
-.navbar-custom .navbar-toggle {
-  	background-color: #EEEEEE;
 }

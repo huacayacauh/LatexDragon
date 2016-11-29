@@ -7,7 +7,7 @@ class GameHandler {
    */
   static setEvents (obj) {
     MouseClickHandler.setEvents(obj);
-    DragNDropHandler.setEvents();
+    DragNDropHandler.setEvents(obj);
     console.log(obj);
   }
 
@@ -28,7 +28,8 @@ class GameHandler {
   /**
    * Response of the startNewGame request.
    * Will display an error message if the server can't create a new game.
-   * If it's a success, ...
+   * If it's a success it will register the game ID and send a request to get the
+   * game state.
    * @param {Object} response response from the request (jQuery ajax response)
    * @param {String} status response status from the request
    * @static
@@ -44,31 +45,56 @@ class GameHandler {
     if (obj.status == "FAILURE")
       Application.getInstance().displayErrorNotification("#gameNotification", obj.complementaryInfo);
 
-
     Application.getInstance().gameId = obj.id;
 
-    var request = Request.buildRequest("GAMESTATE", GameHandler.gameStartGameResponse);
+    var request = Request.buildRequest("GAMESTATE", GameHandler.gameStartResponse);
     request.send("/" + obj.id);
   }
 
-  static gameStartGameResponse (response, status) {
+  /**
+   * Response of the request to get the game state after a new game is created.
+   * Will start a timer if it's enabled and delegate the processing of the response
+   * to gameUpdateMathResponse.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   * @static
+   */
+  static gameStartResponse (response, status) {
     GameHandler.gameUpdateMathResponse(response, status);
+    var app = Application.getInstance();
 
     //Start timer
-    if (Application.getInstance().settings.timer) {
-      var timer = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOnOver, GameHandler.timerOnUpdate);
-      timer.startCountdown();
+    if (app.settings.timer) {
+      if (app.countdown != null)
+        app.countdown.stopCountdown();
+      app.countdown = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOnOver, GameHandler.timerOnUpdate);
+      app.countdown.startCountdown();
     }
+
+    //Hide start button
+    $(".jumbotron:visible").hide();
 
     //Show game tools
     $("#tools").fadeIn(800);
   }
 
+  /**
+   * Send a request to get the game state.
+   * @static
+   */
   static gameStateRequest () {
       var request = Request.buildRequest("GAMESTATE", GameHandler.gameUpdateMathResponse);
       request.send();
   }
 
+  /**
+   * Function that process the response from the server containing the formula state.
+   * Will throw an error if the request failed.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   * @throws if the request fail and the function receive a status diffrent than success.
+   * @static
+   */
   static gameUpdateMathResponse (response, status) {
     if (status == "success")
       Application.getInstance().json = JSON.parse(response.responseText);
@@ -76,9 +102,6 @@ class GameHandler {
       Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
       throw "[ERROR]: request response invalid, request might have failed.";
     }
-
-    //Hide start button
-    $(".jumbotron:visible").hide();
 
     //Set new math
     $("#main-formule").text(Application.getInstance().json.math).hide();
@@ -91,6 +114,11 @@ class GameHandler {
     });
   }
 
+  /**
+   * Send a request to the server to apply a rule to the formula.
+   * Q
+   * @param {Event} event jQuery Event object
+   */
   static gameRuleRequest (event) {
     event.stopPropagation();
     var request = Request.buildRequest("APPLYRULE", GameHandler.gameUpdateMathResponse);
@@ -110,7 +138,23 @@ class GameHandler {
   static timerOnOver () {
     $("#tools").hide(800);
     $("#gameTimer").html("");
-    alert ("timer over");
+    Application.getInstance().displaySuccessNotification("Temps écouler, partie finie.");
+    Application.getInstance().countdown = null;
+    Request.buildRequest("OVER").send(GameHandler.gameOverResponse);
+  }
+
+  static gameOverResponse (response, status) {
+    if (status != "success") {
+      Application.getInstance().displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    $("#tools").hide();
+
+    $("#main-formule").hide();
+
+    $(".jumbotron:visible").show("slow");
+
   }
 
   static timerOnUpdate (countdown) {
