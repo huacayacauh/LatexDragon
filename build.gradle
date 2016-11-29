@@ -1,10 +1,40 @@
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
+    }
+}
+
+// JDK version source compatibility
+sourceCompatibility = 1.8
+// project version
+version = '1.0'
+// War file name
+war.baseName = 'LibreDragon.war'
+// Web directory, this overrides the default value "webapp"
+project.webAppDirName = 'WebContent'
+def currentfile = System.getProperty("user.dir")
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
+// Set source directory
+sourceSets {
+        main {
+            java {
+                srcDir 'src'
+            }
+        }
+    }
 
 dependencies {
     compile("javax.ws.rs:jsr311-api:1.1.1")
@@ -12,29 +42,21 @@ dependencies {
 	compile 'com.sun.jersey:jersey-server:1.19.1'
 	compile 'com.sun.jersey:jersey-core:1.19.1'
 	compile 'com.sun.jersey:jersey-servlet:1.19.1'
-    testCompile "junit:junit-dep:4.10"
+    	testCompile "junit:junit-dep:4.10"
+	def tomcatVersion = '7.0.57'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
 }
 war {
 	archiveName 'LibreDragon.war'
 }
 
-task deploy (dependsOn: war){
-    copy {
-        from "build/libs"
-        into "server/webapps"
-        include "*.war"
-    }
-}
-
-task stopTom() {
-    executeCmd('./server/bin/shutdown.sh')
-}
-
-task startTom() {
-    executeCmd('./server/bin/startup.sh')
-}
 
 
-def executeCmd(command) {
-    command.execute()
-}
+// context where tomcat is deployed, by defautl localhost:8080/
+tomcatRun.contextPath = 'LibreDragon'
+tomcatRunWar.contextPath = 'LibreDragon'
+
