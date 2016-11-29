@@ -27,6 +27,11 @@ public class Data {
 	private static LatexConfiguration config = new LatexConfiguration();
 	private static HashMap<String, Session> sessions = new HashMap<>();
 	
+	/**
+	 * This function add a new session and init configuration 
+	 * if this the first session.
+	 * @return the session id
+	 */
 	public static String addSession(){
 		Session session;
 		if(sessions.isEmpty()){
@@ -39,21 +44,45 @@ public class Data {
 		return session.gameId.toString();
 	}
 	
+	/**
+	 * @param id
+	 */
+	public static void closeSession(String id){
+		if(sessions.containsKey(id))
+			sessions.remove(id);
+	}
+	/**
+	 * @param id
+	 * @return
+	 */
 	public static Session getSession(String id){
 		return sessions.get(id);
 	}
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	public static boolean isIn(String id){
 		return sessions.containsKey(id);
 	}
 	
+	/**
+	 * @return
+	 */
 	public static LatexConfiguration getConfig() {
 		return config;
 	}
 	
+	/**
+	 * 
+	 */
 	public static void setDefault() {
 		readRules();
 	}
+	/**
+	 * 
+	 */
 	public static void readRules() {
 	     String configPath = "config";
 			Configuration.rules = new RulesConfiguration();

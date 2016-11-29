@@ -7,10 +7,17 @@ import javax.ws.rs.Produces;
 
 @Path("/start")
 public class Start {
+	/**
+	 * If client is not in the data server: create a new session
+	 * and return his id.
+	 * If the client id is in the data server just return a success answer
+	 * @param gameid client id
+	 * @return the connection status and if it's a success the client id
+	 */
 	@GET
 	@Path("/{gameid}")
 	@Produces()
-	public String answer (@PathParam("gameid") String gameid) {
+	public String connection (@PathParam("gameid") String gameid) {
 		Reponse reponse = new Reponse();
 		String status,complementaryInfo;
 		if(!Data.isIn(gameid))
@@ -23,6 +30,7 @@ public class Start {
 			status = "SUCCESS";
 			complementaryInfo = "New session created with id : " + gameid + ".";
 		}
+		System.out.println("Start "+gameid);
 		return reponse.authentification(gameid, status, complementaryInfo);
 		
 		}

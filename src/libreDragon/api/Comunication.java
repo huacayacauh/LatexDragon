@@ -14,7 +14,7 @@ public class Comunication {
 	public String answer (@PathParam("gameid") String gameId, @PathParam("exprid") String expId, @PathParam("ruleid") String ruleId, @PathParam("contexid") String context) {
 		Reponse myjaxbean = new Reponse();
 		System.out.println("Game "+gameId);
-		Data.getSession("1").applicRule(expId,Integer.valueOf(ruleId),context);
-		return myjaxbean.getMyJaxBean("1");
+		Data.getSession(gameId).applicRule(expId,Integer.valueOf(ruleId),context);
+		return myjaxbean.getMyJaxBean(gameId);
 		}
 }
