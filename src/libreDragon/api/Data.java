@@ -27,19 +27,24 @@ public class Data {
 	private static LatexConfiguration config = new LatexConfiguration();
 	private static HashMap<String, Session> sessions = new HashMap<>();
 	
-	public static void addSession(String id){
+	public static String addSession(){
 		Session session;
 		if(sessions.isEmpty()){
 			session = new Session();
 			setDefault();
 		}
 		else
-			session = new Session(id);
-		sessions.put(id, session);
+			session = new Session("");
+		sessions.put(session.gameId.toString(), session);
+		return session.gameId.toString();
 	}
 	
 	public static Session getSession(String id){
 		return sessions.get(id);
+	}
+	
+	public static boolean isIn(String id){
+		return sessions.containsKey(id);
 	}
 	
 	public static LatexConfiguration getConfig() {

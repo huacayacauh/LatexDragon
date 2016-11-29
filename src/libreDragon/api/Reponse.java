@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import libreDragon.model.Expression;
 
 @XmlRootElement
-public class MyJaxBean {
+public class Reponse {
     @XmlElement private String math;
     @XmlElement private String ids;
     @XmlElement private String list="";
@@ -40,5 +40,11 @@ public class MyJaxBean {
 				+ "\"ids\":"+ids+","
 				+ "\"rules\":["+list
 				+"}";
+	}
+	public String authentification (String newPlayerId, String status, String complementaryInfo) {
+		
+		return "{ \"id\": \"" + newPlayerId + "\","
+				+ "\"status\": \"" + status + "\","
+				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}
 }

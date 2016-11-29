@@ -13,7 +13,7 @@ public class Test {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String returnTitle () {
-		MyJaxBean myjaxbean = new MyJaxBean();
+		Reponse myjaxbean = new Reponse();
 		if(Data.getSession("1") == null)
 			Data.addSession("1");
 		return myjaxbean.getMyJaxBean("1");

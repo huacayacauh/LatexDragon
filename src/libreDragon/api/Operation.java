@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 @Path("/operation")
 public class Operation {
 	@POST @Consumes("application/json")
-	public void create(final MyJaxBean input) {
+	public void create(final Reponse input) {
 	    System.out.println("param1 = " + input.getMath());
 	    System.out.println("param2 = " + input.getIds());
 	}
