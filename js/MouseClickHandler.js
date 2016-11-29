@@ -31,7 +31,7 @@ class MouseClickHandler {
 
     MouseClickHandler.getTooltipList(event.data.value, id);
 
-    //if (!$("#tooltip:visible"))
+    if ($("#tooltip:hidden"))
       $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
@@ -45,7 +45,7 @@ class MouseClickHandler {
   static mouseleaveHandler (event) {
     event.stopPropagation();
 
-    $("#tooltip").hide(100);
+    $("#tooltip").hide();
   }
 
   /**
@@ -72,7 +72,7 @@ class MouseClickHandler {
 
     MouseClickHandler.getTooltipList(event.data.value.rules, id);
 
-    if (!$("#tooltip:visible"))
+    if ($("#tooltip:hidden"))
       $("#tooltip").show(100);
     $("#tooltip").css("top", event.pageY+20);
     $("#tooltip").css("left", event.pageX+10);
@@ -122,7 +122,7 @@ class MouseClickHandler {
    */
   static bodyTooltipHandler (event) {
     if ($("#tooltip").is(":visible")) {
-      $("#tooltip").hide(100);
+      $("#tooltip").hide();
       for (var i in Application.getInstance().json.ids)
         $("#" + Application.getInstance().json.ids[i]).off("contextmenu");
       MouseClickHandler.setEvents(Application.getInstance().json);

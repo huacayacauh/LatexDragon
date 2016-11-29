@@ -1,4 +1,5 @@
-var EnumHelper = {
+/** Global object regourping all enumerations (we only have 1 enum here) */
+const EnumHelper = {
   REQUESTS:{
     "GAMESTATE":{
       "url":"http://localhost:8080/LibreDragon/api/test",

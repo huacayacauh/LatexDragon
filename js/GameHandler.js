@@ -7,7 +7,7 @@ class GameHandler {
    */
   static setEvents (obj) {
     MouseClickHandler.setEvents(obj);
-    DragNDropHandler.setEvents(obj);
+    //DragNDropHandler.setEvents(obj);
   }
 
   /**
@@ -75,7 +75,7 @@ class GameHandler {
     }
 
     //Hide start button
-    $(".jumbotron:visible").hide();
+    $(".jumbotron:visible").hide("fast");
 
     //Show game tools
     $("#tools").fadeIn(800);
@@ -107,11 +107,11 @@ class GameHandler {
     }
 
     //Set new math
-    $("#main-formule").text(Application.getInstance().json.math).hide();
+    $("#main-formule").text(Application.getInstance().json.math).hide("fast");
 
     //Call mathJax typeset and show the formule once it's done
     GameHandler.typesetMath(() => {
-      $("#main-formule").show();
+      $("#main-formule").show("fast");
       //Set events
       GameHandler.setEvents(Application.getInstance().json);
     });

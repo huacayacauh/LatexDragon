@@ -213,20 +213,6 @@ $(document).ready (function () {
   application.requestHtml("GAME");
 });
 
-
-
-
-
-
-function faireOperation () {
-  var request = Request.buildRequest("OPERATION", operationResponse);
-  request.send("/123456");
-}
-
-function operationResponse (response) {
-  console.log(response.responseText);
-}
-
 /**
  * Load all the needed javascript scripts.
  */
