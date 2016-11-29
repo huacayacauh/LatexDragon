@@ -97,7 +97,7 @@ class Application {
    */
   loaded () {
     if (this.currentTab == "GAME")
-      DragNDropHandler.setEvents();
+      GameHandler.typesetMath();
     else if (this.currentTab == "SETTINGS") {
       SettingsHandler.setEvents();
       SettingsHandler.setValues();
@@ -177,6 +177,23 @@ class Application {
           $(this).remove();
         });
       }, this.settings.notifTimer);
+  }
+
+  /**
+   * Return the memory usage of this process.
+   * Return only the memory usage of the renderer process and not the main process.
+   * @returns {Object} memory usage object
+   */
+  getMemoryUsage () {
+    return this.remote.process.getProcessMemoryInfo();
+  }
+
+  /**
+   * Return the process object (renderer process).
+   * @returns {Object} process object
+   */
+  getProcess () {
+    return this.remote.process;
   }
 }
 

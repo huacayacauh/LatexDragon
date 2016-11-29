@@ -1,7 +1,7 @@
 /** Class managing a countdown */
 class Countdown {
 
-  /*
+  /**
    * @param {int} duration duration of the ocuntdowns (in milliseconds)
    * @param {function} [overHandler] function called when the countdown is over
    * @param {function} [updateHandler] function called each time the countdown update
@@ -15,7 +15,7 @@ class Countdown {
     this.state = "NOT_STARTED";
   }
 
-  /*
+  /**
    * Funciton used to start the countdown if it's not already started.
    * @throws Will throw an error if the countdown is already started
    */
@@ -29,7 +29,7 @@ class Countdown {
       throw "[ERROR]: Countdown already started.";
   }
 
-  /*
+  /**
    * Function updating the countdown, only if the countdown is started.
    * @param {Countdown} countdown countdown object to update
    * @throws Will throw an error if the countdown is not started
@@ -55,7 +55,7 @@ class Countdown {
       throw "[ERROR]: Countdown not started."
   }
 
-  /*
+  /**
    * Convert the countdown in a readable string.
    * @returns {String}
    */
@@ -64,7 +64,7 @@ class Countdown {
     return "Temps restant : " + date.getMinutes() + ":" + date.getSeconds();
   }
 
-  /*
+  /**
    * Convert minutes in to milliseconds.
    * @param {int} minutes minutes to convert
    * @returns {int} milliseconds

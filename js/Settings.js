@@ -22,7 +22,7 @@ class Settings {
    * @static
    */
   static useDefault () {
-    return new Settings ("linear-gradient(to bottom, #1AD6FD, #1D62F0)", "100px", false, false, 1500);
+    return new Settings ("linear-gradient(to bottom, #1AD6FD, #1D62F0)", "100px", true, true, 1500);
   }
 
   /**

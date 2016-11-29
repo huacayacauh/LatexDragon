@@ -55,7 +55,7 @@ class Request {
   }
   /**
    * Static method that create a request using EnumHelper.
-   * @param {string} requestName name of the request defined in EnumHelper
+   * @param {String} requestName name of the request defined in EnumHelper
    * @param {function} [responseHandler] function called when the request is completed, can be omitted
    * @returns {Request}
    * @static

@@ -44,25 +44,32 @@ class GameHandler {
     if (obj.status == "FAILURE")
       Application.getInstance().displayErrorNotification("#gameNotification", obj.complementaryInfo);
 
+
+    Application.getInstance().gameId = obj.id;
+
+    var request = Request.buildRequest("GAMESTATE", GameHandler.gameStartGameResponse);
+    request.send("/" + obj.id);
+  }
+
+  static gameStartGameResponse (response, status) {
+    GameHandler.gameUpdateMathResponse(response, status);
+
     //Start timer
     if (Application.getInstance().settings.timer) {
-      var timer = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOver, GameHandler.updateTimer);
+      var timer = new Countdown (Countdown.minutesToMilliseconds(1), GameHandler.timerOnOver, GameHandler.timerOnUpdate);
       timer.startCountdown();
     }
 
     //Show game tools
     $("#tools").fadeIn(800);
-
-    //TODO: add id to application.gameId
-    Application.getInstance().gameId = obj.id;
   }
 
   static gameStateRequest () {
-      var request = Request.buildRequest("GAMESTATE", GameHandler.gameStateResponse);
+      var request = Request.buildRequest("GAMESTATE", GameHandler.gameUpdateMathResponse);
       request.send();
   }
 
-  static gameStateResponse (response, status) {
+  static gameUpdateMathResponse (response, status) {
     if (status == "success")
       Application.getInstance().json = JSON.parse(response.responseText);
     else {
@@ -86,7 +93,7 @@ class GameHandler {
 
   static gameRuleRequest (event) {
     event.stopPropagation();
-    var request = Request.buildRequest("APPLYRULE", GameHandler.gameStateResponse);
+    var request = Request.buildRequest("APPLYRULE", GameHandler.gameUpdateMathResponse);
     request.send("/" + Application.getInstance().gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
 
     if ($("#tooltip").is(":visible"))
@@ -100,13 +107,13 @@ class GameHandler {
       MathJax.Hub.Queue(callback);
   }
 
-  static timerOver () {
+  static timerOnOver () {
     $("#tools").hide(800);
     $("#gameTimer").html("");
     alert ("timer over");
   }
 
-  static updateTimer (countdown) {
+  static timerOnUpdate (countdown) {
     $("#gameTimer").html($("<h1></h1>").text(countdown.toString()));
   }
 }

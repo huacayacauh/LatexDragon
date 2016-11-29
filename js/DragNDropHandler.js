@@ -1,6 +1,9 @@
 class DragNDropHandler {
 
-  static setEvents () {
+  static setEvents (obj) {
+    for (var i in obj.ids)
+      $("#" + obj.ids[i]).addClass("dragndrop");
+
     $(".dragndrop").attr("draggable", "true");
     $(".dragndrop").on("dragstart", DragNDropHandler.dragstartHandler);
     $(".dragndrop").on("dragover", DragNDropHandler.dragoverHandler);
@@ -17,8 +20,8 @@ class DragNDropHandler {
 
   static dropHandler (event) {
     event.preventDefault();
-    var tmp = $(this).text();
-    $(this).text($("#"+event.originalEvent.dataTransfer.getData("text")).text());
-    $("#"+event.originalEvent.dataTransfer.getData("text")).text(tmp);
+    console.log(event.originalEvent.dataTransfer.getData("text") + "|" + $(this).attr("id"));
+    /*$(this).text($("#"+event.originalEvent.dataTransfer.getData("text")).text());
+    $("#"+event.originalEvent.dataTransfer.getData("text")).text(tmp);*/
   }
 }
