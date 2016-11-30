@@ -31,10 +31,10 @@ else
 fi
 
 if [ $PACKAGE_TYPE == "default" ] ; then
-  electron-pacakger . LibreDragon
+  electron-packager . LibreDragon
   exit 0
 elif [ $PACKAGE_TYPE == "all" ] ; then
-  electron-pacakger . LibreDragon --all
+  electron-packager . LibreDragon --all
   exit 0
 elif [ $PACKAGE_TYPE == "custom" ] ; then
   electron-packager . LibreDragon --platform=$PLAT_FLAG --arch=$ARCH_FLAG
