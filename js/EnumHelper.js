@@ -6,7 +6,7 @@
 const EnumHelper = {
   REQUESTS:{
     "GAMESTATE":{
-      "url":"http://localhost:8080/LibreDragon/api/test",
+      "url":"http://localhost:8080/LibreDragon/api/gamestate",
       "type":"GET",
       "dataType":"text"
     },
