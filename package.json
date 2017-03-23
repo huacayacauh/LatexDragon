@@ -1,9 +1,9 @@
 {
   "name": "LibreDragonClient",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "main.js",
   "devDependencies": {
-    "electron": "^1.4.6",
+    "electron": "^1.4.12",
     "electron-packager": "^8.3.0"
   }
 }

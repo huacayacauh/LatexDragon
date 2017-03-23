@@ -53,6 +53,7 @@ class Request {
     if (this.responseHandler != undefined)
       this.responseHandler(response, status);
   }
+
   /**
    * Static method that create a request using EnumHelper.
    * @param {String} requestName name of the request defined in EnumHelper
@@ -60,7 +61,15 @@ class Request {
    * @returns {Request}
    * @static
    */
-  static buildRequest (requestName, responseHandler) {
-      return new Request (EnumHelper.REQUESTS[requestName].url, EnumHelper.REQUESTS[requestName].type, EnumHelper.REQUESTS[requestName].dataType, responseHandler);
+	static buildRequest (requestName, responseHandler) {
+		const EnumHelper = require ('./EnumHelper')
+		return new Request (EnumHelper.REQUESTS[requestName].url, EnumHelper.REQUESTS[requestName].type, EnumHelper.REQUESTS[requestName].dataType, responseHandler)
   }
 }
+
+/**
+ * Request module.
+ * @module request
+ * @see {@link Request}
+ */
+module.exports = Request

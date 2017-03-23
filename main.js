@@ -23,23 +23,23 @@ global.windowsArray = {
  */
 function createMainWindow () {
   //Create the browser window
-  global.windowsArray.app = new BrowserWindow({width: 1280, height: 640})
+  global.windowsArray.app = new BrowserWindow({width: 800, height: 600, frame: false, minWidth: 800, minHeight: 600})
 
   //Maximize the window
   global.windowsArray.app.maximize()
 
   //Remove the default menubar
-  global.windowsArray.app.setMenu(null);
+  global.windowsArray.app.setMenu(null)
 
   //Load the index.html of the app
   global.windowsArray.app.loadURL(`file://${__dirname}/index.html`)
 
   //Open the DevTools
-  //global.windowsArray.app.webContents.openDevTools({mode: 'bottom'})
+  global.windowsArray.app.webContents.openDevTools({mode: 'bottom'})
 
   //When the window is closed the app quit
   global.windowsArray.app.on('closed', () => {
-    app.quit();
+    app.quit()
   })
 }
 
@@ -51,16 +51,16 @@ function createDocWindow () {
   if (global.windowsArray.doc == null) {
     global.windowsArray.doc = new BrowserWindow({width: 1280, height: 640})
 
-    global.windowsArray.doc.setMenu(null);
+    global.windowsArray.doc.setMenu(null)
 
     global.windowsArray.doc.loadURL(`file://${__dirname}/out/index.html`)
 
     global.windowsArray.doc.on('closed', () => {
-      global.windowsArray.doc = null;
+      global.windowsArray.doc = null
     })
   }
   else
-    global.windowsArray.doc.focus();
+    global.windowsArray.doc.focus()
 }
 
 /**
@@ -85,5 +85,5 @@ app.on('ready', createMainWindow)
  * @listens window-all-closed
  */
 app.on('window-all-closed', () => {
-    app.quit()
+	app.quit()
 })

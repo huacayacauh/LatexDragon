@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+			<div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a onclick="require('./js/gameHandler').startNewGame('1')">$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$</a></li>
+            <li><a onclick="require('./js/gameHandler').startNewGame('1')">$$\frac{d}{dx}\left( \int_{0}^{x} f(u)\,du\right)=f(x)$$</a></li>
+            <li><a onclick="require('./js/gameHandler').startNewGame('1')">$$x_{1,2} = \frac{- b \pm \sqrt{\Delta}}{2a}$$</a></li>
+            <li><a onclick="require('./js/gameHandler').startNewGame('1')">$$\frac{n!}{k!(n-k)!} = \binom{n}{k}$$</a></li>
+    		  </ul>
+    	  </div>
+        <!-- Main content -->
+        <div id="main-content" class="col-md-10 col-md-offset-2">
+          <!-- Notification div -->
+          <div id="gameNotification">
+          </div>
+          <!-- Start button -->
+          <div class="jumbotron">
+            <p>Clique sur start pour commencer</p>
+            <p><a class="btn btn-success btn-lg" role="button" onclick="require('./js/gameHandler').startNewGame('1')">Start</a></p>
+          </div>
+          <!-- Formule -->
+          <div id="main-formule">
+          </div>
+          <div id="tools">
+            <!-- Timer -->
+            <div id="gameTimer">
+            </div>
+            <!-- Bouton recommencer -->
+            <button class="btn btn-success" id="restartButton" onclick="require('./js/gameHandler').restartGame()">
+              Recommencer
+              <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    <!-- Tooltip -->
+    <div class="list-group" id="tooltip">
+    </div>
+  </body>
+</html>

@@ -63,12 +63,21 @@ class Countdown {
   }
 
   /**
-   * Convert the countdown in a readable string.
+   * Convert the countdown into a readable string.
    * @returns {String}
    */
   toString () {
     var date = new Date(this.remainingTime);
-    return "Temps restant : " + date.getMinutes() + ":" + date.getSeconds();
+    var minutes = date.getMinutes()
+    var seconds = date.getSeconds()
+
+    if (minutes.toString().length == 1)
+      minutes = '0' + minutes
+
+    if (seconds.toString().length == 1)
+      seconds = '0' + seconds
+
+    return "Temps restant : " + minutes + ":" + seconds;
   }
 
   /**
@@ -81,3 +90,10 @@ class Countdown {
     return minutes * 60 * 1000;
   }
 }
+
+/**
+ * Countdown module.
+ * @module countdown
+ * @see {@link Countdown}
+ */
+module.exports = Countdown

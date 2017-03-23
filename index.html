@@ -1,56 +1,91 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>LibreDragon Client</title>
-    <!-- Bootstrap css -->
-    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
-    <!-- css -->
-    <link href="css/index.css" rel="stylesheet">
-    <!-- Jquery -->
-    <script>window.$ = window.jQuery = require('./lib/js/jquery.min.js');</script>
-    <!-- Bootstrap -->
-    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
-    <!-- MathJax -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-      });
-    </script>
-    <script type="text/javascript"
-      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
-    <!-- Scripts -->
-    <script src="js/Application.js"></script>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">LibreDragon</a>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+        <!-- CSS  -->
+				<!-- Animate.css -->
+        <link rel="stylesheet" href="lib/css/animate.min.css">
+				<!-- Tether -->
+        <link rel="stylesheet" href="lib/css/tether.min.css">
+				<!-- Bootstrap -->
+        <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+				<!-- font-awesome -->
+        <link rel="stylesheet" href="lib/css/font-awesome.min.css">
+				<!-- SCRIPTS -->
+        <link rel="stylesheet" href="css/style.css">
+        <!-- SCRIPTS -->
+				<!-- jQuery -->
+        <script> window.$ = window.jQuery = require('./lib/js/jquery.min.js'); </script>
+				<!-- Tether -->
+        <script type="text/javascript" src="lib/js/tether.min.js"></script>
+				<!-- Bootstrap -->
+        <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+        <!-- MathJax -->
+		    <script type="text/x-mathjax-config">
+				MathJax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+				});
+		    </script>
+		    <script type="text/javascript"
+				src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+		    </script>
+				<!-- Main script -->
+				<script type="text/javascript" src="js/start.js"></script>
+    </head>
+    <body>
+				<!-- WINDOW -->
+        <div id="window-content" class="container-fluid">
+            <div class="row">
+                <!-- SIDEBAR -->
+                <div class="col-fixed-50 sidebar-container">
+                    <ul class="nav sidebar-button-container">
+                        <button id="home" class="sidebar-button sidebar-button-active" data-toggle="tooltip" data-placement="right" title="Accueil" onclick="require('./js/Application').requestHtml('HOME')">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </button>
+                        <button id="game" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Jouer" onclick="require('./js/Application').requestHtml('GAMEMODE')">
+                            $f(x)$
+                        </button>
+                        <button id="settings" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Paramètres" onclick="require('./js/Application').requestHtml('SETTINGS')">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                        </button>
+                        <button id="doc" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Documentation" onclick="require('./js/Application').displayDoc()">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                        </button>
+                    </ul>
+										<ul class="nav sidebar-button-container">
+                        <button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Toggle devtools" onclick="require('./js/Application').toggleDevTools()">
+                            <i class="fa fa-terminal" aria-hidden="true"></i>
+                        </button>
+												<button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Notifications" onclick="require('./js/Application').toggleNotificationLog()">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                        </button>
+                    </ul>
+                </div>
+                <!-- TAB CONTENT -->
+                <div class="row">
+                    <div class="col-md-12 col-offset-400 tab-container">
+                        <div class="container-fluid content main">
+													<!-- CONTENT GOES THERE -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav" id="headerMenu">
-            <li class="active" id="game"><a onclick="Application.getInstance().requestHtml('GAME')">Jeu</a></li>
-            <li id="settings"><a onclick="Application.getInstance().requestHtml('SETTINGS')">Paramètres</a></li>
-            <li id="help"><a onclick="Application.getInstance().requestHtml('HELP')">Aide</a></li>
-            <li id="doc"><a onclick="Application.getInstance().displayDoc()">Documentation</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right" id="headerMenu">
-            <li id="doc"><a onclick="Application.getInstance().toggleConsole()" class="glyphicon glyphicon-cog"></a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!-- Container -->
-    <div class="container-fluid main">
-    </div>
-  </body>
+				<!-- WINDOW CONTROL BUTTON -->
+				<div class="win-ctrl-btn nav">
+					<a class="btn-red btn-ctrl"><i class="fa fa-times" aria-hidden="true"></i></a>
+					<a class="btn-green btn-ctrl"><i class="fa fa-window-restore" aria-hidden="true"></i></a>
+					<a class="btn-yellow btn-ctrl"><i class="fa fa-minus" aria-hidden="true"></i></a>
+				</div>
+				<!-- LOADING SCREEN -->
+				<div id="loading-screen" class="container-fluid">
+					<h1 class="display-1 align-middle"><i class="fa fa-spinner fa-spin align-middle" aria-hidden="true"></i></h1>
+				</div>
+				<!-- NOTIFICATIONS LOG -->
+				<div id="notif-log">
+				</div>
+    </body>
 </html>

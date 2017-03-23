@@ -1,0 +1,7 @@
+{
+  "color": "linear-gradient(to bottom, #FFDB4C, #FFCD02)",
+  "mathSize": "50px",
+  "autoCloseNotif": true,
+  "notifTimer": 2000,
+  "timer": true
+}
