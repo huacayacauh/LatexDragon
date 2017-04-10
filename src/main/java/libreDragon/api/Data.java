@@ -1,8 +1,5 @@
 package libreDragon.api;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,26 +26,25 @@ import libreDragon.ruleParser.RuleParser;
  *
  */
 public class Data {
-	private static LatexConfiguration config = new LatexConfiguration();
+	private static LatexConfiguration config = null;
 	private static HashMap<String, Session> sessions = new HashMap<>();
-	
+
 	/**
-	 * This function add a new session and init configuration 
+	 * This function add a new session and init configuration
 	 * if this the first session.
 	 * @return the session id
 	 */
-	public static String addSession(){
+	public static String addSession(Boolean customRules){
 		Session session;
-		if(sessions.isEmpty()){
-			session = new Session();
-			readRules();;
+		if(config == null){
+			config = new LatexConfiguration();
+			Configuration.init(config);
 		}
-		else
-			session = new Session("");
+		session = new Session(customRules);
 		sessions.put(session.gameId.toString(), session);
 		return session.gameId.toString();
 	}
-	
+
 	/**
 	 * This function close a session if she exist
 	 * @param id session id to close
@@ -65,7 +61,7 @@ public class Data {
 	public static Session getSession(String id){
 		return sessions.get(id);
 	}
-	
+
 	/**
 	 * This function return true if the session id is open in the server
 	 * @param id the session id
@@ -74,27 +70,11 @@ public class Data {
 	public static boolean isIn(String id){
 		return sessions.containsKey(id);
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public static LatexConfiguration getConfig() {
 		return config;
 	}
-	
-	/**
-	 * Read rules
-	 */
-	public static void readRules() {
-	     String configPath = "config";
-			Configuration.rules = new RulesConfiguration();
-			try {
-				RuleParser.readRules(new FileInputStream(new File(configPath + "/rules.cfg")));
-			} catch (FileNotFoundException | libreDragon.ruleParser.ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		
-}
 }

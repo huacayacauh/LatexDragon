@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import libreDragon.model.Expression;
+import libreDragon.api.Session;
 
 /**
  * Class use to create a answer to the client
@@ -33,7 +34,7 @@ public class Reponse {
 	public void setList(String list) {
 		this.list = list;
 	}
-    
+
 	/**
 	 * return a JSON implementation of the formula and the rules we can applique
 	 * @param gameId
@@ -42,7 +43,26 @@ public class Reponse {
 	public String formula (String gameId) {
 		Data.getSession(gameId).cleanexpr();
 		Expression resultat = Data.getSession(gameId).getTree().getRoot();
-		setMath((String) resultat.generateExpression("0",gameId));
+		setMath((String) resultat.generateExpression("0",Data.getSession(gameId)));
+		setIds(Data.getSession(gameId).getexpr());
+		list = Data.getSession(gameId).getrules();
+		return 	"{"
+				+ "\"math\": \"$$"+math+"$$\","
+				+ "\"ids\":"+ids+","
+				+ "\"rules\":["+list
+				+"}";
+	}
+
+  public String formula (String gameId, String mode) {
+		Data.getSession(gameId).cleanexpr();
+		Expression resultat = null;
+
+		if (mode.compareTo("NEXT") == 0)
+			  resultat = Data.getSession(gameId).getNext().getRoot();
+		else if (mode.compareTo("PREVIOUS") == 0)
+			  resultat = Data.getSession(gameId).getPrevious().getRoot();
+
+		setMath((String) resultat.generateExpression("0",Data.getSession(gameId)));
 		setIds(Data.getSession(gameId).getexpr());
 		list = Data.getSession(gameId).getrules();
 		return 	"{"
@@ -53,14 +73,14 @@ public class Reponse {
 	}
 	/**
 	 * return a JSON implementation of the connection state
-	 * @param newPlayerId 
+	 * @param newPlayerId
 	 * @param status
 	 * @param complementaryInfo
 	 * @return
 	 */
-	public String authentification (String newPlayerId, String status, String complementaryInfo) {
-		
-		return "{ \"id\": \"" + newPlayerId + "\","
+	public String info (String playerId, String status, String complementaryInfo) {
+
+		return "{ \"id\": \"" + playerId + "\","
 				+ "\"status\": \"" + status + "\","
 				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}

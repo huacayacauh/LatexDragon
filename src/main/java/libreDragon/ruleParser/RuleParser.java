@@ -4,21 +4,55 @@ package libreDragon.ruleParser;
 import java.util.ArrayList;
 import libreDragon.model.*;
 import java.io.InputStream;
+import java.io.File;
+import java.io.FileWriter;
+
 public class RuleParser implements RuleParserConstants {
-        public static void main(String args[]) throws ParseException {
-                RuleParser parser = new RuleParser(System.in);
-                Configuration.rules = new RulesConfiguration();
-                parser.Rule();
-        }
-public static void readRules(InputStream stream) throws ParseException {
-        RuleParser parser = new RuleParser(stream);
-        parser.RuleList();
-}
-        public static Expression readExpression(InputStream stream) throws ParseException {
-                RuleParser.ReInit(stream);
-                Expression expression = Terme0();
-                return new UnaryExpression("ROOT", expression);
-        }
+	private static RulesConfiguration rules;
+  public static void main(String args[]) throws ParseException {
+          RuleParser parser = new RuleParser(System.in);
+          Configuration.rules = new RulesConfiguration();
+          parser.Rule();
+  }
+  
+  public static void readRules(InputStream stream, RulesConfiguration r) throws ParseException {
+	rules = r;
+	if (jj_initialized_once){
+		RuleParser.ReInit(stream);
+		RuleParser.RuleList();
+	}
+	else{
+    	RuleParser parser = new RuleParser(stream);
+    	parser.RuleList();
+	}
+  }
+
+  public static void writeRule(Rule rule) {
+      final String chemin = "config//customRules.cfg";
+      final File fichier =new File(chemin);
+      try {
+          // Creation du fichier
+          if(!fichier.exists())
+            fichier.createNewFile();
+          // creation d'un writer (un écrivain)
+          final FileWriter writer = new FileWriter(fichier);
+          try {
+              writer.write(rule.getInputModel().generateSimpleExpression()+"\t"+"=(§contextMenu)=>"+rule.getResultModel().generateSimpleExpression());
+
+          } finally {
+              // quoiqu'il arrive, on ferme le fichier
+              writer.close();
+          }
+      } catch (Exception e) {
+          System.out.println("Impossible de creer le fichier");
+      }
+  }
+
+  public static Expression readExpression(InputStream stream) throws ParseException {
+          RuleParser.ReInit(stream);
+          Expression expression = Terme0();
+          return new UnaryExpression("ROOT", expression);
+  }
 
   static final public Expression Epsilon() throws ParseException {
 {if ("" != null) return null;}
@@ -65,9 +99,9 @@ public static void readRules(InputStream stream) throws ParseException {
       input_type_rule = jj_consume_token(RULE_INPUT_TYPE);
       jj_consume_token(RIGHT_RULE);
       exp2 = Terme0();
-Configuration.rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
-                Configuration.rules.addRule(input_type_rule.image.substring(1), new Rule(exp2, exp1));
-                System.out.println(Configuration.rules.getRules());
+	rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
+        rules.addRule(input_type_rule.image.substring(1), new Rule(exp2, exp1));
+                System.out.println(rules.getRules());
       break;
       }
     case LEFT_RULE_NOT_EQUIVALENT:{
@@ -75,7 +109,7 @@ Configuration.rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, e
       input_type_rule = jj_consume_token(RULE_INPUT_TYPE);
       jj_consume_token(RIGHT_RULE);
       exp2 = Terme0();
-Configuration.rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
+	rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
       break;
       }
     default:
@@ -595,14 +629,6 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
       exptokseq[i] = jj_expentries.get(i);
     }
     return new ParseException(token, exptokseq, tokenImage);
-  }
-
-  /** Enable tracing. */
-  static final public void enable_tracing() {
-  }
-
-  /** Disable tracing. */
-  static final public void disable_tracing() {
   }
 
 }

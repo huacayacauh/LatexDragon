@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import libreDragon.latexParser.LatexConfiguration;
+import libreDragon.latexParser.ReverseParser;
 import libreDragon.model.BinaryExpression;
 import libreDragon.model.Configuration;
 import libreDragon.model.Expression;
@@ -16,34 +20,64 @@ import libreDragon.model.KrakenTree;
 import libreDragon.model.PrimaryExpression;
 import libreDragon.model.Rule;
 import libreDragon.model.UnaryExpression;
+import libreDragon.model.RulesConfiguration;
+import libreDragon.ruleParser.RuleParser;
 
 /**
- * The class session store every information associte to a client and his formula
+ * The class session store every information associate to a client and his formula
  * @author malo
  *
  */
 public class Session {
-	private static LatexConfiguration config = new LatexConfiguration();
-	private  KrakenTree tree;
-	private  HashMap<String,Expression> ids = new HashMap<>();
-	private  HashMap<String,ArrayList<String>> rules = new HashMap<>();
+	private ArrayList<KrakenTree> trees = new ArrayList();
+	private int currentTree = 0;
+	private HashMap<String,Expression> ids = new HashMap<>();
+	private HashMap<String,ArrayList<String>> rules = new HashMap<>();
+	private RulesConfiguration globalRules;
+	private Expression input_theoreme = null;
 	UUID gameId;
-	
-	/**
-	 * 
-	 */
-	public Session(){
-		tree = new KrakenTree(config);
-		tree.setRoot(defaultFormula());
-		gameId = UUID.randomUUID();
+
+	public KrakenTree getNext(){
+		if(trees.size() <= currentTree +1)
+			currentTree = trees.size()-1;
+		else
+			currentTree++;
+		return trees.get(currentTree);
 	}
+
+	public KrakenTree getPrevious(){
+		if(currentTree > 0)
+			currentTree--;
+		return trees.get(currentTree);
+	}
+
 	/**
-	 * @param id
+	 *
 	 */
-	public Session(String id){
-		tree = new KrakenTree();
-		tree.setRoot(defaultFormula());
+	public Session(Boolean customRules){
+		trees.add(new KrakenTree());
+		trees.get(currentTree).setRoot(defaultFormula());
 		gameId = UUID.randomUUID();
+		globalRules = new RulesConfiguration();
+		readRules("/rules.cfg");
+		if(customRules)
+			readRules("/customRules.cfg");
+	}
+
+	public void addRuleSession(String input_type, Expression input_model, Expression output_model){
+		globalRules.addRule(input_type,new Rule(input_model, output_model));
+	}
+
+	public void startTheoreme(){
+		input_theoreme = trees.get(currentTree).getRoot();
+	}
+
+	public void endTheoreme(){
+		if(input_theoreme != null){
+			addRuleSession("contextMenu", input_theoreme, trees.get(currentTree).getRoot());
+			RuleParser.writeRule(new Rule(input_theoreme,trees.get(currentTree).getRoot()));
+			input_theoreme = null;
+		}
 	}
 	/**
 	 * @param exprid
@@ -51,11 +85,22 @@ public class Session {
 	 * @param contexe
 	 */
 	public void applicRule(String exprid,int idrule, String contexe){
+		rules.clear();
+		ids.clear();
+		menage();
+		trees.add(getTree().cloneKrakenTree());
+		currentTree++;
+		getTree().getRoot().generateExpression("0",this);
 		Expression expression = ids.get("\""+exprid+"\"");
-		Rule rule = Configuration.rules.getRules().get(contexe).get(idrule);
-		tree.applicRule(expression, rule);
+		Rule rule = globalRules.getRules().get(contexe).get(idrule);
+		getTree().applicRule(expression, rule);
 	}
-	
+
+	public void menage(){
+		for(int i = currentTree + 1; i < trees.size(); i++)
+			trees.remove(i);
+	}
+
 	/**
 	 * A default formula
 	 * @return
@@ -71,13 +116,13 @@ public class Session {
 		BinaryExpression egal_ABC_D = new BinaryExpression("EGAL", fois_AB_C.cloneExpression(), expr_D.cloneExpression());
 		return egal_ABC_D;
 	}
-	
-	
+
+
 	/**
 	 * @param t
 	 */
 	public void setTree(KrakenTree t) {
-		tree = t;
+		trees.set(currentTree, t);
 	}
 
 	/**
@@ -87,7 +132,7 @@ public class Session {
 	public void addexpr(String id,Expression expression){
 		ids.put(id,expression);
 	}
-	
+
 	/**
 	 *  return the list of expressions in a string
 	 * @return
@@ -104,7 +149,7 @@ public class Session {
 		}
 		return temp+"]";
 	}
-	
+
 	/**
 	 * @param exp
 	 * @param rule
@@ -112,7 +157,7 @@ public class Session {
 	public void addrules(String exp,ArrayList<String> rule){
 		rules.put(exp, rule);
 	}
-	
+
 	/**
 	 * Generate all the rule can applique in a session
 	 * @param expression
@@ -121,13 +166,12 @@ public class Session {
 	public ArrayList<String> addrules(Expression expression){
 		List<Rule> liste;
 		ArrayList<String> res = new ArrayList<>();
-		Map<String, List<Rule>> rules = Configuration.rules.getRules();
-		Set<String> listKeys=rules.keySet();
+		Set<String> listKeys= globalRules.getRules().keySet();
 		Iterator<String> iterateur=listKeys.iterator();
 		while(iterateur.hasNext())
 		{
 			Object key= iterateur.next();
-			liste = rules.get(key);
+			liste = globalRules.getRules().get(key);
 			for(int i = 0; i < liste.size(); i++){
 				if (liste.get(i).canApplic(expression)){
 					res.add("{\"text\": "+"\""+expression.getExpr() + " => "+liste.get(i).applic(expression).getExpr()+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
@@ -136,7 +180,7 @@ public class Session {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * return the list of rules in a string
 	 * @return
@@ -162,7 +206,7 @@ public class Session {
 		}
 		return temp+"]";
 	}
-	
+
 	/**
 	 * Clear the expressions hashmap
 	 */
@@ -171,11 +215,23 @@ public class Session {
 	}
 
 	/**
-	 * return the expression representation 
+	 * return the expression representation
 	 * @return
 	 */
 	public KrakenTree getTree() {
-		return tree;
+		return trees.get(currentTree);
+	}
+
+	private void readRules(String file) {
+	    String configPath = "config";
+		try {
+			RuleParser.readRules(new FileInputStream(new File(configPath + file)), globalRules);
+		} catch (FileNotFoundException | libreDragon.ruleParser.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 
 }

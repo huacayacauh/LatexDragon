@@ -24,14 +24,11 @@ public class KrakenTree {
 	 * @param factory : la factory utilisateur
 	 * @see view.GraphicExpressionFactory
 	 */
-	public KrakenTree(GraphicExpressionFactory factory) {
-		Configuration.init(factory);
-		
-	}
+
 	public KrakenTree() {
-		
+
 	}
-	
+
 	/**
 	 * Affecte la racine à l'expression voulue.
 	 * @param root : la nouvelle racine
@@ -40,7 +37,7 @@ public class KrakenTree {
 		this.root = root;
 		root.setFather(null);
 	}
-	
+
 	/**
 	 * Retourne la racine. Peut être null
 	 * @return la racine, si elle existe
@@ -48,7 +45,7 @@ public class KrakenTree {
 	public Expression getRoot() {
 		return root;
 	}
-	
+
 	/**
 	 * Applique la règle rule à l'expression en argument.
 	 * La fonction Rule.applic() retournant un objet différent
@@ -81,7 +78,7 @@ public class KrakenTree {
 			}
 		}
 	}
-	
+
 	/**
 	 * Fonction statique permettant de récupérer la racine d'une root_path.
 	 * La racine est simplement le dernier élément de la liste.
@@ -92,7 +89,7 @@ public class KrakenTree {
 		if( root_path.isEmpty() ) throw new IllegalArgumentException();
 		return root_path.get( root_path.size() - 1 );
 	}
-	
+
 	/**
 	 * Prend les deux root_path en argument et renvoit la partie commune des deux.
 	 * Permet de retrouver la racine la plus basse de deux éléments dans l'arbre à
@@ -106,10 +103,10 @@ public class KrakenTree {
 		for(; k < path_list_1.size() && k < path_list_2.size(); k++)
 			if( path_list_1.get(k) != path_list_2.get(k) )
 				return path_list_1.subList(0, k);
-		
+
 		return path_list_1.subList(0, k);
 	}
-	
+
 	/**
 	 * Renvoit la plus basse racine commune entre n noeuds de l'arbre.
 	 * Cette fonction procède d'abord à retrouver les chemins depuis la racine
@@ -122,17 +119,17 @@ public class KrakenTree {
 	 */
 	public static Expression deduceRoot(List<Expression> expr) {
 		if( expr.isEmpty() ) throw new IllegalArgumentException();
-		if( expr.size() == 1 ) return expr.get(0); 
-		
+		if( expr.size() == 1 ) return expr.get(0);
+
 		List<Expression> path_list = expr.get(0).generatePathList();
-		
+
 		for(int k = 1; k < expr.size(); k++) {
 			path_list = deduceRootPath(path_list, expr.get(k).generatePathList());
 		}
-		
+
 		return getRootFromRootPath(path_list);
 	}
-	
+
 	/**
 	 * Cette fonction renvoit toutes les combinaisons possibles de règles appliquable
 	 * sur le noeud expression avec le type d'input input_type.
@@ -147,10 +144,10 @@ public class KrakenTree {
 		List<Rule> rules = new LinkedList<Rule>();
 		for(Rule rule : raw_rule_list)
 			if( rule.canApplic(expr) ) rules.add(rule);
-		
+
 		return new Pair<Expression, List<Rule>>(expr, rules);
 	}
-	
+
 	/**
 	 * Cette fonction procède à la même chose que la précédente, à l'exception près
 	 * qu'elle déduit le noeud cible à partir d'une liste de noeuds en extrayant
@@ -167,7 +164,13 @@ public class KrakenTree {
 		List<Rule> rules = new LinkedList<Rule>();
 		for(Rule rule : raw_rule_list)
 			if( rule.canApplic(root) ) rules.add(rule);
-		
+
 		return new Pair<Expression, List<Rule>>(root, rules);
+	}
+
+	public KrakenTree cloneKrakenTree () {
+		KrakenTree clone = new KrakenTree();
+		clone.setRoot(this.root.cloneExpression());
+		return clone;
 	}
 }

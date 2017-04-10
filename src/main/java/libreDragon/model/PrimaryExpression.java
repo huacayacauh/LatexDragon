@@ -2,49 +2,55 @@ package libreDragon.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import libreDragon.api.Session;
 
 public class PrimaryExpression implements Expression{
-	
+
 	public static final String general_expression_type = "EXPRESSION";
-	
+
 	String type;
 	String name;
 	String id;
-	
+
 	Expression father;
-	
+
 	public PrimaryExpression(String type, String name) {
 		this.type = type;
 		this.name = name;
 	}
-	
+
 	@Override
 	public PrimaryExpression cloneExpression() {
 		return new PrimaryExpression(type, name);
 	}
-	
+
 	public String getType() {
 		return type;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	@Override
-	public String generateExpression(String id,String gameId) {
+	public String generateExpression(String id,Session session) {
 		this.id = id;
-		return Configuration.graphic.generatePrimaryExpression(this, type, name, id,gameId);
+		return Configuration.graphic.generatePrimaryExpression(this, type, name, id, session);
+	}
+
+	@Override
+	public String generateSimpleExpression() {
+		return Configuration.graphic.generateSimplePrimaryExpression(this, type, name);
 	}
 
 	@Override
 	public boolean compare(Expression expression) {
 		if( ! (expression instanceof PrimaryExpression) ) return false;
-		
+
 		PrimaryExpression primary_expression = (PrimaryExpression) expression;
 		if( primary_expression.getType() != getType() ) return false;
 		if( primary_expression.getName() != getName() ) return false;
-		
+
 		return true;
 	}
 
@@ -53,7 +59,7 @@ public class PrimaryExpression implements Expression{
 		if( model instanceof PrimaryExpression && model.getType() == general_expression_type ) return true;
 		if( ! (model instanceof PrimaryExpression) ) return false;
 		if( ! (model.getType() == getType()) ) return false;
-		
+
 		PrimaryExpression primary_model = (PrimaryExpression) model;
 		return primary_model.getName() == getName();
 	}
@@ -85,19 +91,19 @@ public class PrimaryExpression implements Expression{
 			list.add(this);
 			return list;
 		}
-		
+
 		List<Expression> list = father.generatePathList();
 		list.add(this);
 		return list;
 	}
-	
+
 	public String getId(){
 		return this.id;
 	}
 	public int getSize(){
 		return 1;
 	}
-	
+
 	public String getExpr(){
 		return name;
 	}

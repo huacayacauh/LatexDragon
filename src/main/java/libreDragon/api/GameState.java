@@ -14,14 +14,14 @@ import javax.ws.rs.core.Response;
  * @author malo
  *
  */
-@Path("/gamestate")
+@Path("/")
 public class GameState {
 	/**
-	 * if the session exist return the formula state and the rule we can applique 
-	 * @param gameid 
+	 * if the session exist return the formula state and the rule we can applique
+	 * @param gameid
 	 * @return
 	 */
-	@Path("/{gameid}")
+	@Path("/gamestate/{gameid}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String returnstate (@PathParam("gameid") String gameid) {
@@ -31,7 +31,7 @@ public class GameState {
 			Unauthorized();
 		return myjaxbean.formula(gameid);
 		}
-		
+
 	/**
 	 * return error 401 if the session doesn't exist
 	 * @return
@@ -45,5 +45,28 @@ public class GameState {
 	         super(Response.status(Response.Status.UNAUTHORIZED)
 	             .entity(message).type(MediaType.TEXT_PLAIN).build());
 	     }
+	}
+
+
+	@Path("/previous/{gameid}")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String getPrevious (@PathParam("gameid") String gameid) {
+		Reponse myjaxbean = new Reponse();
+		System.out.println("Game "+gameid);
+		if(Data.getSession(gameid) == null)
+			Unauthorized();
+		return myjaxbean.formula(gameid,"PREVIOUS");
+	}
+
+	@Path("/next/{gameid}")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String getNext (@PathParam("gameid") String gameid) {
+		Reponse myjaxbean = new Reponse();
+		System.out.println("Game "+gameid);
+		if(Data.getSession(gameid) == null)
+			Unauthorized();
+		return myjaxbean.formula(gameid,"NEXT");
 	}
 }

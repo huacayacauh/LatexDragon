@@ -5,11 +5,12 @@ import java.util.List;
 
 import libreDragon.api.Data;
 import libreDragon.latexParser.OperatorParser;
+import libreDragon.api.Session;
 
 /**
  * Cette classe représente un noeud à deux fils.
  * Exemple : + dans 1 + 2
- * 
+ *
  * @author Pacôme
  * @see Expression
  *
@@ -20,15 +21,15 @@ public class BinaryExpression implements Expression {
 	String id;
 	Expression first_expression;
 	Expression second_expression;
-	
+
 	Expression father;
-	
+
 	public BinaryExpression(String type, Expression first_expression, Expression second_expression) {
 		setFirstExpression(first_expression);
 		setSecondExpression(second_expression);
 		this.type = type;
 	}
-	
+
 	@Override
 	public BinaryExpression cloneExpression() {
 		return new BinaryExpression(type, first_expression.cloneExpression(), second_expression.cloneExpression());
@@ -38,14 +39,23 @@ public class BinaryExpression implements Expression {
 	 * Génère un équivalent graphique en fonction de la factory de la configuration
 	 */
 	@Override
-	public String generateExpression(String id,String gameId) {
+	public String generateExpression(String id,Session session) {
 		this.id = id;
 		return Configuration.graphic.generateBinaryExpression(
 					this,
 					type,
 					first_expression,
 					second_expression,
-					id,gameId);
+					id,session);
+	}
+
+	@Override
+	public String generateSimpleExpression() {
+		return Configuration.graphic.generateSimpleBinaryExpression(
+					this,
+					type,
+					first_expression,
+					second_expression);
 	}
 	/**
 	 * Compare ce noeud avec le noeud en paramètre.
@@ -57,10 +67,10 @@ public class BinaryExpression implements Expression {
 	@Override
 	public boolean compare(Expression expression) {
 		if( ! (expression instanceof BinaryExpression) ) return false;
-		
+
 		BinaryExpression binary_expression = (BinaryExpression) expression;
 		if( binary_expression.getType() != getType() ) return false;
-		
+
 		return binary_expression.firstExpression().compare(firstExpression()) && binary_expression.secondExpression().compare(secondExpression());
 	}
 
@@ -76,24 +86,24 @@ public class BinaryExpression implements Expression {
 		if( model instanceof PrimaryExpression && model.getType() == PrimaryExpression.general_expression_type ) return true;
 		if( ! (model instanceof BinaryExpression) ) return false;
 		if( ! (model.getType() == getType()) ) return false;
-		
+
 		BinaryExpression binary_model = (BinaryExpression) model;
 		return firstExpression().doesMatchModel(binary_model.firstExpression()) && secondExpression().doesMatchModel(binary_model.secondExpression());
 	}
-	
+
 	public Expression firstExpression() {
 		return first_expression;
 	}
-	
+
 	public Expression secondExpression() {
 		return second_expression;
 	}
-	
+
 	public void setFirstExpression(Expression expression) {
 		first_expression = expression;
 		first_expression.setFather(this);
 	}
-	
+
 	public void setSecondExpression(Expression expression) {
 		second_expression = expression;
 		second_expression.setFather(this);
@@ -108,7 +118,7 @@ public class BinaryExpression implements Expression {
 	public String toString() {
 		return expressionToString();
 	}
-	
+
 	@Override
 	public String expressionToString() {
 		return "( " + firstExpression().expressionToString() + " " + getType() + " " + secondExpression().expressionToString() + " )";
@@ -135,22 +145,22 @@ public class BinaryExpression implements Expression {
 			list.add(this);
 			return list;
 		}
-		
+
 		List<Expression> list = father.generatePathList();
 		list.add(this);
 		return list;
 	}
-	
+
 	public String getId(){
 		return this.id;
 	}
-	
+
 	public int getSize(){
 		return first_expression.getSize() + second_expression.getSize()+1;
 	}
 
 	@Override
 	public String getExpr() {
-		return "( "+first_expression.getExpr() +" "+ Operator.convert(type)  +" "+  second_expression.getExpr() +" )";
+		return first_expression.getExpr() +" "+ Operator.convert(type)  +" "+  second_expression.getExpr();
 	}
 }

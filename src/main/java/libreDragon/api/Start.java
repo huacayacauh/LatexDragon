@@ -20,13 +20,13 @@ public class Start {
 	 * @return the connection status and if it's a success the client id
 	 */
 	@GET
-	@Path("/{gameid}")
+	@Path("/{mode}/{gameid}/{formulaid}/{reglecustom}")
 	@Produces()
-	public String connection (@PathParam("gameid") String gameid) {
+	public String connection (@PathParam("mode") String mode, @PathParam("gameid") String gameid, @PathParam("formulaid") String formulaId, @PathParam("reglecustom") Boolean regleCustom) {
 		Reponse reponse = new Reponse();
 		String status,complementaryInfo;
 		if(!Data.isIn(gameid))
-			gameid = Data.addSession();
+			gameid = Data.addSession(regleCustom);
 		if (gameid == null) {
 			status = "FAILURE";
 			complementaryInfo = "Couldn't create a new session, server might be full.";
@@ -36,7 +36,7 @@ public class Start {
 			complementaryInfo = "New session created with id : " + gameid + ".";
 		}
 		System.out.println("Start "+gameid);
-		return reponse.authentification(gameid, status, complementaryInfo);
-		
+		return reponse.info(gameid, status, complementaryInfo);
+
 		}
 }
