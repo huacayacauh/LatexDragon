@@ -6,53 +6,45 @@ import libreDragon.model.*;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileWriter;
-
 public class RuleParser implements RuleParserConstants {
-	private static RulesConfiguration rules;
-  public static void main(String args[]) throws ParseException {
-          RuleParser parser = new RuleParser(System.in);
-          Configuration.rules = new RulesConfiguration();
-          parser.Rule();
-  }
-  
-  public static void readRules(InputStream stream, RulesConfiguration r) throws ParseException {
-	rules = r;
-	if (jj_initialized_once){
-		RuleParser.ReInit(stream);
-		RuleParser.RuleList();
-	}
-	else{
-    	RuleParser parser = new RuleParser(stream);
-    	parser.RuleList();
-	}
-  }
-
-  public static void writeRule(Rule rule) {
-      final String chemin = "config//customRules.cfg";
-      final File fichier =new File(chemin);
-      try {
-          // Creation du fichier
-          if(!fichier.exists())
-            fichier.createNewFile();
-          // creation d'un writer (un écrivain)
-          final FileWriter writer = new FileWriter(fichier);
-          try {
-              writer.write(rule.getInputModel().generateSimpleExpression()+"\t"+"=(§contextMenu)=>"+rule.getResultModel().generateSimpleExpression());
-
-          } finally {
-              // quoiqu'il arrive, on ferme le fichier
-              writer.close();
-          }
-      } catch (Exception e) {
-          System.out.println("Impossible de creer le fichier");
-      }
-  }
-
-  public static Expression readExpression(InputStream stream) throws ParseException {
-          RuleParser.ReInit(stream);
-          Expression expression = Terme0();
-          return new UnaryExpression("ROOT", expression);
-  }
+private static RulesConfiguration rules;
+        public static void main(String args[]) throws ParseException {
+                RuleParser parser = new RuleParser(System.in);
+                Configuration.rules = new RulesConfiguration();
+                parser.Rule();
+        }
+public static void readRules(InputStream stream, RulesConfiguration r) throws ParseException {
+        rules = r;
+        if (jj_initialized_once){
+        RuleParser.ReInit(stream);
+        RuleParser.RuleList();
+        }
+        else{
+        RuleParser parser = new RuleParser(stream);
+        parser.RuleList();
+        }
+        }
+        public static void writeRule(Rule rule) {
+        final String chemin = "config//customRules.cfg";
+        final File fichier =new File(chemin);
+        try {
+        if(!fichier.exists())
+        fichier.createNewFile();
+        final FileWriter writer = new FileWriter(fichier);
+        try {
+        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7contextMenu)=>"+rule.getResultModel().generateSimpleExpression());
+        } finally {
+        writer.close();
+        }
+        } catch (Exception e) {
+        System.out.println("Impossible de creer le fichier");
+        }
+        }
+        public static Expression readExpression(InputStream stream) throws ParseException {
+                RuleParser.ReInit(stream);
+                Expression expression = Terme0();
+                return new UnaryExpression("ROOT", expression);
+        }
 
   static final public Expression Epsilon() throws ParseException {
 {if ("" != null) return null;}
@@ -71,8 +63,7 @@ public class RuleParser implements RuleParserConstants {
       case PARENTHESIS_LEFT:
       case BRACKETS_LEFT:
       case LITTERAL:
-      case ZERO:
-      case UN:
+      case NOMBRE:
       case EXPRESSION:{
         ;
         break;
@@ -99,8 +90,8 @@ public class RuleParser implements RuleParserConstants {
       input_type_rule = jj_consume_token(RULE_INPUT_TYPE);
       jj_consume_token(RIGHT_RULE);
       exp2 = Terme0();
-	rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
-        rules.addRule(input_type_rule.image.substring(1), new Rule(exp2, exp1));
+rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
+                rules.addRule(input_type_rule.image.substring(1), new Rule(exp2, exp1));
                 System.out.println(rules.getRules());
       break;
       }
@@ -109,7 +100,7 @@ public class RuleParser implements RuleParserConstants {
       input_type_rule = jj_consume_token(RULE_INPUT_TYPE);
       jj_consume_token(RIGHT_RULE);
       exp2 = Terme0();
-	rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
+rules.addRule(input_type_rule.image.substring(1), new Rule(exp1, exp2));
       break;
       }
     default:
@@ -353,8 +344,7 @@ System.out.println(exp.expressionToString());
     case PARENTHESIS_LEFT:
     case BRACKETS_LEFT:
     case LITTERAL:
-    case ZERO:
-    case UN:
+    case NOMBRE:
     case EXPRESSION:{
       exp = UnaireDroit();
 {if ("" != null) return exp;}
@@ -418,14 +408,9 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
 {if ("" != null) return new PrimaryExpression("LITTERAL",symbolLeft.image);}
       break;
       }
-    case ZERO:{
-      symbolLeft = jj_consume_token(ZERO);
-{if ("" != null) return new PrimaryExpression("ZERO",symbolLeft.image);}
-      break;
-      }
-    case UN:{
-      symbolLeft = jj_consume_token(UN);
-{if ("" != null) return new PrimaryExpression("UN",symbolLeft.image);}
+    case NOMBRE:{
+      symbolLeft = jj_consume_token(NOMBRE);
+{if ("" != null) return new PrimaryExpression("NOMBRE",symbolLeft.image);}
       break;
       }
     case EXPRESSION:{
@@ -459,10 +444,10 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3d7c2000,0x80000000,0x20,0x40,0x1f80,0x6000,0x18000,0x20000,0x3d7c2000,0x80000,0x3d400000,};
+      jj_la1_0 = new int[] {0x1d7c2000,0xc0000000,0x20,0x40,0x1f80,0x6000,0x18000,0x20000,0x1d7c2000,0x80000,0x1d400000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -600,7 +585,7 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[34];
+    boolean[] la1tokens = new boolean[33];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -617,7 +602,7 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
         }
       }
     }
-    for (int i = 0; i < 34; i++) {
+    for (int i = 0; i < 33; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -629,6 +614,14 @@ exp2 = new UnaryExpression("FACTORIAL",exp);
       exptokseq[i] = jj_expentries.get(i);
     }
     return new ParseException(token, exptokseq, tokenImage);
+  }
+
+  /** Enable tracing. */
+  static final public void enable_tracing() {
+  }
+
+  /** Disable tracing. */
+  static final public void disable_tracing() {
   }
 
 }

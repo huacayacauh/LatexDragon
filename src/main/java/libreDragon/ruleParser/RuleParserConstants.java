@@ -55,19 +55,17 @@ public interface RuleParserConstants {
   /** RegularExpression Id. */
   int LITTERAL = 26;
   /** RegularExpression Id. */
-  int ZERO = 27;
+  int NOMBRE = 27;
   /** RegularExpression Id. */
-  int UN = 28;
+  int EXPRESSION = 28;
   /** RegularExpression Id. */
-  int EXPRESSION = 29;
+  int RULE_INPUT_TYPE = 29;
   /** RegularExpression Id. */
-  int RULE_INPUT_TYPE = 30;
+  int LEFT_RULE_EQUIVALENT = 30;
   /** RegularExpression Id. */
-  int LEFT_RULE_EQUIVALENT = 31;
+  int LEFT_RULE_NOT_EQUIVALENT = 31;
   /** RegularExpression Id. */
-  int LEFT_RULE_NOT_EQUIVALENT = 32;
-  /** RegularExpression Id. */
-  int RIGHT_RULE = 33;
+  int RIGHT_RULE = 32;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -101,8 +99,7 @@ public interface RuleParserConstants {
     "\"{\"",
     "\"}\"",
     "<LITTERAL>",
-    "\"0\"",
-    "\"1\"",
+    "<NOMBRE>",
     "<EXPRESSION>",
     "<RULE_INPUT_TYPE>",
     "\"<=(\"",

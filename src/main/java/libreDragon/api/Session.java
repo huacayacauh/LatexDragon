@@ -51,6 +51,28 @@ public class Session {
 		return trees.get(currentTree);
 	}
 
+	public String getGlobalRules(){
+		String temp ="";
+		Set<String> listKeys=globalRules.getRules().keySet();
+		Iterator<String> iterateur=listKeys.iterator();
+		while(iterateur.hasNext())
+		{
+			String key= iterateur.next();
+			temp += "{"+key +":[";
+			List<Rule> liste = globalRules.getRules().get(key);
+			if(liste.size() > 0)
+				temp += liste.get(0).toString();
+			for(int i = 1; i < liste.size(); i++){
+				temp += ","+liste.get(i).toString();
+			}
+			if(iterateur.hasNext())
+				temp+="]},";
+			else
+				temp+="]}";
+		}
+		return temp+"]";
+	}
+
 	/**
 	 *
 	 */
@@ -68,11 +90,11 @@ public class Session {
 		globalRules.addRule(input_type,new Rule(input_model, output_model));
 	}
 
-	public void startTheoreme(){
+	public void startTheorem(){
 		input_theoreme = trees.get(currentTree).getRoot();
 	}
 
-	public void endTheoreme(){
+	public void endTheorem(){
 		if(input_theoreme != null){
 			addRuleSession("contextMenu", input_theoreme, trees.get(currentTree).getRoot());
 			RuleParser.writeRule(new Rule(input_theoreme,trees.get(currentTree).getRoot()));

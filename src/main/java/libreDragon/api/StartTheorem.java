@@ -6,14 +6,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 @Path("/starttheorem")
-public class StartTheoreme {
+public class StartTheorem {
   @GET
 	@Path("/{gameid}")
 	@Produces()
 	public String answer (@PathParam("gameid") String gameId) {
 		Reponse reponse = new Reponse();
 		System.out.println("New Theorem "+gameId);
-		Data.getSession(gameId).startTheoreme();
+		Data.getSession(gameId).startTheorem();
     String status,complementaryInfo;
 		if (!Data.isIn(gameId)) {
 			status = "FAILURE";

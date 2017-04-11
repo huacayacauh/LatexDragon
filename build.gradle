@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'com.bmuschko.tomcat'
 
+def configPath = "config"
+
 buildscript {
     repositories {
         jcenter()
@@ -27,14 +29,40 @@ repositories {
     mavenCentral()
 }
 
+task callCL(type: Exec) {
+    commandLine './cleanRuleParser.sh'
+}
+
+
 // Set source directory
 sourceSets {
-        main {
-            java {
-                srcDir 'src'
-            }
+	modelInit {
+        java {
+            srcDir 'src/main/java/libreDragon/generateRuleParser'
         }
+}
+        main {
+        java {
+            srcDirs = [ "src", "$buildDir/ruleParser" ]
+            exclude '**/generateRuleParser/*'
+        }
+        compileClasspath += modelInit.compileClasspath + modelInit.output
+}
     }
+
+
+task generateRuleParserGrammar (dependsOn: [callCL, modelInitClasses], type: JavaExec) {
+    main = 'generateRuleParser.Main'
+    classpath = sourceSets.modelInit.runtimeClasspath
+    args = [ "$configPath/operators.cfg", "$buildDir/RPgrammar.jj" ]
+}
+
+task generateRuleParser (dependsOn: generateRuleParserGrammar, type: Exec) {
+    outputs.dir file("src/main/java/libreDragon/ruleParser")
+    commandLine "javacc-6.0/bin/javacc", "-OUTPUT_DIRECTORY=src/main/java/libreDragon/ruleParser", "$buildDir/RPgrammar.jj"
+}
+
+compileJava.dependsOn generateRuleParser.outputs.files
 
 dependencies {
     compile("javax.ws.rs:jsr311-api:1.1.1")

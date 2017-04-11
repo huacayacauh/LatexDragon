@@ -59,14 +59,19 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 
 	public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second) {
 		BinaryExpression bexpression = (BinaryExpression) expression;
+		String op;
 		String operator = getConfiguration(expression.getType()).getOperators().first;
-		return bexpression.firstExpression().generateSimpleExpression() + operator.substring(1, operator.length()-1)+bexpression.secondExpression().generateSimpleExpression();
+		if(operator.substring(1, operator.length()-1).compareTo("\\\\over")==0)
+			op ="/";
+		else
+			op = operator.substring(1, operator.length()-1);
+		return bexpression.firstExpression().generateSimpleExpression() +" "+ op +" "+bexpression.secondExpression().generateSimpleExpression();
 	}
 
 	public String generateSimpleUnaryExpression(Expression expression, String type, Expression sub) {
 		String firstOperator = getConfiguration(expression.getType()).getOperators().first;
 		String secondOperator = getConfiguration(expression.getType()).getOperators().second;
-		return firstOperator.substring(1, firstOperator.length()-1)  + sub.generateSimpleExpression() + secondOperator.substring(1, secondOperator.length()-1);
+		return firstOperator.substring(1, firstOperator.length()-1)  +" "+ sub.generateSimpleExpression() +" "+ secondOperator.substring(1, secondOperator.length()-1);
 	}
 
 	public String generateSimplePrimaryExpression(Expression expression, String type, String name) {

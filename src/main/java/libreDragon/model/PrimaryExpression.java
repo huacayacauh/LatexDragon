@@ -61,7 +61,10 @@ public class PrimaryExpression implements Expression{
 		if( ! (model.getType() == getType()) ) return false;
 
 		PrimaryExpression primary_model = (PrimaryExpression) model;
-		return primary_model.getName() == getName();
+
+		if(primary_model.getName().compareTo(getName()) != 0)
+			return false;
+		return true;
 	}
 
 	@Override
