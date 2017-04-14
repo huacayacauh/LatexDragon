@@ -31,8 +31,6 @@ import libreDragon.ruleParser.RuleParser;
 public class Session {
 	private ArrayList<KrakenTree> trees = new ArrayList();
 	private int currentTree = 0;
-	private HashMap<String,Expression> ids = new HashMap<>();
-	private HashMap<String,ArrayList<String>> rules = new HashMap<>();
 	private RulesConfiguration globalRules;
 	private Expression input_theoreme = null;
 	UUID gameId;
@@ -107,13 +105,13 @@ public class Session {
 	 * @param contexe
 	 */
 	public void applicRule(String exprid,int idrule, String contexe){
-		rules.clear();
-		ids.clear();
+		getTree().cleanRules();
+		cleanexpr();
 		menage();
 		trees.add(getTree().cloneKrakenTree());
 		currentTree++;
 		getTree().getRoot().generateExpression("0",this);
-		Expression expression = ids.get("\""+exprid+"\"");
+		Expression expression = getTree().getIds("\""+exprid+"\"");
 		Rule rule = globalRules.getRules().get(contexe).get(idrule);
 		getTree().applicRule(expression, rule);
 	}
@@ -152,7 +150,7 @@ public class Session {
 	 * @param expression
 	 */
 	public void addexpr(String id,Expression expression){
-		ids.put(id,expression);
+		getTree().addIds(id, expression);
 	}
 
 	/**
@@ -161,7 +159,7 @@ public class Session {
 	 */
 	public String getexpr(){
 		String temp ="[";
-		Set<String> listKeys=ids.keySet();
+		Set<String> listKeys=getTree().getKeyIds();
 		Iterator<String> iterator=listKeys.iterator();
 		if(iterator.hasNext()){
 			temp = temp+iterator.next();
@@ -177,7 +175,7 @@ public class Session {
 	 * @param rule
 	 */
 	public void addrules(String exp,ArrayList<String> rule){
-		rules.put(exp, rule);
+		getTree().addRules(exp, rule);
 	}
 
 	/**
@@ -209,13 +207,13 @@ public class Session {
 	 */
 	public String getrules(){
 		String temp ="";
-		Set<String> listKeys=rules.keySet();
+		Set<String> listKeys= getTree().getKeyRules();
 		Iterator<String> iterateur=listKeys.iterator();
 		while(iterateur.hasNext())
 		{
 			String key= iterateur.next();
 			temp += "{"+key +":[";
-			ArrayList<String> liste = rules.get(key);
+			ArrayList<String> liste = getTree().getRules(key);
 			if(liste.size() > 0)
 				temp += liste.get(0);;
 			for(int i = 1; i < liste.size(); i++){
@@ -233,7 +231,7 @@ public class Session {
 	 * Clear the expressions hashmap
 	 */
 	public void cleanexpr(){
-		ids.clear();
+		getTree().cleanIds();
 	}
 
 	/**
@@ -252,8 +250,34 @@ public class Session {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
+	public String getTimeline () {
+		String timeline = "";
+		for (int i = 0 ; i < trees.size() ; i++) {
+			String tmp = (String) trees.get(i).getRoot().generateSimpleExpression();
+			timeline += "{\"index\":" + i + ",";
+			timeline += "\"text\":\"$$" + tmp +"$$\"}";
+			if (i != trees.size() - 1)
+				timeline += ",";
+		}
+		timeline += "]}";
 
+		return timeline;
+	}
+
+	public int getCurrentTree () {
+		return currentTree;
+	}
+
+	public KrakenTree getStateFromTimeline (int index) {
+		if ((index < 0) || (index >= trees.size())) {
+			System.out.println("null:" + index);
+			return null;
+		}
+
+		currentTree = index;
+		return trees.get(currentTree);
 	}
 
 }

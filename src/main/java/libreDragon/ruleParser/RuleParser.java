@@ -30,9 +30,9 @@ public static void readRules(InputStream stream, RulesConfiguration r) throws Pa
         try {
         if(!fichier.exists())
         fichier.createNewFile();
-        final FileWriter writer = new FileWriter(fichier);
+        final FileWriter writer = new FileWriter(fichier, true);
         try {
-        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7contextMenu)=>"+rule.getResultModel().generateSimpleExpression());
+        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7contextMenu)=>"+rule.getResultModel().generateSimpleExpression()+"\u005cn");
         } finally {
         writer.close();
         }

@@ -671,9 +671,9 @@ public void generateGrammar() throws FileNotFoundException, UnsupportedEncodingE
 			writer.println("\ttry {");
 					writer.println("\tif(!fichier.exists())");
 						writer.println("\tfichier.createNewFile();");
-					writer.println("\tfinal FileWriter writer = new FileWriter(fichier);");
+					writer.println("\tfinal FileWriter writer = new FileWriter(fichier, true);");
 					writer.println("\ttry {");
-							writer.println("\twriter.write(rule.getInputModel().generateSimpleExpression()+\"\t\"+\"=(§contextMenu)=>\"+rule.getResultModel().generateSimpleExpression());");
+							writer.println("\twriter.write(rule.getInputModel().generateSimpleExpression()+\"\t\"+\"=(§contextMenu)=>\"+rule.getResultModel().generateSimpleExpression()+\"\\n\");");
 
 					writer.println("\t} finally {");
 							writer.println("\twriter.close();");

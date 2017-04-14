@@ -2,6 +2,9 @@ package libreDragon.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import libreDragon.latexParser.GraphicExpressionFactory;
 
@@ -17,6 +20,8 @@ import libreDragon.latexParser.GraphicExpressionFactory;
  */
 public class KrakenTree {
 	private Expression root;
+	private HashMap<String,Expression> ids = new HashMap<>();
+	private HashMap<String,ArrayList<String>> rules = new HashMap<>();
 	/**
 	 * Ce constructeur initialise la librairie en utilisant la factory utilisateur.
 	 * Cette factory permet de faire le lein entre le support physique et l'interface
@@ -27,6 +32,38 @@ public class KrakenTree {
 
 	public KrakenTree() {
 
+	}
+
+	public void cleanIds(){
+		ids.clear();
+	}
+
+	public void cleanRules(){
+		rules.clear();
+	}
+
+	public Expression getIds(String id){
+		return ids.get(id);
+	}
+
+	public void addIds(String id, Expression expression){
+		ids.put(id,expression);
+	}
+
+	public Set<String> getKeyIds(){
+		return ids.keySet();
+	}
+
+	public ArrayList<String> getRules(String id){
+		return rules.get(id);
+	}
+
+	public void addRules(String id, ArrayList<String> liste){
+		rules.put(id, liste);
+	}
+
+	public Set<String> getKeyRules(){
+		return rules.keySet();
 	}
 
 	/**

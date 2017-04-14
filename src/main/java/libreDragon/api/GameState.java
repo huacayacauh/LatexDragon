@@ -69,4 +69,15 @@ public class GameState {
 			Unauthorized();
 		return myjaxbean.formula(gameid,"NEXT");
 	}
+
+	@Path("/timeline/{gameid}/{index}")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String getStateFromTimeline (@PathParam("gameid") String gameid, @PathParam("index") String index) {
+		Reponse myjaxbean = new Reponse();
+		System.out.println("Game "+gameid);
+		if(Data.getSession(gameid) == null)
+			Unauthorized();
+		return myjaxbean.formula(gameid, Integer.parseInt(index));
+	}
 }
