@@ -43,8 +43,6 @@ class Settings {
     //Apply background color
     $('html').css('background-image', this.color);
     //Apply mathJax font size
-		console.log(instance.settings.mathSize + ' !important')
-		console.log(this)
 		if ($('#main-formule')[0] != undefined)
 			$('#main-formule')[0].style.setProperty('font-size', this.mathSize, 'important')
     //$('#main-formule').css('font-size', this.mathSize + ' !important');

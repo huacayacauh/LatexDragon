@@ -4,12 +4,40 @@
   </head>
   <body>
 		<div id="home-content" class="col-md-12">
-			<div class="container-fluid">
-				<h1 class="display-2"><i class="fa fa-home" aria-hidden="true"></i> Accueil</h1>
+			<!-- Titre -->
+			<div class="page-header">
+	      <h1 class="display-2"><i class="fa fa-home" aria-hidden="true"></i> Accueil</h1>
 				<hr/>
-				<div>
+	    </div>
+	    <!-- Notification div -->
+	    <div id="homeNotification">
+	    </div>
+			<!-- Content -->
+			<div class="col-md-4">
+				<div class="jumbotron col-md-12 bg-success">
+					<h1>Statut du serveur</h1>
+					<div id="server-status-container">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="jumbotron col-md-12 bg-info">
 					<div id="last-game-container">
 					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="jumbotron col-md-12 bg-info">
+					<h1 class="display-3">Stats a la con</h1>
+					<p class="lead">
+						105 théorèmes
+						45 Formules
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="jumbotron col-md-12 bg-warning">
+					<h1 class="display-3">Changer l'adresse du serveur ? Lien vers les paramètres ?</h1>
 				</div>
 			</div>
 		</div>

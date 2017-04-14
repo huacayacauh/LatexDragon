@@ -1,12 +1,3 @@
-/*
-	home
-	gameMode
-		gameRule
-			game
-	settings
-	help ?
-*/
-//TODO: serveur implémente le mode de jeu choisi/et le jeu de règle choisi | Régler problème? avec mathId/gameId lors de la requête start
 /**
  * Class controlling the different tab of the application.
  * The application is divided in 3 (4 counting the doc) 'tab'.
@@ -206,14 +197,12 @@ class Application {
 
   /**
    * Display a notification.
-   * Create the notification of type type and message message and append it to
-   * the DOM element element.
-   * Create a dismissible notification that won't close unless the user close it.
-   * If autoCloseNotif is true the notif will close automatically in notifTimer milliseconds.
-   * If a notification was already present in the DOM element it will be replaced.
+	 * Create a new notification and display it, the newly created notification is
+	 * then added to the notification log list.
    * @param {String} element identifier of the DOM element who will append the notification
    * @param {String} message message to be displayed on the notification
    * @param {String} type type of the notification (error, success ...) correspond to bootsrap 4 colors (danger, warning, success and info)
+	 * @see {@link Notification}
    */
   displayNotification (element, message, type) {
 		const Notification = require('./Notification')
@@ -225,6 +214,12 @@ class Application {
 		this.notifLog.push(notif)
   }
 
+	/**
+	 * Toggle the notification log.
+	 * If the notification log is not already open will create a list of all the
+	 * notifications present in the notifLog list.
+	 * If the log is open will close it.
+	 */
 	toggleNotificationLog () {
 		$('#notif-log').html('')
 
@@ -251,6 +246,29 @@ class Application {
 		}
 	}
 
+	/**
+	 * Display a popup window.
+	 * Use the popup present in index.html.
+	 * Take as parameters the title, content, text and event handlers for the buttons.
+	 * @param {String} title title text
+	 * @param {String} content content text
+	 * @param {String} leftButton left button text
+	 * @param {String} rightButton right button text
+	 * @param {function} leftButtonHandler left button onclick event handler
+	 * @param {function} rightButtonHandler right button onclick event handler
+	 */
+	displayPopup (title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler) {
+		$('#popup-title').text(title)
+		$('#popup-body').text(content)
+		$('#popup-button-left').text(leftButton)
+		$('#popup-button-right').text(rightButton)
+
+		$('#popup-button-left').click(leftButtonHandler)
+		$('#popup-button-right').click(rightButtonHandler)
+
+		$('#popup').modal('show')
+	}
+
   /**
    * Return the memory usage of this process.
    * Return only the memory usage of the renderer process and not the main process.
@@ -267,12 +285,6 @@ class Application {
   getProcess () {
     return this.remote.process
   }
-
-	test () {
-		$('.j1').animateCss('slideInDown', 0.5)
-		$('.j2').animateCss('slideInDown', 0.5, 0.1)
-		$('.j3').animateCss('slideInDown', 0.5, 0.2)
-	}
 }
 
 module.exports = new Application()

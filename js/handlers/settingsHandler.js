@@ -11,6 +11,7 @@ var self = module.exports = {
 		self.setValues()
 		self.setAnimations()
 	},
+	
 	/**
 	 * Set the events of the elements in the settings tab.
 	 */

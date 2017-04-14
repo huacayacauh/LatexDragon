@@ -1,5 +1,3 @@
-//TODO: sort out the mathId/gameId bullshit in the start request
-
 /**
  * module containing all the function for handling the elements/event of the game tab
  * @module gameHandler
@@ -28,11 +26,11 @@ var self = module.exports = {
   },
 
 	setAnimations: () => {
-			$('.rules-bar').animateCss('slideInLeft', 0.3, 0, () => {
-				$('.toolbar').show().animateCss('slideInLeft', 0.3, 0, () => {
-					$('#main-content').show().animateCss('slideInLeft', 0.3)
-				})
-			})
+		$('.toolbar').show().animateCss('slideInLeft', 0.3, 0, () => {
+			$('#main-content').show().animateCss('slideInLeft', 0.3)
+			$('#timeline').show().animateCss('slideInUp', 0.3)
+		})
+
 	},
 
   /**
@@ -149,6 +147,9 @@ var self = module.exports = {
     //Set new math
     $("#main-formule").text(instance.gameState.currentState.math).hide("fast");
 
+		//Update Timeline
+		self.updateTimeline(instance.gameState.currentState.timeline)
+
     //Call mathJax typeset and show the formule once it's done
     utils.typesetMath(() => {
       $("#main-formule").show("fast")
@@ -244,14 +245,40 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
+		$('#theoremStart').hide()
+		$('#theoremEnd').show()
+
 		Request.buildRequest("STARTTHEOREM").send('/' + instance.gameState.gameId)
 	},
 
 	endTheorem: () => {
 		const instance = require('../Application')
+
+		instance.displayPopup('Fin du théorème', 'Voulez-vous sauvegarder ce théorème ?', 'Sauvegarder', 'Nan', self.endTheoremPopupAccept, self.endTheoremPopupRefuse)
+	},
+
+	endTheoremPopupAccept: () => {
+		const instance = require('../Application')
 		const Request = require('../Request')
 
+		$('#theoremStart').show()
+		$('#theoremEnd').hide()
+
 		Request.buildRequest("ENDTHEOREM").send('/' + instance.gameState.gameId + '/true')
+
+		$('#popup').modal('hide')
+	},
+
+	endTheoremPopupRefuse: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		$('#theoremStart').show()
+		$('#theoremEnd').hide()
+
+		Request.buildRequest("ENDTHEOREM").send('/' + instance.gameState.gameId + '/false')
+
+		$('#popup').modal('hide')
 	},
 
 	previousState: () => {
@@ -266,5 +293,46 @@ var self = module.exports = {
 		const Request = require('../Request')
 
 		Request.buildRequest('NEXT', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId)
+	},
+
+	toggleTimeline: () => {
+		if ($('#hideTimeline').is(':visible')) {
+			$('#hideTimeline').hide()
+			$('#showTimeline').show()
+
+			$('#timeline').animateCss('slideOutDown', 0.2, 0, () => {
+				$('#timeline-elements').hide()
+			})
+		}
+		else {
+			$('#hideTimeline').show()
+			$('#showTimeline').hide()
+
+			$('#timeline-elements').show()
+			$('#timeline').animateCss('slideInUp', 0.2, 0)
+		}
+	},
+
+	updateTimeline: (timeline) => {
+		$('#timeline-elements').html('')
+
+		for (var i = timeline.elements.length-1 ; i >= 0 ; i--) {
+			var elem
+			if (i == timeline.current)
+				elem = $('<div></div>').addClass('timeline-element current-element btn btn-danger').text(timeline.elements[i].text)
+			else
+				elem = $('<div></div>').addClass('timeline-element btn btn-info').text(timeline.elements[i].text)
+
+			elem.click({ param: i }, self.requestStateFromTimeline)
+
+			$('#timeline-elements').append(elem)
+		}
+	},
+
+	requestStateFromTimeline: (event) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId + '/' + event.data.param)
 	}
 }

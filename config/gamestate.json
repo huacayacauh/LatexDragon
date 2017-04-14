@@ -1,5 +1,5 @@
 {
-  "gameId": "86c27f9b-806c-46ed-998a-3b3f523f7b77",
+  "gameId": "c85b84ab-551e-4327-a50a-2d02c5d6ceab",
   "formulaId": "1",
   "mode": "SANDBOX",
   "ruleSet": 1,
@@ -25,13 +25,13 @@
             "type": "drag_and_drop"
           },
           {
-            "text": "( a / 2 ) * 2 = 3 => ( ( a / 2 ) * 2 = 3 ) + 0",
-            "ruleId": 5,
+            "text": "( a / 2 ) * 2 = 3 => ( ( a / 2 ) * 2 = 3 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "( a / 2 ) * 2 = 3 => ( ( a / 2 ) * 2 = 3 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -39,13 +39,13 @@
       {
         "exp0000": [
           {
-            "text": "a / 2 => ( a / 2 ) + 0",
-            "ruleId": 5,
+            "text": "a / 2 => ( a / 2 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "a / 2 => ( a / 2 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -53,13 +53,13 @@
       {
         "exp00000": [
           {
-            "text": "a => ( a ) + 0",
-            "ruleId": 5,
+            "text": "a => ( a + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "a => ( a ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -67,13 +67,13 @@
       {
         "exp00001": [
           {
-            "text": "2 => ( 2 ) + 0",
-            "ruleId": 5,
+            "text": "2 => ( 2 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "2 => ( 2 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -86,18 +86,18 @@
             "type": "drag_and_drop"
           },
           {
-            "text": "( a / 2 ) * 2 => ( ( a / 2 ) * 2 ) + 0",
-            "ruleId": 5,
+            "text": "( a / 2 ) * 2 => ( ( a / 2 ) * 2 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "( a / 2 ) * 2 => ( ( a / 2 ) * 2 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           },
           {
             "text": "( a / 2 ) * 2 => ( ( a / 2 ) * 2 )",
-            "ruleId": 11,
+            "ruleId": 13,
             "type": "contextMenu"
           }
         ]
@@ -105,13 +105,13 @@
       {
         "exp01": [
           {
-            "text": "3 => ( 3 ) + 0",
-            "ruleId": 5,
+            "text": "3 => ( 3 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "3 => ( 3 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -120,17 +120,17 @@
         "exp000": [
           {
             "text": "( a / 2 ) => a / 2",
-            "ruleId": 3,
+            "ruleId": 4,
             "type": "contextMenu"
           },
           {
-            "text": "( a / 2 ) => ( ( a / 2 ) ) + 0",
-            "ruleId": 5,
+            "text": "( a / 2 ) => ( ( a / 2 ) + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "( a / 2 ) => ( ( a / 2 ) ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
@@ -138,17 +138,34 @@
       {
         "exp001": [
           {
-            "text": "2 => ( 2 ) + 0",
-            "ruleId": 5,
+            "text": "2 => ( 2 + 0 )",
+            "ruleId": 6,
             "type": "contextMenu"
           },
           {
             "text": "2 => ( 2 ) * 1",
-            "ruleId": 10,
+            "ruleId": 12,
             "type": "contextMenu"
           }
         ]
       }
-    ]
+    ],
+    "timeline": {
+      "current": 0,
+      "elements": [
+        {
+          "index": 0,
+          "text": "$$( a / 2 ) * 2 = 3$$"
+        },
+        {
+          "index": 1,
+          "text": "$$( a / 2 ) * ( 2 + 0 ) = 3$$"
+        },
+        {
+          "index": 2,
+          "text": "$$( a / 2 ) * ( 2 + ( 0 ) * 1 ) = 3$$"
+        }
+      ]
+    }
   }
 }

@@ -23,7 +23,7 @@ global.windowsArray = {
  */
 function createMainWindow () {
   //Create the browser window
-  global.windowsArray.app = new BrowserWindow({width: 800, height: 600, frame: false, minWidth: 800, minHeight: 600})
+  global.windowsArray.app = new BrowserWindow({width: 900, height: 600, frame: false, minWidth: 900, minHeight: 600})
 
   //Maximize the window
   global.windowsArray.app.maximize()

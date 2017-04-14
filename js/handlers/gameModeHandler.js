@@ -13,6 +13,7 @@ var self = module.exports = {
 	setAnimations: () => {
 			$('.j1').animateCss('slideInDown', 0.5)
 			$('.j2').animateCss('slideInDown', 0.5, 0.1)
+			$('.breadcrumb').animateCss('bounceInLeft', 0.5, 0.1)
 	},
 
 	selectMode: (mode) => {

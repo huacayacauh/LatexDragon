@@ -74,6 +74,11 @@ const EnumHelper = {
       "url":"http://localhost:8080/LibreDragon/api/next",
 			"type":"GET",
 			"dataType":"text"
+    },
+    "TIMELINE":{
+      "url":"http://localhost:8080/LibreDragon/api/timeline",
+			"type":"GET",
+			"dataType":"text"
     }
   },
 	TABS:{
