@@ -241,46 +241,6 @@ var self = module.exports = {
     Request.buildRequest("OVER", self.startNewGame(instance.gameState.formulaId)).send("/" + instance.gameState.gameId);
   },
 
-	startTheorem: () => {
-		const instance = require('../Application')
-		const Request = require('../Request')
-
-		$('#theoremStart').hide()
-		$('#theoremEnd').show()
-
-		Request.buildRequest("STARTTHEOREM").send('/' + instance.gameState.gameId)
-	},
-
-	endTheorem: () => {
-		const instance = require('../Application')
-
-		instance.displayPopup('Fin du théorème', 'Voulez-vous sauvegarder ce théorème ?', 'Sauvegarder', 'Nan', self.endTheoremPopupAccept, self.endTheoremPopupRefuse)
-	},
-
-	endTheoremPopupAccept: () => {
-		const instance = require('../Application')
-		const Request = require('../Request')
-
-		$('#theoremStart').show()
-		$('#theoremEnd').hide()
-
-		Request.buildRequest("ENDTHEOREM").send('/' + instance.gameState.gameId + '/true')
-
-		$('#popup').modal('hide')
-	},
-
-	endTheoremPopupRefuse: () => {
-		const instance = require('../Application')
-		const Request = require('../Request')
-
-		$('#theoremStart').show()
-		$('#theoremEnd').hide()
-
-		Request.buildRequest("ENDTHEOREM").send('/' + instance.gameState.gameId + '/false')
-
-		$('#popup').modal('hide')
-	},
-
 	previousState: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -298,14 +258,14 @@ var self = module.exports = {
 	toggleTimeline: () => {
 		if ($('#hideTimeline').is(':visible')) {
 			$('#hideTimeline').hide()
-			$('#showTimeline').show()
+			$('#showTimeline').show().css('display', 'flex')
 
 			$('#timeline').animateCss('slideOutDown', 0.2, 0, () => {
 				$('#timeline-elements').hide()
 			})
 		}
 		else {
-			$('#hideTimeline').show()
+			$('#hideTimeline').show().css('display', 'flex')
 			$('#showTimeline').hide()
 
 			$('#timeline-elements').show()
@@ -323,16 +283,161 @@ var self = module.exports = {
 			else
 				elem = $('<div></div>').addClass('timeline-element btn btn-info').text(timeline.elements[i].text)
 
-			elem.click({ param: i }, self.requestStateFromTimeline)
+			elem.click({ param: i }, self.timelineOnClickHandler)
 
 			$('#timeline-elements').append(elem)
 		}
 	},
 
-	requestStateFromTimeline: (event) => {
+	timelineOnClickHandler: (event) => {
+		if ($('#addTheorem').is(':visible'))
+			self.requestStateFromTimeline(event.data.param)
+		else
+			self.selectForTheorem(event.data.param, event.currentTarget)
+	},
+
+	requestStateFromTimeline: (index) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId + '/' + event.data.param)
+		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId + '/' + index)
+	},
+
+	theoremSelection: { start: null, end: null},
+
+	toggleCreateTheorem: () => {
+		const instance = require('../Application')
+
+		if ($('#addTheorem').is(':visible')) {
+			$('#addTheorem').hide()
+
+			$('#validTheorem').show().css('display', 'flex')
+			$('#cancelTheorem').show().css('display', 'flex')
+		}
+		else {
+			$('#addTheorem').show().css('display', 'flex')
+
+			$('#validTheorem').hide()
+			$('#cancelTheorem').hide()
+
+			$('.timeline-element').each(function () {
+				$(this).removeClass('btn-warning')
+				if ($(this).hasClass('current-element'))
+					$(this).addClass('btn-danger')
+				else
+					$(this).addClass('btn-info')
+			})
+		}
+
+		self.theoremSelection.start = null
+		self.theoremSelection.end = null
+	},
+
+	selectForTheorem: (index, target) => {
+		const instance = require('../Application')
+
+		//If we click on an already selectionned item we unselect it
+		if (self.theoremSelection.start == index) {
+			self.theoremSelection.start = null
+			$(target).removeClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).addClass('btn-danger')
+			else
+				$(target).addClass('btn-info')
+		}
+		else if (self.theoremSelection.end == index) {
+			self.theoremSelection.end = null
+			$(target).removeClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).addClass('btn-danger')
+			else
+				$(target).addClass('btn-info')
+		}
+		//Else we first select the starting point then the end one
+		else if (self.theoremSelection.start == null) {
+			self.theoremSelection.start = index
+			$(target).addClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).removeClass('btn-danger')
+			else
+				$(target).removeClass('btn-info')
+		}
+		else if (self.theoremSelection.end == null) {
+			self.theoremSelection.end = index
+			$(target).addClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).removeClass('btn-danger')
+			else
+				$(target).removeClass('btn-info')
+		}
+	},
+
+	validTheorem: () => {
+		const instance = require('../Application')
+
+		if ((self.theoremSelection.start == null) || (self.theoremSelection.end == null))
+			instance.displayPopup('Création d\'un théorème', 'L\' une des 2 valeurs n\'est pas selectionné.', 'OK', 'Annuler', () => { $('#popup').modal('hide') }, () => { $('#popup').modal('hide') })
+		else if (self.theoremSelection.start > self.theoremSelection.end)
+			instance.displayPopup('Création d\'un théorème', 'Le début du théorème ne peut pas être après la fin.', 'OK', 'Annuler', () => { $('#popup').modal('hide') }, () => { $('#popup').modal('hide') })
+		else
+			instance.displayPopup('Création d\'un théorème', 'Voulez-vous créer ce théorème ?', 'Oui', 'Annuler', self.sendTheoremCreation, () => { $('#popup').modal('hide') })
+	},
+
+	sendTheoremCreation: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('CREATETHEOREM').send('/' + instance.gameState.gameId + '/' + self.theoremSelection.start + '/' + self.theoremSelection.end)
+
+		self.toggleCreateTheorem()
+	},
+
+	toggleRulesList: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		if ($('#rules-list').is(':hidden')) {
+			Request.buildRequest('RULESLIST', self.rulesListReply).send('/' + instance.gameState.gameId)
+
+			$('#rules-list').animateCss('slideInDown', 0.3)
+			$('#rules-list').show()
+			$('#rules-loader').show()
+		}
+		else {
+			$('#rules-list').animateCss('slideOutUp', 0.3, 0, () => {
+				$('#rules-list').hide()
+				$('#rules-content').hide()
+			})
+		}
+
+	},
+
+	rulesListReply: (response, status) => {
+		const instance = require('../Application')
+
+    if (status != "success") {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+		self.displayRulesList(JSON.parse(response.responseText).rules)
+	},
+
+	displayRulesList: (rules) => {
+		$('#rules-content').html('')
+
+		for (var item in rules) {
+			for (var type in rules[item]) {
+				var title = $('<h1></h1>').addClass('display-3').text(type)
+				$('#rules-content').append(title)
+				for (var rule in rules[item][type]) {
+					var elem = $('<div></div>').addClass('notif alert alert-info').text(rules[item][type][rule])
+					$('#rules-content').append(elem)
+				}
+			}
+		}
+
+		$('#rules-loader').hide()
+		$('#rules-content').show()
 	}
 }

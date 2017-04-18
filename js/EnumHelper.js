@@ -55,13 +55,8 @@ const EnumHelper = {
       "type":"GET",
       "dataType":"text"
     },
-		"STARTTHEOREM":{
-			"url":"http://localhost:8080/LibreDragon/api/starttheorem",
-			"type":"GET",
-			"dataType":"text"
-		},
-		"ENDTHEOREM":{
-			"url":"http://localhost:8080/LibreDragon/api/endtheorem",
+		"CREATETHEOREM":{
+			"url":"http://localhost:8080/LibreDragon/api/createtheorem",
 			"type":"GET",
 			"dataType":"text"
 		},
@@ -77,6 +72,11 @@ const EnumHelper = {
     },
     "TIMELINE":{
       "url":"http://localhost:8080/LibreDragon/api/timeline",
+			"type":"GET",
+			"dataType":"text"
+    },
+    "RULESLIST":{
+      "url":"http://localhost:8080/LibreDragon/api/ruleslist",
 			"type":"GET",
 			"dataType":"text"
     }

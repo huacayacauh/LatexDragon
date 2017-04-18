@@ -91,9 +91,9 @@ body {
 	cursor: pointer;
 }
 
-/*==================================notiflog==================================*/
+/*=============================notiflog/rule list=============================*/
 
-#notif-log {
+#notif-log, #rules-list {
 	display: none;
 	position: absolute;
 	top: 0;
@@ -107,6 +107,25 @@ body {
 	padding-left: 60px;
 	padding-right: 40px;
 	color: #eee;
+}
+
+#rules-list {
+	margin-left: 50px;
+	width: calc(100% - 50px);
+}
+
+#rules-loader {
+	width: 100%;
+	text-align: center;
+}
+
+#rules-list::-webkit-scrollbar {
+	width: 10px;
+}
+
+#rules-list::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	background-color: #eee;
 }
 
 /*===================================popup====================================*/
@@ -256,10 +275,6 @@ body {
   z-index: 101;
 }
 
-#theoremEnd {
-	display: none;
-}
-
 #timeline {
 	display: none;
 	width: calc(100% - 50px);
@@ -278,14 +293,14 @@ body {
 	float: right;
 	height: 40px;
 	width: 40px;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	margin-right: 5px;
 	cursor: pointer;
 
 }
 
-.timeline-controls-button.btn-yellow {
+#showTimeline, #validTheorem, #cancelTheorem {
 	display: none;
 }
 
@@ -306,7 +321,7 @@ body {
 }
 
 #timeline-elements::-webkit-scrollbar-thumb {
-	background-color: white;
+	background-color: #eee;
 	border-radius: 10px;
 }
 

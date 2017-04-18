@@ -1,5 +1,5 @@
 {
-  "gameId": "c85b84ab-551e-4327-a50a-2d02c5d6ceab",
+  "gameId": "00658b34-f001-4c64-ba2c-22a59a9de300",
   "formulaId": "1",
   "mode": "SANDBOX",
   "ruleSet": 1,
@@ -156,14 +156,6 @@
         {
           "index": 0,
           "text": "$$( a / 2 ) * 2 = 3$$"
-        },
-        {
-          "index": 1,
-          "text": "$$( a / 2 ) * ( 2 + 0 ) = 3$$"
-        },
-        {
-          "index": 2,
-          "text": "$$( a / 2 ) * ( 2 + ( 0 ) * 1 ) = 3$$"
         }
       ]
     }
