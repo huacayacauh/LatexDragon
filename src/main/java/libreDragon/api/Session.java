@@ -32,7 +32,6 @@ public class Session {
 	private ArrayList<KrakenTree> trees = new ArrayList();
 	private int currentTree = 0;
 	private RulesConfiguration globalRules;
-	private Expression input_theoreme = null;
 	UUID gameId;
 
 	public KrakenTree getNext(){
@@ -56,12 +55,12 @@ public class Session {
 		while(iterateur.hasNext())
 		{
 			String key= iterateur.next();
-			temp += "{"+key +":[";
+			temp += "{\""+key +"\":[";
 			List<Rule> liste = globalRules.getRules().get(key);
 			if(liste.size() > 0)
-				temp += liste.get(0).toString();
+				temp += ("\"" + liste.get(0).toString() + "\"");
 			for(int i = 1; i < liste.size(); i++){
-				temp += ","+liste.get(i).toString();
+				temp += ",\"" + liste.get(i).toString() + "\"";
 			}
 			if(iterateur.hasNext())
 				temp+="]},";
@@ -88,17 +87,13 @@ public class Session {
 		globalRules.addRule(input_type,new Rule(input_model, output_model));
 	}
 
-	public void startTheorem(){
-		input_theoreme = trees.get(currentTree).getRoot();
-	}
-
-	public void endTheorem(){
-		if(input_theoreme != null){
-			addRuleSession("contextMenu", input_theoreme, trees.get(currentTree).getRoot());
-			RuleParser.writeRule(new Rule(input_theoreme,trees.get(currentTree).getRoot()));
-			input_theoreme = null;
+	public void createTheorem (int start, int end) {
+		if ((start < trees.size()) && (end < trees.size())) {
+			addRuleSession("contextMenu", trees.get(start).getRoot(), trees.get(end).getRoot());
+			RuleParser.writeRule(new Rule(trees.get(start).getRoot(), trees.get(end).getRoot()));
 		}
 	}
+
 	/**
 	 * @param exprid
 	 * @param idrule

@@ -124,4 +124,10 @@ public class Reponse {
 				+ "\"status\": \"" + status + "\","
 				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}
+
+	public String rulesList (String gameId) {
+		return "{"
+			+	"\"rules\":[" + Data.getSession(gameId).getGlobalRules()
+			+ "}";
+	}
 }
