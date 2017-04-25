@@ -32,7 +32,7 @@ public static void readRules(InputStream stream, RulesConfiguration r) throws Pa
         fichier.createNewFile();
         final FileWriter writer = new FileWriter(fichier, true);
         try {
-        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7contextMenu)=>"+rule.getResultModel().generateSimpleExpression()+"\u005cn");
+        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7Custom)=>"+rule.getResultModel().generateSimpleExpression()+"\u005cn");
         } finally {
         writer.close();
         }

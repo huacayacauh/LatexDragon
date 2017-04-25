@@ -58,9 +58,9 @@ public class Session {
 			temp += "{\""+key +"\":[";
 			List<Rule> liste = globalRules.getRules().get(key);
 			if(liste.size() > 0)
-				temp += ("\"" + liste.get(0).toString() + "\"");
+				temp += ("\"" + liste.get(0).getInputModel().getExpr() + " => "+ liste.get(0).getResultModel().getExpr()+ "\"");
 			for(int i = 1; i < liste.size(); i++){
-				temp += ",\"" + liste.get(i).toString() + "\"";
+				temp += ",\"" + liste.get(i).getInputModel().getExpr() + " => "+ liste.get(i).getResultModel().getExpr() +"\"";
 			}
 			if(iterateur.hasNext())
 				temp+="]},";
@@ -73,14 +73,15 @@ public class Session {
 	/**
 	 *
 	 */
-	public Session(Boolean customRules){
+	public Session(Boolean custom){
 		trees.add(new KrakenTree());
 		trees.get(currentTree).setRoot(defaultFormula());
 		gameId = UUID.randomUUID();
 		globalRules = new RulesConfiguration();
-		readRules("/rules.cfg");
-		if(customRules)
-			readRules("/customRules.cfg");
+		readRules(globalRules,"/rules.cfg");
+		if(custom)
+			readRules(globalRules,"/customRules.cfg");
+
 	}
 
 	public void addRuleSession(String input_type, Expression input_model, Expression output_model){
@@ -89,7 +90,7 @@ public class Session {
 
 	public void createTheorem (int start, int end) {
 		if ((start < trees.size()) && (end < trees.size())) {
-			addRuleSession("contextMenu", trees.get(start).getRoot(), trees.get(end).getRoot());
+			addRuleSession("Custom", trees.get(start).getRoot(), trees.get(end).getRoot());
 			RuleParser.writeRule(new Rule(trees.get(start).getRoot(), trees.get(end).getRoot()));
 		}
 	}
@@ -112,7 +113,7 @@ public class Session {
 	}
 
 	public void menage(){
-		for(int i = currentTree + 1; i < trees.size(); i++)
+		for(int i = trees.size() - 1 ; i > currentTree ; i--)
 			trees.remove(i);
 	}
 
@@ -237,10 +238,10 @@ public class Session {
 		return trees.get(currentTree);
 	}
 
-	private void readRules(String file) {
+	private void readRules(RulesConfiguration config, String file) {
 	    String configPath = "config";
 		try {
-			RuleParser.readRules(new FileInputStream(new File(configPath + file)), globalRules);
+			RuleParser.readRules(new FileInputStream(new File(configPath + file)), config);
 		} catch (FileNotFoundException | libreDragon.ruleParser.ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -12,15 +12,22 @@ public class Operator {
 			case "SUP": return ">";
 			case "INFEGAL": return "<=";
 			case "SUPEGAL": return ">=";
-			case "MOINS": return "-";
+			case "MOINS_B": return "-";
 			case "FOIS": return "*";
 			case "DIVIDE": return "/";
 			case "POWER": return"^";
+			case  "SQRT" :  return "sqrt";
+			case "MOINS_U": return "-";
+			case "FACTORIAL": return "!";
+			case  "NOT": return "!";
+			case "CONGRAT": return "congrat";
+
+
 		default:
 			break;
 		}
 		return null;
-		
+
 	}
 
 }
