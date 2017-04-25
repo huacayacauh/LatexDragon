@@ -1,3 +1,5 @@
+//TODO: mouseEvent => left or right click, display or not tooltip. game => possibility to play more than one game at a time
+
 /**
  * Class controlling the different tab of the application.
  * The application is divided in 3 (4 counting the doc) 'tab'.
@@ -250,6 +252,7 @@ class Application {
 	 * Display a popup window.
 	 * Use the popup present in index.html.
 	 * Take as parameters the title, content, text and event handlers for the buttons.
+	 * The Strings parameters for the buttons can be empty.
 	 * @param {String} title title text
 	 * @param {String} content content text
 	 * @param {String} leftButton left button text
@@ -260,11 +263,22 @@ class Application {
 	displayPopup (title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler) {
 		$('#popup-title').text(title)
 		$('#popup-body').text(content)
-		$('#popup-button-left').text(leftButton)
-		$('#popup-button-right').text(rightButton)
 
-		$('#popup-button-left').click(leftButtonHandler)
-		$('#popup-button-right').click(rightButtonHandler)
+		if (leftButton.length > 0)
+			$('#popup-button-left').text(leftButton)
+		else
+			$('#popup-button-left').hide()
+
+		if (rightButton.length > 0)
+			$('#popup-button-right').text(rightButton)
+		else
+			$('#popup-button-right').hide()
+
+		if (leftButtonHandler != undefined)
+			$('#popup-button-left').click(leftButtonHandler)
+
+		if (leftButtonHandler != undefined)
+			$('#popup-button-right').click(rightButtonHandler)
 
 		$('#popup').modal('show')
 	}

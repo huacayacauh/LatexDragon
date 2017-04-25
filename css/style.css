@@ -397,3 +397,9 @@ input:checked + .slider:before {
 	padding-right: 5px;
 	padding-left: 5px;
 }
+
+/*=================================settings===================================*/
+
+#settings-highlightColor {
+	height: 50px;
+}

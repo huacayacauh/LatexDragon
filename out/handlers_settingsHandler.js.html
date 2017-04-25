@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: handlers/settingsHandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: handlers/settingsHandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Module containing all the function for handling the elements/event of the settings tabe.
+ * @module settingsHandler
+ */
+var self = module.exports = {
+	/**
+	 * Initialize everything the tab need in order to run properly.
+	 */
+	init: () => {
+		self.setEvents()
+		self.setValues()
+		self.setAnimations()
+	},
+	
+	/**
+	 * Set the events of the elements in the settings tab.
+	 */
+	setEvents: () => {
+		//Color
+		$("#settings-color").change(self.colorHandler)
+		//mathJax font size
+		$(".settings-mathSize").click(self.mathSizeHandler)
+		//Auto close notification on/off
+		$("#settings-notifOnOff").change(self.autoCloseNotifHandler)
+	},
+
+	setAnimations: () => {
+		$('.main').animateCss('slideInDown', 0.5);
+	},
+
+	/**
+   * Set the default values of the element in the tab to match their value
+   * in the application settrings
+   */
+  setValues: () => {
+		const instance = require('../Application')
+
+    $("#settings-color").val(instance.settings.color)
+    $("#settings-timer").attr("checked", instance.settings.timer)
+    $("#settings-notifOnOff").attr("checked", instance.settings.autoCloseNotif)
+
+    self.memoryUsageHandler()
+    self.processInfoHandler()
+  },
+
+	/**
+   * Handler for the color select.
+   */
+  colorHandler: function () {
+		const instance = require ('../Application')
+    instance.settings.setColor($(this).val());
+  },
+
+  /**
+   * Handler for the font size select.
+   */
+  mathSizeHandler: function () {
+		const instance = require ('../Application')
+    instance.settings.setMathSize($(this).text());
+  },
+
+  /**
+   * Handler for the notif close on/off select.
+   */
+  autoCloseNotifHandler: function () {
+		const instance = require ('../Application')
+    instance.settings.setAutoCloseNotif($(this).is(":checked"));
+  },
+
+  /**
+   * Handler for the memory usage.
+   * Memory usage is updated once every 1000 milliseconds.
+   */
+  memoryUsageHandler: () => {
+		const instance = require ('../Application')
+
+    if (instance.currentTab == "SETTINGS") {
+      var usage = instance.getMemoryUsage();
+
+      $("#settings-memoryUsage").html("");
+      $("#settings-memoryUsage").append(
+        $("&lt;div>&lt;/div>").text("Actuellement utilisé : ").append($("&lt;b>&lt;/b>").text(usage.workingSetSize + " Ko"))
+      ).append(
+        $("&lt;div>&lt;/div>").text("Maximum : ").append($("&lt;b>&lt;/b>").text(usage.peakWorkingSetSize + " Ko"))
+      ).append(
+        $("&lt;div>&lt;/div>").text("Mémoire caché utilisé : ").append($("&lt;b>&lt;/b>").text(usage.privateBytes + " Ko"))
+      ).append(
+        $("&lt;div>&lt;/div>").text("Mémoire partager utilisé : ").append($("&lt;b>&lt;/b>").text(usage.sharedBytes + " Ko"))
+      );
+
+      setTimeout(self.memoryUsageHandler, 1000);
+    }
+  },
+
+  /**
+   * Handler for the process informations.
+   */
+  processInfoHandler: () => {
+		const instance = require ('../Application')
+    var process = instance.getProcess();
+    const app = instance.remote.app;
+
+    $("#settings-processInfo").append(
+      $("&lt;div>&lt;/div>").text("LibreDragon Client version : ").append($("&lt;b>&lt;/b>").text(app.getVersion()))
+    ).append(
+      $("&lt;div>&lt;/div>").text("Process type : ").append($("&lt;b>&lt;/b>").text(process.type))
+    ).append(
+      $("&lt;div>&lt;/div>").text("Electron version : ").append($("&lt;b>&lt;/b>").text(process.versions.electron))
+    ).append(
+      $("&lt;div>&lt;/div>").text("Chrome version : ").append($("&lt;b>&lt;/b>").text(process.versions.chrome))
+    ).append(
+      $("&lt;div>&lt;/div>").text("Node.js version : ").append($("&lt;b>&lt;/b>").text(process.versions.node))
+    );
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Apr 23 2017 19:50:52 GMT+0200 (Paris, Madrid (heure d’été))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

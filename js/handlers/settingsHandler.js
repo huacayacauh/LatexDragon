@@ -11,21 +11,25 @@ var self = module.exports = {
 		self.setValues()
 		self.setAnimations()
 	},
-	
+
 	/**
 	 * Set the events of the elements in the settings tab.
 	 */
 	setEvents: () => {
 		//Color
-		$("#settings-color").change(self.colorHandler)
+		$('#settings-color').change(self.colorHandler)
 		//mathJax font size
-		$(".settings-mathSize").click(self.mathSizeHandler)
+		$('.settings-mathSize').click(self.mathSizeHandler)
 		//Auto close notification on/off
-		$("#settings-notifOnOff").change(self.autoCloseNotifHandler)
+		$('#settings-notifOnOff').change(self.autoCloseNotifHandler)
+		//highlighting on/off
+		$('#settings-highlightingOnOff').change(self.highlightingHandler)
+		//highlight color
+		$('#settings-highlightColor').change(self.highlightColorHandler)
 	},
 
 	setAnimations: () => {
-		$('.main').animateCss('slideInDown', 0.5);
+		$('.main').animateCss('slideInDown', 0.5)
 	},
 
 	/**
@@ -35,9 +39,11 @@ var self = module.exports = {
   setValues: () => {
 		const instance = require('../Application')
 
-    $("#settings-color").val(instance.settings.color)
-    $("#settings-timer").attr("checked", instance.settings.timer)
-    $("#settings-notifOnOff").attr("checked", instance.settings.autoCloseNotif)
+    $('#settings-color').val(instance.settings.color)
+    $('#settings-timer').attr('checked', instance.settings.timer)
+    $('#settings-notifOnOff').attr('checked', instance.settings.autoCloseNotif)
+		$('#settings-highlightingOnOff').attr('checked', instance.settings.highlighting)
+		$('#settings-highlightColor').val(instance.settings.highlightColor)
 
     self.memoryUsageHandler()
     self.processInfoHandler()
@@ -48,7 +54,7 @@ var self = module.exports = {
    */
   colorHandler: function () {
 		const instance = require ('../Application')
-    instance.settings.setColor($(this).val());
+    instance.settings.setColor($(this).val())
   },
 
   /**
@@ -56,15 +62,31 @@ var self = module.exports = {
    */
   mathSizeHandler: function () {
 		const instance = require ('../Application')
-    instance.settings.setMathSize($(this).text());
+    instance.settings.setMathSize($(this).text())
   },
+
+	/**
+   * Handler for the highlighting on/off select.
+   */
+	highlightingHandler: function () {
+		const instance = require ('../Application')
+    instance.settings.setHighlighting($(this).is(':checked'))
+	},
+
+	/**
+	 * Handler for the highlight color select.
+	 */
+	highlightColorHandler: function () {
+		const instance = require ('../Application')
+		instance.settings.setHighlightColor($(this).val())
+	},
 
   /**
    * Handler for the notif close on/off select.
    */
   autoCloseNotifHandler: function () {
 		const instance = require ('../Application')
-    instance.settings.setAutoCloseNotif($(this).is(":checked"));
+    instance.settings.setAutoCloseNotif($(this).is(':checked'))
   },
 
   /**
@@ -74,21 +96,21 @@ var self = module.exports = {
   memoryUsageHandler: () => {
 		const instance = require ('../Application')
 
-    if (instance.currentTab == "SETTINGS") {
-      var usage = instance.getMemoryUsage();
+    if (instance.currentTab == 'SETTINGS') {
+      var usage = instance.getMemoryUsage()
 
-      $("#settings-memoryUsage").html("");
-      $("#settings-memoryUsage").append(
-        $("<div></div>").text("Actuellement utilisé : ").append($("<b></b>").text(usage.workingSetSize + " Ko"))
+      $('#settings-memoryUsage').html('')
+      $('#settings-memoryUsage').append(
+        $('<div></div>').text('Actuellement utilisé : ').append($('<b></b>').text(usage.workingSetSize + ' Ko'))
       ).append(
-        $("<div></div>").text("Maximum : ").append($("<b></b>").text(usage.peakWorkingSetSize + " Ko"))
+        $('<div></div>').text('Maximum : ').append($('<b></b>').text(usage.peakWorkingSetSize + ' Ko'))
       ).append(
-        $("<div></div>").text("Mémoire caché utilisé : ").append($("<b></b>").text(usage.privateBytes + " Ko"))
+        $('<div></div>').text('Mémoire caché utilisé : ').append($('<b></b>').text(usage.privateBytes + ' Ko'))
       ).append(
-        $("<div></div>").text("Mémoire partager utilisé : ").append($("<b></b>").text(usage.sharedBytes + " Ko"))
-      );
+        $('<div></div>').text('Mémoire partager utilisé : ').append($('<b></b>').text(usage.sharedBytes + ' Ko'))
+      )
 
-      setTimeout(self.memoryUsageHandler, 1000);
+      setTimeout(self.memoryUsageHandler, 1000)
     }
   },
 
@@ -97,19 +119,19 @@ var self = module.exports = {
    */
   processInfoHandler: () => {
 		const instance = require ('../Application')
-    var process = instance.getProcess();
-    const app = instance.remote.app;
+    var process = instance.getProcess()
+    const app = instance.remote.app
 
-    $("#settings-processInfo").append(
-      $("<div></div>").text("LibreDragon Client version : ").append($("<b></b>").text(app.getVersion()))
+    $('#settings-processInfo').append(
+      $('<div></div>').text('LibreDragon Client version : ').append($('<b></b>').text(app.getVersion()))
     ).append(
-      $("<div></div>").text("Process type : ").append($("<b></b>").text(process.type))
+      $('<div></div>').text('Process type : ').append($('<b></b>').text(process.type))
     ).append(
-      $("<div></div>").text("Electron version : ").append($("<b></b>").text(process.versions.electron))
+      $('<div></div>').text('Electron version : ').append($('<b></b>').text(process.versions.electron))
     ).append(
-      $("<div></div>").text("Chrome version : ").append($("<b></b>").text(process.versions.chrome))
+      $('<div></div>').text('Chrome version : ').append($('<b></b>').text(process.versions.chrome))
     ).append(
-      $("<div></div>").text("Node.js version : ").append($("<b></b>").text(process.versions.node))
-    );
+      $('<div></div>').text('Node.js version : ').append($('<b></b>').text(process.versions.node))
+    )
   }
 }

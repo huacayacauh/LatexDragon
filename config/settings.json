@@ -3,5 +3,7 @@
   "mathSize": "50px",
   "autoCloseNotif": true,
   "notifTimer": 2000,
+  "highlighting": true,
+  "highlightColor": "#36fe3c",
   "timer": true
 }

@@ -30,7 +30,7 @@
     
         <h2>Application</h2>
         
-            <div class="class-description">Class controlling the different tab of the application.The application is divided in 3 (4 counting the doc) "tab".This class is used to switch between tab and to initialize everything the tabsneed in order to run.Can be considered as the "main" object running the application.</div>
+            <div class="class-description">Class controlling the different tab of the application.The application is divided in 3 (4 counting the doc) 'tab'.This class is used to switch between tab and to initialize everything the tabsneed in order to run.Can be considered as the 'main' object running the application.</div>
         
     
 </header>
@@ -253,13 +253,13 @@
 
         <tr>
             
-                <td class="name"><code>json</code></td>
+                <td class="name"><code>gameState</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">GameState</span>
 
 
             
@@ -269,53 +269,7 @@
 
             
 
-            <td class="description last">Object of the last/current game request to the server</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>gameId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Sring</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Id of the client on the server</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>formulaId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Id of which formula the game is using (currently not used properly)</td>
+            <td class="description last">Object containing all the informations on the state of the game</td>
         </tr>
 
     
@@ -339,6 +293,29 @@
             
 
             <td class="description last">Countdown object of the game (used to keep an eye on the countdown and not having multiple wountdown running at the same time)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>notifLog</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Notification></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Log of all the notifications issued since the start of the app</td>
         </tr>
 
     
@@ -400,7 +377,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line23">line 23</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
@@ -500,7 +477,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line146">line 146</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -582,7 +559,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line160">line 160</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line173">line 173</a>
     </li></ul></dd>
     
 
@@ -736,7 +713,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line172">line 172</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line185">line 185</a>
     </li></ul></dd>
     
 
@@ -774,7 +751,7 @@
 
 
 <div class="description">
-    Display a notification.Create the notification of type type and message message and append it tothe DOM element element.Create a dismissible notification that won't close unless the user close it.If autoCloseNotif is true the notif will close automatically in notifTimer milliseconds.If a notification was already present in the DOM element it will be replaced.
+    Display a notification.Create a new notification and display it, the newly created notification isthen added to the notification log list.
 </div>
 
 
@@ -872,7 +849,7 @@
 
             
 
-            <td class="description last">type of the notification (error, success ...) correspond to bootsrap 4 color (danger, warning, success and info)</td>
+            <td class="description last">type of the notification (error, success ...) correspond to bootsrap 4 colors (danger, warning, success and info)</td>
         </tr>
 
     
@@ -913,7 +890,260 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line198">line 198</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line209">line 209</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Notification</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="displayPopup"><span class="type-signature"></span>displayPopup<span class="signature">(title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Display a popup window.Use the popup present in index.html.Take as parameters the title, content, text and event handlers for the buttons.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">title text</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">content text</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>leftButton</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">left button text</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rightButton</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">right button text</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>leftButtonHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">left button onclick event handler</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rightButtonHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">right button onclick event handler</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -1067,7 +1297,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line183">line 183</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -1149,7 +1379,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line220">line 220</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line279">line 279</a>
     </li></ul></dd>
     
 
@@ -1253,7 +1483,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line228">line 228</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line287">line 287</a>
     </li></ul></dd>
     
 
@@ -1306,14 +1536,14 @@
 
     
 
-    <h4 class="name" id="loaded"><span class="type-signature"></span>loaded<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadHandler"><span class="type-signature"></span>loadHandler<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Called when the tab is loaded.Initialize everything the tab need in order to run,also apply the settings to the tab newly loaded.
+    Called when the tab is loaded.Load the handler corresponding to the tab,init the handler and apply the settings on the newly loaded tab.Also a tab can not have a handler.
 </div>
 
 
@@ -1357,7 +1587,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line121">line 121</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -1511,7 +1741,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line85">line 85</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -1549,7 +1779,7 @@
 
 
 <div class="description">
-    Send a request to get an html file, and change the active tab.Used to get the diffrent html file composing the app "tabs".Call loadHtml() when completed.
+    Send a request to get an html file, and change the active tab.Used to get the diffrent html file composing the app 'tabs'.Call loadHtml() when completed.
 </div>
 
 
@@ -1642,7 +1872,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line67">line 67</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -1724,7 +1954,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line110">line 110</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -1806,7 +2036,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line153">line 153</a>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line166">line 166</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toggleNotificationLog"><span class="type-signature"></span>toggleNotificationLog<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Toggle the notification log.If the notification log is not already open will create a list of all thenotifications present in the notifLog list.If the log is open will close it.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Application.js.html">Application.js</a>, <a href="Application.js.html#line225">line 225</a>
     </li></ul></dd>
     
 
@@ -1848,13 +2160,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-mouseClickHandler.html">mouseClickHandler</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Mar 08 2017 15:31:01 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Apr 23 2017 19:50:52 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

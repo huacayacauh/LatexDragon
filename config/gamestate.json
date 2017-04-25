@@ -1,9 +1,9 @@
 {
-  "gameId": "00658b34-f001-4c64-ba2c-22a59a9de300",
+  "gameId": "5b691d3a-99a3-4614-9a94-f57d06568e0e",
   "formulaId": "1",
   "mode": "SANDBOX",
   "ruleSet": 1,
-  "useTheorem": false,
+  "useTheorem": true,
   "currentState": {
     "math": "$$\\cssId{exp0}{\\cssId{exp00}{\\cssId{exp000}{(\\cssId{exp0000}{\\cssId{exp00000}{a}\\over\\cssId{exp00001}{2}})}*\\cssId{exp001}{2}}=\\cssId{exp01}{3}}$$",
     "ids": [
@@ -99,6 +99,11 @@
             "text": "( a / 2 ) * 2 => ( ( a / 2 ) * 2 )",
             "ruleId": 13,
             "type": "contextMenu"
+          },
+          {
+            "text": "( a / 2 ) * 2 => a",
+            "ruleId": 0,
+            "type": "Custom"
           }
         ]
       },
