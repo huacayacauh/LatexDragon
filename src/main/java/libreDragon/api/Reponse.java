@@ -51,7 +51,8 @@ public class Reponse {
 	public String formula (String gameId) {
 		Data.getSession(gameId).cleanexpr();
 		Expression resultat = Data.getSession(gameId).getTree().getRoot();
-		setMath((String) resultat.generateExpression("0",Data.getSession(gameId)));
+		setMath((String) resultat.generateExpression("0"));
+		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
 		setIds(Data.getSession(gameId).getexpr());
 		list = Data.getSession(gameId).getrules();
 		setTimeline(Data.getSession(gameId).getTimeline());
@@ -74,7 +75,8 @@ public class Reponse {
 		else if (mode.compareTo("PREVIOUS") == 0)
 			  resultat = Data.getSession(gameId).getPrevious().getRoot();
 
-		setMath((String) resultat.generateExpression("0",Data.getSession(gameId)));
+		setMath((String) resultat.generateExpression("0"));
+		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
 		setIds(Data.getSession(gameId).getexpr());
 		list = Data.getSession(gameId).getrules();
 		setTimeline(Data.getSession(gameId).getTimeline());
@@ -93,7 +95,8 @@ public class Reponse {
 
 		Expression resultat = Data.getSession(gameId).getStateFromTimeline(index).getRoot();
 
-		setMath((String) resultat.generateExpression("0",Data.getSession(gameId)));
+		setMath((String) resultat.generateExpression("0"));
+		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
 
 		setIds(Data.getSession(gameId).getexpr());
 

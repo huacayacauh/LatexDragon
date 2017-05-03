@@ -23,7 +23,7 @@ public interface GraphicExpressionFactory {
 	 * @param second : l'objet graphique correspondant au second sous noeud
 	 * @return l'objet graphique utilisateur
 	 */
-	public String generateBinaryExpression(Expression expression, String type, Expression first, Expression second, String id,Session session);
+	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id,Session session);
 
 	/**
 	 * Génère un objet graphique.
@@ -32,7 +32,7 @@ public interface GraphicExpressionFactory {
 	 * @param sub : l'objet graphique correspondant au sous noeud
 	 * @return l'objet graphique utilisateur
 	 */
-	public String generateUnaryExpression(Expression expression, String type, Expression sub, String id,Session session);
+	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id,Session session);
 
 	/**
 	 * Génère un objet graphique.
@@ -41,7 +41,27 @@ public interface GraphicExpressionFactory {
 	 * @param name : Le nom de l'instance de l'objet primaire
 	 * @return l'objet graphique utilisateur
 	 */
-	public String generatePrimaryExpression(Expression expression, String type, String name, String id,Session session);
+	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, Session session);
+
+	public String generateBinaryExpression(Expression expression, String type, Expression first, Expression second, String id);
+
+	/**
+	 * Génère un objet graphique.
+	 * @param expression : l'expression unaire à traduire
+	 * @param type : Son type
+	 * @param sub : l'objet graphique correspondant au sous noeud
+	 * @return l'objet graphique utilisateur
+	 */
+	public String generateUnaryExpression(Expression expression, String type, Expression sub, String id);
+
+	/**
+	 * Génère un objet graphique.
+	 * @param expression : l'expression primaire à traduire
+	 * @param type : Son type
+	 * @param name : Le nom de l'instance de l'objet primaire
+	 * @return l'objet graphique utilisateur
+	 */
+	public String generatePrimaryExpression(Expression expression, String type, String name, String id);
 
 	public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second);
 

@@ -58,9 +58,9 @@ public class Session {
 			temp += "{\""+key +"\":[";
 			List<Rule> liste = globalRules.getRules().get(key);
 			if(liste.size() > 0)
-				temp += ("\"" + liste.get(0).getInputModel().getExpr() + " => "+ liste.get(0).getResultModel().getExpr()+ "\"");
+				temp += ("\"" + Configuration.graphic.generateRuleExpression(liste.get(0))+ "\"");
 			for(int i = 1; i < liste.size(); i++){
-				temp += ",\"" + liste.get(i).getInputModel().getExpr() + " => "+ liste.get(i).getResultModel().getExpr() +"\"";
+				temp += ",\"" + Configuration.graphic.generateRuleExpression(liste.get(i)) +"\"";
 			}
 			if(iterateur.hasNext())
 				temp+="]},";
@@ -106,7 +106,8 @@ public class Session {
 		menage();
 		trees.add(getTree().cloneKrakenTree());
 		currentTree++;
-		getTree().getRoot().generateExpression("0",this);
+		getTree().getRoot().generateExpression("0");
+		getTree().getRoot().generateRulesAndIdExpression("0",this);
 		Expression expression = getTree().getIds("\""+exprid+"\"");
 		Rule rule = globalRules.getRules().get(contexe).get(idrule);
 		getTree().applicRule(expression, rule);
@@ -190,7 +191,7 @@ public class Session {
 			liste = globalRules.getRules().get(key);
 			for(int i = 0; i < liste.size(); i++){
 				if (liste.get(i).canApplic(expression)){
-					res.add("{\"text\": "+"\""+expression.getExpr() + " => "+liste.get(i).applic(expression).getExpr()+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
+					res.add("{\"text\": "+"\""+expression.generateExpression("") + " => "+liste.get(i).applic(expression).generateExpression("")+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
 				}
 			}
 		}

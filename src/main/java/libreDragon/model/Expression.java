@@ -18,7 +18,9 @@ public interface Expression {
 	 * Ca permet de donner un tag à chaque expression.
 	 * @return L'objet graphique (le type dépend de la factory de la configuration)
 	 */
-	Object generateExpression(String id,Session session);
+	Object generateExpression(String id);
+
+	void generateRulesAndIdExpression(String id,Session session);
 
 	Object generateSimpleExpression();
 

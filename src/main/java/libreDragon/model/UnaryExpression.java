@@ -23,9 +23,19 @@ public class UnaryExpression implements Expression {
 	}
 
 	@Override
-	public String generateExpression(String id,Session session) {
+	public String generateExpression(String id) {
 		this.id = id;
 		return Configuration.graphic.generateUnaryExpression(
+					this,
+					type,
+					sub_expression,
+					id);
+	}
+
+	@Override
+	public void generateRulesAndIdExpression(String id,Session session) {
+		this.id = id;
+		Configuration.graphic.generateRulesAndIdUnaryExpression(
 					this,
 					type,
 					sub_expression,

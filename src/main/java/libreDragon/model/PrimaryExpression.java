@@ -33,9 +33,15 @@ public class PrimaryExpression implements Expression{
 	}
 
 	@Override
-	public String generateExpression(String id,Session session) {
+	public void generateRulesAndIdExpression(String id,Session session) {
 		this.id = id;
-		return Configuration.graphic.generatePrimaryExpression(this, type, name, id, session);
+		Configuration.graphic.generateRulesAndIdPrimaryExpression(this, type, name, id, session);
+	}
+
+	@Override
+	public String generateExpression(String id) {
+		this.id = id;
+		return Configuration.graphic.generatePrimaryExpression(this, type, name, id);
 	}
 
 	@Override

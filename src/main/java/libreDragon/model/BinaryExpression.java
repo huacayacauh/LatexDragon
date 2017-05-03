@@ -39,9 +39,20 @@ public class BinaryExpression implements Expression {
 	 * Génère un équivalent graphique en fonction de la factory de la configuration
 	 */
 	@Override
-	public String generateExpression(String id,Session session) {
+	public String generateExpression(String id) {
 		this.id = id;
 		return Configuration.graphic.generateBinaryExpression(
+					this,
+					type,
+					first_expression,
+					second_expression,
+					id);
+	}
+
+	@Override
+	public void generateRulesAndIdExpression(String id,Session session) {
+		this.id = id;
+		Configuration.graphic.generateRulesAndIdBinaryExpression(
 					this,
 					type,
 					first_expression,
