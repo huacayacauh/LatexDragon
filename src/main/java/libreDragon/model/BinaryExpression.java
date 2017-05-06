@@ -50,24 +50,16 @@ public class BinaryExpression implements Expression {
 	}
 
 	@Override
-	public void generateRulesAndIdExpression(String id,Session session) {
+	public void generateRulesAndIdExpression(String id,KrakenTree tree) {
 		this.id = id;
 		Configuration.graphic.generateRulesAndIdBinaryExpression(
 					this,
 					type,
 					first_expression,
 					second_expression,
-					id,session);
+					id, tree);
 	}
 
-	@Override
-	public String generateSimpleExpression() {
-		return Configuration.graphic.generateSimpleBinaryExpression(
-					this,
-					type,
-					first_expression,
-					second_expression);
-	}
 	/**
 	 * Compare ce noeud avec le noeud en paramètre.
 	 * Tente d'abord de comparer le type du noeud (qui doit être binaire)

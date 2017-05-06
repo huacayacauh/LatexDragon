@@ -5,6 +5,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import libreDragon.model.Expression;
 import libreDragon.api.Session;
+import libreDragon.model.KrakenTree;
+import libreDragon.model.Configuration;
+import libreDragon.model.Pair;
+import libreDragon.model.Rule;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Class use to create a answer to the client
@@ -13,103 +22,128 @@ import libreDragon.api.Session;
  */
 @XmlRootElement
 public class Reponse {
-	@XmlElement private String math;
-	@XmlElement private String ids;
-	@XmlElement private String list="";
-	private String timeline;
 
-	public String getMath() {
-		return math;
+	private String generateJsonRules(KrakenTree tree){
+		String temp ="";
+		Expression exp = null;
+		Set<String> listKeys= tree.getKeyRules();
+		Iterator<String> iterateur=listKeys.iterator();
+		while(iterateur.hasNext())
+		{
+			String key = iterateur.next();
+			temp += "{\""+key +"\":[";
+			exp = tree.getIds(key);
+			ArrayList<Pair<Rule,String>> liste = tree.getRules(key);
+			if(liste.size() > 0){
+				temp += ("{\"text\":\"$$"+exp.generateExpression("") + " => "+liste.get(0).first.applic(exp).generateExpression("")+"$$\","+"\"ruleId\":"+0+",\"type\":"+"\""+liste.get(0).second+"\"}");
+			}
+			for(int i = 1; i < liste.size(); i++){
+				temp += ","+("{\"text\":\"$$"+exp.generateExpression("") + " => "+liste.get(i).first.applic(exp).generateExpression("")+"$$\","+"\"ruleId\":"+i+",\"type\":"+"\""+liste.get(i).second+"\"}");
+			}
+			if(iterateur.hasNext())
+				temp+="]},";
+			else
+				temp+="]}";
+		}
+		return temp+"]";
 	}
-	public void setMath(String math) {
-		this.math = math;
+
+	public String generateJsonRulesList(KrakenTree tree){
+		String temp ="";
+		Set<String> listKeys = tree.globalRules.getRules().keySet();
+		Iterator<String> iterateur=listKeys.iterator();
+		while(iterateur.hasNext())
+		{
+			String key= iterateur.next();
+			temp += "{\""+key +"\":[";
+			List<Rule> liste = tree.globalRules.getRules().get(key);
+			if(liste.size() > 0)
+				temp += ("\"$$"+ Configuration.graphic.generateRuleExpression(liste.get(0))+"$$\"");
+			for(int i = 1; i < liste.size(); i++){
+				temp += ",\"$$" + Configuration.graphic.generateRuleExpression(liste.get(i)) +"$$\"";
+			}
+			if(iterateur.hasNext())
+				temp+="]},";
+			else
+				temp+="]}";
+		}
+		return temp+"]";
 	}
-	public String getIds() {
-		return ids;
+
+	/**
+	 *  return the list of expressions in a string
+	 * @return
+	 */
+	public String generateJsonId(KrakenTree tree){
+		String temp ="[";
+		Set<String> listKeys = tree.getKeyIds();
+		Iterator<String> iterator = listKeys.iterator();
+		if(iterator.hasNext()){
+			temp = temp+"\""+iterator.next()+"\"";
+			while (iterator.hasNext()) {
+				temp = temp+","+"\""+iterator.next()+"\"";
+			}
+		}
+		return temp+"]";
 	}
-	public void setIds(String ids) {
-		this.ids = ids;
+
+	public String generateJsonExpressionList(ArrayList<Expression> list){
+		String temp ="[";
+		if(list.size() > 0)
+			temp += ("\"$$"+ list.get(0).generateExpression("")+"$$\"");
+		for(int i = 1; i < list.size(); i++){
+			temp += ",\"$$" + list.get(i).generateExpression("") +"$$\"";
+		}
+		return temp+"]";
 	}
-	public String getList() {
-		return list;
-	}
-	public void setList(String list) {
-		this.list = list;
-	}
-	public void setTimeline (String timeline) {
-		this.timeline = timeline;
-	}
-	public String getTimeline () {
+
+	public String getJsonTimeline (ArrayList<KrakenTree> trees) {
+		String timeline = "";
+		for (int i = 0 ; i < trees.size() ; i++) {
+			String tmp = (String) trees.get(i).getRoot().generateExpression("");
+			timeline += "{\"index\":" + i + ",";
+			timeline += "\"text\":\"$$" + tmp +"$$\"}";
+			if (i != trees.size() - 1)
+				timeline += ",";
+		}
+		timeline += "]}";
 		return timeline;
 	}
+
 
 	/**
 	 * return a JSON implementation of the formula and the rules we can applique
 	 * @param gameId
 	 * @return
 	 */
-	public String formula (String gameId) {
-		Data.getSession(gameId).cleanexpr();
-		Expression resultat = Data.getSession(gameId).getTree().getRoot();
-		setMath((String) resultat.generateExpression("0"));
-		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
-		setIds(Data.getSession(gameId).getexpr());
-		list = Data.getSession(gameId).getrules();
-		setTimeline(Data.getSession(gameId).getTimeline());
-		return 	"{"
-				+ "\"math\": \"$$"+math+"$$\","
-				+ "\"ids\":"+ids+","
-				+ "\"rules\":["+list+","
-				+ "\"timeline\":{"
-				+ "\"current\":"+Data.getSession(gameId).getCurrentTree()+","
-				+ "\"elements\":["+timeline
-				+ "}";
-	}
-
-  public String formula (String gameId, String mode) {
-		Data.getSession(gameId).cleanexpr();
-		Expression resultat = null;
+  public String formula (String gameId, String mode, int index) {
+		Data.getSession(gameId).getTree().cleanIds();
+		Data.getSession(gameId).getTree().cleanRules();
+		KrakenTree tree;
 
 		if (mode.compareTo("NEXT") == 0)
-			  resultat = Data.getSession(gameId).getNext().getRoot();
+			  tree = Data.getSession(gameId).getNext();
 		else if (mode.compareTo("PREVIOUS") == 0)
-			  resultat = Data.getSession(gameId).getPrevious().getRoot();
+			  tree = Data.getSession(gameId).getPrevious();
+		else if(index != -1)
+			tree = Data.getSession(gameId).getStateFromTimeline(index);
+		else
+			tree = Data.getSession(gameId).getTree();
 
-		setMath((String) resultat.generateExpression("0"));
-		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
-		setIds(Data.getSession(gameId).getexpr());
-		list = Data.getSession(gameId).getrules();
-		setTimeline(Data.getSession(gameId).getTimeline());
+		Expression resultat = tree.getRoot();
+
+		String math = (String) resultat.generateExpression("0");
+		resultat.generateRulesAndIdExpression("0",tree);
+		String ids = generateJsonId(tree);
+		String list = generateJsonRules(tree);
+		String timeline = getJsonTimeline(Data.getSession(gameId).getTrees());
+		int current = Data.getSession(gameId).getCurrentTree();
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"ids\":"+ids+","
 				+ "\"rules\":["+list+","
 				+ "\"timeline\":{"
-				+ "\"current\":"+Data.getSession(gameId).getCurrentTree()+","
-				+ "\"elements\":["+timeline
-				+ "}";
-	}
-
-	public String formula (String gameId, int index) {
-		Data.getSession(gameId).cleanexpr();
-
-		Expression resultat = Data.getSession(gameId).getStateFromTimeline(index).getRoot();
-
-		setMath((String) resultat.generateExpression("0"));
-		resultat.generateRulesAndIdExpression("0",Data.getSession(gameId));
-
-		setIds(Data.getSession(gameId).getexpr());
-
-		list = Data.getSession(gameId).getrules();
-
-		setTimeline(Data.getSession(gameId).getTimeline());
-
-		return 	"{"
-				+ "\"math\": \"$$"+math+"$$\","
-				+ "\"ids\":"+ids+","
-				+ "\"rules\":["+list+","
-				+ "\"timeline\":{"
-				+ "\"current\":"+Data.getSession(gameId).getCurrentTree()+","
+				+ "\"current\":"+current+","
 				+ "\"elements\":["+timeline
 				+ "}";
 	}
@@ -130,7 +164,13 @@ public class Reponse {
 
 	public String rulesList (String gameId) {
 		return "{"
-			+	"\"rules\":[" + Data.getSession(gameId).getGlobalRules()
+			+	"\"rules\":[" + generateJsonRulesList(Data.getSession(gameId).getTree())
+			+ "}";
+	}
+
+	public String expressionList () {
+		return "{"
+			+	"\"expression\":[" + generateJsonExpressionList(Data.getExpressionsList())
 			+ "}";
 	}
 }

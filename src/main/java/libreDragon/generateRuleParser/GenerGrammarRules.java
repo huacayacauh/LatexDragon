@@ -673,7 +673,7 @@ public void generateGrammar() throws FileNotFoundException, UnsupportedEncodingE
 						writer.println("\tfichier.createNewFile();");
 					writer.println("\tfinal FileWriter writer = new FileWriter(fichier, true);");
 					writer.println("\ttry {");
-							writer.println("\twriter.write(rule.getInputModel().generateSimpleExpression()+\"\t\"+\"=(§Custom)=>\"+rule.getResultModel().generateSimpleExpression()+\"\\n\");");
+							writer.println("\twriter.write(rule.getInputModel().getExpr()+\"\t\"+\"=(§Custom)=>\"+rule.getResultModel().getExpr()+\"\\n\");");
 
 					writer.println("\t} finally {");
 							writer.println("\twriter.close();");
@@ -684,9 +684,16 @@ public void generateGrammar() throws FileNotFoundException, UnsupportedEncodingE
 	writer.println("\t}");
 
 	writer.println("\tpublic static Expression readExpression(InputStream stream) throws ParseException {");
+	writer.println("\t\tExpression expression = null;");
+	writer.println("\tif (jj_initialized_once){");
 	writer.println("\t\tRuleParser.ReInit(stream);");
-	writer.println("\t\tExpression expression = Terme0();");
-	writer.println("\t\treturn new UnaryExpression(\"ROOT\", expression);");
+	writer.println("\texpression = Terme0();");
+	writer.println("\t}");
+	writer.println("\telse {");
+	writer.println("\tRuleParser parser =  new RuleParser(stream);");
+	writer.println("\texpression = parser.Terme0();");
+	writer.println("\t}");
+	writer.println("\t\treturn expression;");
 	writer.println("\t}");
 	writer.println("}");
 	writer.println("\nPARSER_END(RuleParser)\n");

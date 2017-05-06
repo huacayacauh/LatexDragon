@@ -14,7 +14,12 @@ public class RulesList {
 	@Produces(MediaType.TEXT_HTML)
 	public String answer (@PathParam("gameid") String gameId) {
 		Reponse reponse = new Reponse();
-
+		String complementaryInfo, status;
+		if (!Data.isIn(gameId)) {
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
 		return reponse.rulesList(gameId);
 	}
 }

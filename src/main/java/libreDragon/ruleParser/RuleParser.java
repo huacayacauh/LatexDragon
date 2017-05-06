@@ -32,7 +32,7 @@ public static void readRules(InputStream stream, RulesConfiguration r) throws Pa
         fichier.createNewFile();
         final FileWriter writer = new FileWriter(fichier, true);
         try {
-        writer.write(rule.getInputModel().generateSimpleExpression()+"\u0009"+"=(\u00a7Custom)=>"+rule.getResultModel().generateSimpleExpression()+"\u005cn");
+        writer.write(rule.getInputModel().getExpr()+"\u0009"+"=(\u00a7Custom)=>"+rule.getResultModel().getExpr()+"\u005cn");
         } finally {
         writer.close();
         }
@@ -41,9 +41,16 @@ public static void readRules(InputStream stream, RulesConfiguration r) throws Pa
         }
         }
         public static Expression readExpression(InputStream stream) throws ParseException {
+                Expression expression = null;
+        if (jj_initialized_once){
                 RuleParser.ReInit(stream);
-                Expression expression = Terme0();
-                return new UnaryExpression("ROOT", expression);
+        expression = Terme0();
+        }
+        else {
+        RuleParser parser =  new RuleParser(stream);
+        expression = parser.Terme0();
+        }
+                return expression;
         }
 
   static final public Expression Epsilon() throws ParseException {

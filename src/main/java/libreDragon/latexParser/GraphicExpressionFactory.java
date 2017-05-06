@@ -2,7 +2,7 @@ package libreDragon.latexParser;
 
 import libreDragon.model.Expression;
 import libreDragon.model.Rule;
-import libreDragon.api.Session;
+import libreDragon.model.KrakenTree;
 
 /**
  * Cette interface décrit le pont entre le modèle physique et le modèle graphique.
@@ -23,7 +23,7 @@ public interface GraphicExpressionFactory {
 	 * @param second : l'objet graphique correspondant au second sous noeud
 	 * @return l'objet graphique utilisateur
 	 */
-	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id,Session session);
+	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id, KrakenTree tree);
 
 	/**
 	 * Génère un objet graphique.
@@ -32,7 +32,7 @@ public interface GraphicExpressionFactory {
 	 * @param sub : l'objet graphique correspondant au sous noeud
 	 * @return l'objet graphique utilisateur
 	 */
-	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id,Session session);
+	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id, KrakenTree tree);
 
 	/**
 	 * Génère un objet graphique.
@@ -41,7 +41,7 @@ public interface GraphicExpressionFactory {
 	 * @param name : Le nom de l'instance de l'objet primaire
 	 * @return l'objet graphique utilisateur
 	 */
-	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, Session session);
+	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, KrakenTree tree);
 
 	public String generateBinaryExpression(Expression expression, String type, Expression first, Expression second, String id);
 
@@ -62,12 +62,6 @@ public interface GraphicExpressionFactory {
 	 * @return l'objet graphique utilisateur
 	 */
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id);
-
-	public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second);
-
-	public String generateSimpleUnaryExpression(Expression expression, String type, Expression sub);
-
-	public String generateSimplePrimaryExpression(Expression expression, String type, String name);
 
 	/**
 	 * Génère un objet graphique correspondant à une règle.

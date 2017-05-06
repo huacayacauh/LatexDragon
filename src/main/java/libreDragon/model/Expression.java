@@ -20,9 +20,7 @@ public interface Expression {
 	 */
 	Object generateExpression(String id);
 
-	void generateRulesAndIdExpression(String id,Session session);
-
-	Object generateSimpleExpression();
+	void generateRulesAndIdExpression(String id,KrakenTree tree);
 
 	/**
 	 * Compare si une expression est équivalente à une autre.

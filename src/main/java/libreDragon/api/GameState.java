@@ -8,6 +8,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.lang.Throwable;
+
 
 /**
  * Class use by the client to request the game state
@@ -24,60 +26,81 @@ public class GameState {
 	@Path("/gamestate/{gameid}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String returnstate (@PathParam("gameid") String gameid) {
-		Reponse myjaxbean = new Reponse();
-		System.out.println("Game "+gameid);
-		if(Data.getSession(gameid) == null)
-			Unauthorized();
-		return myjaxbean.formula(gameid);
+	public String returnstate (@PathParam("gameid") String gameId) {
+		Reponse reponse = new Reponse();
+		String complementaryInfo, status;
+		if (Data.isIn(gameId)) {
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
 		}
-
-	/**
-	 * return error 401 if the session doesn't exist
-	 * @return
-	 */
-	public String Unauthorized() {
-		   // An unauthorized user tries to enter
-		   throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+		System.out.println("Game "+gameId);
+		return reponse.formula(gameId,"",-1);
 		}
-	public class NotAuthorizedException extends WebApplicationException {
-	     public NotAuthorizedException(String message) {
-	         super(Response.status(Response.Status.UNAUTHORIZED)
-	             .entity(message).type(MediaType.TEXT_PLAIN).build());
-	     }
-	}
-
 
 	@Path("/previous/{gameid}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getPrevious (@PathParam("gameid") String gameid) {
-		Reponse myjaxbean = new Reponse();
-		System.out.println("Game "+gameid);
-		if(Data.getSession(gameid) == null)
-			Unauthorized();
-		return myjaxbean.formula(gameid,"PREVIOUS");
+	public String getPrevious (@PathParam("gameid") String gameId) {
+		Reponse reponse = new Reponse();
+		String complementaryInfo, status;
+		if (!Data.isIn(gameId)) {
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
+		System.out.println("Game "+gameId);
+		return reponse.formula(gameId,"PREVIOUS",-1);
 	}
 
 	@Path("/next/{gameid}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getNext (@PathParam("gameid") String gameid) {
-		Reponse myjaxbean = new Reponse();
-		System.out.println("Game "+gameid);
-		if(Data.getSession(gameid) == null)
-			Unauthorized();
-		return myjaxbean.formula(gameid,"NEXT");
+	public String getNext (@PathParam("gameid") String gameId) {
+		Reponse reponse = new Reponse();
+		String complementaryInfo, status;
+		if (!Data.isIn(gameId)) {
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
+		System.out.println("Game "+gameId);
+		return reponse.formula(gameId,"NEXT",-1);
 	}
 
 	@Path("/timeline/{gameid}/{index}")
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public String getStateFromTimeline (@PathParam("gameid") String gameid, @PathParam("index") String index) {
-		Reponse myjaxbean = new Reponse();
-		System.out.println("Game "+gameid);
-		if(Data.getSession(gameid) == null)
-			Unauthorized();
-		return myjaxbean.formula(gameid, Integer.parseInt(index));
+	public String getStateFromTimeline (@PathParam("gameid") String gameId, @PathParam("index") String index) {
+		Reponse reponse = new Reponse();
+		String complementaryInfo, status;
+		if (!Data.isIn(gameId)) {
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
+		else if(Integer.parseInt(index) < 0 || Integer.parseInt(index) > Data.getSession(gameId).getTreesSize()){
+			status = "FAILURE";
+			complementaryInfo = "Timeline introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
+		System.out.println("Game "+gameId);
+		return reponse.formula(gameId, "", Integer.parseInt(index));
+	}
+
+	@Path("/delete/{gameid}")
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	public String deleteGame (@PathParam("gameid") String gameId) {
+		if (!Data.isIn(gameId)) {
+			Reponse reponse = new Reponse();
+	    String complementaryInfo, status;
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
+		Data.closeSession(gameId);
+		System.out.println("Delete " + gameId);
+		return "cool";
 	}
 }

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 import libreDragon.latexParser.GraphicExpressionFactory;
@@ -20,8 +21,9 @@ import libreDragon.latexParser.GraphicExpressionFactory;
  */
 public class KrakenTree {
 	private Expression root;
-	private HashMap<String,Expression> ids = new HashMap<>();
-	private HashMap<String,ArrayList<String>> rules = new HashMap<>();
+	private HashMap<String, Expression> ids = new HashMap<>();
+	private HashMap<String,ArrayList<Pair<Rule,String>>> rules = new HashMap<>();
+	public RulesConfiguration globalRules;
 	/**
 	 * Ce constructeur initialise la librairie en utilisant la factory utilisateur.
 	 * Cette factory permet de faire le lein entre le support physique et l'interface
@@ -30,10 +32,13 @@ public class KrakenTree {
 	 * @see view.GraphicExpressionFactory
 	 */
 
-	public KrakenTree() {
-
+	public KrakenTree(RulesConfiguration config) {
+		globalRules = config;
 	}
 
+	/**
+	 * Clear the expressions hashmap
+	 */
 	public void cleanIds(){
 		ids.clear();
 	}
@@ -42,24 +47,40 @@ public class KrakenTree {
 		rules.clear();
 	}
 
+	public boolean idIsIn(String id){
+		return ids.containsKey(id);
+	}
+
+	public boolean ruleIsIn(String exprid, int idrule, String context){
+		if( rules.containsKey(exprid) && rules.get(exprid).size() > idrule && rules.get(exprid).get(idrule).second.compareTo(context) == 0)
+					return true;
+		return false;
+	}
+
 	public Expression getIds(String id){
 		return ids.get(id);
 	}
 
-	public void addIds(String id, Expression expression){
-		ids.put(id,expression);
+	public void addIds(String id,Expression expression){
+		ids.put(id, expression);
 	}
 
 	public Set<String> getKeyIds(){
 		return ids.keySet();
 	}
 
-	public ArrayList<String> getRules(String id){
+	public ArrayList<Pair<Rule,String>> getRules(String id){
 		return rules.get(id);
 	}
 
-	public void addRules(String id, ArrayList<String> liste){
+	public void addRules(String id, ArrayList<Pair<Rule,String>> liste){
 		rules.put(id, liste);
+	}
+
+	public Rule getRuleByidsAndContext(String exprid, int idrule, String context){
+		if(idIsIn(exprid) && ruleIsIn(exprid, idrule, context))
+			return getRules(exprid).get(idrule).first;
+		return null;
 	}
 
 	public Set<String> getKeyRules(){
@@ -206,8 +227,36 @@ public class KrakenTree {
 	}
 
 	public KrakenTree cloneKrakenTree () {
-		KrakenTree clone = new KrakenTree();
+		KrakenTree clone = new KrakenTree(globalRules);
 		clone.setRoot(this.root.cloneExpression());
 		return clone;
 	}
+
+	/**
+	 * Generate all the rule can apply on an expression in this rule context
+	 * @param expression
+	 * @return
+	 */
+	public ArrayList<Pair<Rule,String>> generateRules(Expression expression){
+		List<Rule> liste;
+		ArrayList<Pair<Rule,String>> res = new ArrayList<>();
+		Set<String> listKeys= globalRules.getRules().keySet();
+		Iterator<String> iterateur=listKeys.iterator();
+		while(iterateur.hasNext())
+		{
+			String key= iterateur.next();
+			liste = globalRules.getRules().get(key);
+			for(int i = 0; i < liste.size(); i++){
+				if (liste.get(i).canApplic(expression)){
+					res.add(new Pair(liste.get(i), key));
+				}
+			}
+		}
+		return res;
+	}
+
+	public void addRule(String input_type, Expression input_model, Expression output_model){
+		globalRules.addRule(input_type,new Rule(input_model, output_model));
+	}
+
 }

@@ -31,8 +31,15 @@ import libreDragon.ruleParser.RuleParser;
 public class Session {
 	private ArrayList<KrakenTree> trees = new ArrayList();
 	private int currentTree = 0;
-	private RulesConfiguration globalRules;
 	UUID gameId;
+
+	public ArrayList<KrakenTree> getTrees(){
+		return trees;
+	}
+
+	public int getTreesSize(){
+		return trees.size();
+	}
 
 	public KrakenTree getNext(){
 		if(trees.size() <= currentTree +1)
@@ -48,49 +55,33 @@ public class Session {
 		return trees.get(currentTree);
 	}
 
-	public String getGlobalRules(){
-		String temp ="";
-		Set<String> listKeys=globalRules.getRules().keySet();
-		Iterator<String> iterateur=listKeys.iterator();
-		while(iterateur.hasNext())
-		{
-			String key= iterateur.next();
-			temp += "{\""+key +"\":[";
-			List<Rule> liste = globalRules.getRules().get(key);
-			if(liste.size() > 0)
-				temp += ("\"" + Configuration.graphic.generateRuleExpression(liste.get(0))+ "\"");
-			for(int i = 1; i < liste.size(); i++){
-				temp += ",\"" + Configuration.graphic.generateRuleExpression(liste.get(i)) +"\"";
-			}
-			if(iterateur.hasNext())
-				temp+="]},";
-			else
-				temp+="]}";
-		}
-		return temp+"]";
+	public int getCurrentTree () {
+		return currentTree;
+	}
+
+	/**
+	 * @param t
+	 */
+	public void setTree(KrakenTree t) {
+		trees.set(currentTree, t);
 	}
 
 	/**
 	 *
 	 */
-	public Session(Boolean custom){
-		trees.add(new KrakenTree());
-		trees.get(currentTree).setRoot(defaultFormula());
+	public Session(Boolean custom, int indice){
 		gameId = UUID.randomUUID();
-		globalRules = new RulesConfiguration();
+		RulesConfiguration globalRules = new RulesConfiguration();
 		readRules(globalRules,"/rules.cfg");
 		if(custom)
 			readRules(globalRules,"/customRules.cfg");
-
-	}
-
-	public void addRuleSession(String input_type, Expression input_model, Expression output_model){
-		globalRules.addRule(input_type,new Rule(input_model, output_model));
+		trees.add(new KrakenTree(globalRules));
+		trees.get(currentTree).setRoot(Data.getExpression(indice));
 	}
 
 	public void createTheorem (int start, int end) {
 		if ((start < trees.size()) && (end < trees.size())) {
-			addRuleSession("Custom", trees.get(start).getRoot(), trees.get(end).getRoot());
+			getTree().addRule("Custom", trees.get(start).getRoot(), trees.get(end).getRoot());
 			RuleParser.writeRule(new Rule(trees.get(start).getRoot(), trees.get(end).getRoot()));
 		}
 	}
@@ -102,14 +93,14 @@ public class Session {
 	 */
 	public void applicRule(String exprid,int idrule, String contexe){
 		getTree().cleanRules();
-		cleanexpr();
+		getTree().cleanIds();
 		menage();
 		trees.add(getTree().cloneKrakenTree());
 		currentTree++;
 		getTree().getRoot().generateExpression("0");
-		getTree().getRoot().generateRulesAndIdExpression("0",this);
-		Expression expression = getTree().getIds("\""+exprid+"\"");
-		Rule rule = globalRules.getRules().get(contexe).get(idrule);
+		getTree().getRoot().generateRulesAndIdExpression("0",getTree());
+		Expression expression = getTree().getIds(exprid);
+		Rule rule = getTree().getRuleByidsAndContext(exprid,idrule,contexe);
 		getTree().applicRule(expression, rule);
 	}
 
@@ -118,118 +109,6 @@ public class Session {
 			trees.remove(i);
 	}
 
-	/**
-	 * A default formula
-	 * @return
-	 */
-	private Expression defaultFormula(){
-		PrimaryExpression expr_A = new PrimaryExpression("LITTERAL", "a");
-		PrimaryExpression expr_B = new PrimaryExpression("NOMBRE", "2");
-		PrimaryExpression expr_C = new PrimaryExpression("NOMBRE", "2");
-		PrimaryExpression expr_D = new PrimaryExpression("NOMBRE", "3");
-		BinaryExpression divide_A_B = new BinaryExpression("DIVIDE", expr_A.cloneExpression(), expr_B.cloneExpression());
-		UnaryExpression parenthese_A_plus_B = new UnaryExpression("PARENTHESIS", divide_A_B.cloneExpression());
-		BinaryExpression fois_AB_C = new BinaryExpression("FOIS", parenthese_A_plus_B.cloneExpression(), expr_C.cloneExpression());
-		BinaryExpression egal_ABC_D = new BinaryExpression("EGAL", fois_AB_C.cloneExpression(), expr_D.cloneExpression());
-		return egal_ABC_D;
-	}
-
-
-	/**
-	 * @param t
-	 */
-	public void setTree(KrakenTree t) {
-		trees.set(currentTree, t);
-	}
-
-	/**
-	 * @param id
-	 * @param expression
-	 */
-	public void addexpr(String id,Expression expression){
-		getTree().addIds(id, expression);
-	}
-
-	/**
-	 *  return the list of expressions in a string
-	 * @return
-	 */
-	public String getexpr(){
-		String temp ="[";
-		Set<String> listKeys=getTree().getKeyIds();
-		Iterator<String> iterator=listKeys.iterator();
-		if(iterator.hasNext()){
-			temp = temp+iterator.next();
-			while (iterator.hasNext()) {
-				temp = temp+","+iterator.next();
-			}
-		}
-		return temp+"]";
-	}
-
-	/**
-	 * @param exp
-	 * @param rule
-	 */
-	public void addrules(String exp,ArrayList<String> rule){
-		getTree().addRules(exp, rule);
-	}
-
-	/**
-	 * Generate all the rule can applique in a session
-	 * @param expression
-	 * @return
-	 */
-	public ArrayList<String> addrules(Expression expression){
-		List<Rule> liste;
-		ArrayList<String> res = new ArrayList<>();
-		Set<String> listKeys= globalRules.getRules().keySet();
-		Iterator<String> iterateur=listKeys.iterator();
-		while(iterateur.hasNext())
-		{
-			Object key= iterateur.next();
-			liste = globalRules.getRules().get(key);
-			for(int i = 0; i < liste.size(); i++){
-				if (liste.get(i).canApplic(expression)){
-					res.add("{\"text\": "+"\""+expression.generateExpression("") + " => "+liste.get(i).applic(expression).generateExpression("")+"\","+"\"ruleId\":"+i+",\"type\":"+"\""+key+"\"}");
-				}
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * return the list of rules in a string
-	 * @return
-	 */
-	public String getrules(){
-		String temp ="";
-		Set<String> listKeys= getTree().getKeyRules();
-		Iterator<String> iterateur=listKeys.iterator();
-		while(iterateur.hasNext())
-		{
-			String key= iterateur.next();
-			temp += "{"+key +":[";
-			ArrayList<String> liste = getTree().getRules(key);
-			if(liste.size() > 0)
-				temp += liste.get(0);;
-			for(int i = 1; i < liste.size(); i++){
-				temp += ","+liste.get(i);
-			}
-			if(iterateur.hasNext())
-				temp+="]},";
-			else
-				temp+="]}";
-		}
-		return temp+"]";
-	}
-
-	/**
-	 * Clear the expressions hashmap
-	 */
-	public void cleanexpr(){
-		getTree().cleanIds();
-	}
 
 	/**
 	 * return the expression representation
@@ -244,27 +123,8 @@ public class Session {
 		try {
 			RuleParser.readRules(new FileInputStream(new File(configPath + file)), config);
 		} catch (FileNotFoundException | libreDragon.ruleParser.ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public String getTimeline () {
-		String timeline = "";
-		for (int i = 0 ; i < trees.size() ; i++) {
-			String tmp = (String) trees.get(i).getRoot().generateSimpleExpression();
-			timeline += "{\"index\":" + i + ",";
-			timeline += "\"text\":\"$$" + tmp +"$$\"}";
-			if (i != trees.size() - 1)
-				timeline += ",";
-		}
-		timeline += "]}";
-
-		return timeline;
-	}
-
-	public int getCurrentTree () {
-		return currentTree;
 	}
 
 	public KrakenTree getStateFromTimeline (int index) {
@@ -272,7 +132,6 @@ public class Session {
 			System.out.println("null:" + index);
 			return null;
 		}
-
 		currentTree = index;
 		return trees.get(currentTree);
 	}

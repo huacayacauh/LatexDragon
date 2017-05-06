@@ -14,13 +14,20 @@ import javax.ws.rs.Produces;
 public class GameOver {
 	/**
 	 * Close the session if the client id exist in the data server
-	 * @param gameId 
+	 * @param gameId
 	 * @return
 	 */
 	@GET
 	@Path("/{gameid}")
 	@Produces()
 	public String closeGame(@PathParam("gameid") String gameId){
+		if (!Data.isIn(gameId)) {
+			Reponse reponse = new Reponse();
+	    String complementaryInfo, status;
+			status = "FAILURE";
+			complementaryInfo = "Session introuvable !";
+			return reponse.info(gameId, status, complementaryInfo);
+		}
 		Data.closeSession(gameId);
 		return "";
 	}

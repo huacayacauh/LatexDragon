@@ -33,20 +33,15 @@ public class PrimaryExpression implements Expression{
 	}
 
 	@Override
-	public void generateRulesAndIdExpression(String id,Session session) {
+	public void generateRulesAndIdExpression(String id, KrakenTree tree) {
 		this.id = id;
-		Configuration.graphic.generateRulesAndIdPrimaryExpression(this, type, name, id, session);
+		Configuration.graphic.generateRulesAndIdPrimaryExpression(this, type, name, id, tree);
 	}
 
 	@Override
 	public String generateExpression(String id) {
 		this.id = id;
 		return Configuration.graphic.generatePrimaryExpression(this, type, name, id);
-	}
-
-	@Override
-	public String generateSimpleExpression() {
-		return Configuration.graphic.generateSimplePrimaryExpression(this, type, name);
 	}
 
 	@Override

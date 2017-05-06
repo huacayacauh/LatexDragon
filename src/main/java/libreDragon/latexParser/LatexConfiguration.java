@@ -9,7 +9,7 @@ import libreDragon.model.BinaryExpression;
 import libreDragon.model.Expression;
 import libreDragon.model.Pair;
 import libreDragon.model.Rule;
-import libreDragon.api.Session;
+import libreDragon.model.KrakenTree;
 
 public class LatexConfiguration implements GraphicExpressionFactory {
 
@@ -40,13 +40,13 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	}
 
 	@Override
-	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id,Session session) {
+	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id,KrakenTree tree) {
 		BinaryExpression bexpression = (BinaryExpression) expression;
-		session.addexpr("\"exp"+id+"\"",expression);
-		session.addrules("\"exp"+id+"\"", session.addrules(bexpression));
+		tree.addIds("exp"+id,expression);
+		tree.addRules("exp"+id, tree.generateRules(bexpression));
 
-		bexpression.firstExpression().generateRulesAndIdExpression(id+"0",session);
-		bexpression.secondExpression().generateRulesAndIdExpression(id+"1",session);
+		bexpression.firstExpression().generateRulesAndIdExpression(id+"0",tree);
+		bexpression.secondExpression().generateRulesAndIdExpression(id+"1",tree);
 	}
 
 
@@ -58,10 +58,10 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	}
 
 	@Override
-	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id,Session session) {
-		session.addexpr("\"exp"+id+"\"",expression);
-		session.addrules("\"exp"+id+"\"", session.addrules(expression));
-		sub.generateRulesAndIdExpression(id+"0",session);
+	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id, KrakenTree tree) {
+		tree.addIds("exp"+id,expression);
+		tree.addRules("exp"+id, tree.generateRules(expression));
+		sub.generateRulesAndIdExpression(id+"0",tree);
 	}
 
 
@@ -71,30 +71,9 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	}
 
 	@Override
-	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id,Session session) {
-		session.addexpr("\"exp"+id+"\"",expression);
-		session.addrules("\"exp"+id+"\"", session.addrules(expression));
-	}
-
-	public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second) {
-		BinaryExpression bexpression = (BinaryExpression) expression;
-		String op;
-		String operator = getConfiguration(expression.getType()).getOperators().first;
-		if(operator.substring(1, operator.length()-1).compareTo("\\\\over")==0)
-			op ="/";
-		else
-			op = operator.substring(1, operator.length()-1);
-		return bexpression.firstExpression().generateSimpleExpression() +" "+ op +" "+bexpression.secondExpression().generateSimpleExpression();
-	}
-
-	public String generateSimpleUnaryExpression(Expression expression, String type, Expression sub) {
-		String firstOperator = getConfiguration(expression.getType()).getOperators().first;
-		String secondOperator = getConfiguration(expression.getType()).getOperators().second;
-		return firstOperator.substring(1, firstOperator.length()-1)  +" "+ sub.generateSimpleExpression() +" "+ secondOperator.substring(1, secondOperator.length()-1);
-	}
-
-	public String generateSimplePrimaryExpression(Expression expression, String type, String name) {
-		return name;
+	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, KrakenTree tree) {
+		tree.addIds("exp"+id,expression);
+		tree.addRules("exp"+id, tree.generateRules(expression));
 	}
 
 	@Override
