@@ -29,7 +29,7 @@ public class GameState {
 	public String returnstate (@PathParam("gameid") String gameId) {
 		Reponse reponse = new Reponse();
 		String complementaryInfo, status;
-		if (Data.isIn(gameId)) {
+		if (!Data.isIn(gameId)) {
 			status = "FAILURE";
 			complementaryInfo = "Session introuvable !";
 			return reponse.info(gameId, status, complementaryInfo);
