@@ -6,6 +6,7 @@ import java.util.HashMap;
 import libreDragon.latexParser.LatexConfiguration;
 import libreDragon.model.Configuration;
 import libreDragon.model.Expression;
+import libreDragon.model.Pair;
 import libreDragon.model.RulesConfiguration;
 
 import java.io.BufferedReader;
@@ -26,9 +27,17 @@ import java.nio.charset.StandardCharsets;
  *
  */
 public class Data {
+	private static boolean init = false;
 	private static LatexConfiguration config = null;
 	private static HashMap<String, Session> sessions = new HashMap<>();
-	private static ArrayList<Expression> expressionJouable = new ArrayList();
+	private static ArrayList<Pair<Expression,Expression>> expressionJouable = new ArrayList();
+
+	public static void initialize(){
+		config = new LatexConfiguration();
+		Configuration.init(config);
+		readExpressions();
+		init = true;
+	}
 
 	/**
 	 * This function add a new session and init configuration
@@ -37,10 +46,8 @@ public class Data {
 	 */
 	public static String addSession(Boolean customRules, int indice){
 		Session session;
-		if(config == null){
-			config = new LatexConfiguration();
-			Configuration.init(config);
-			readExpressions();
+		if(!init){
+			initialize();
 		}
 		session = new Session(customRules, indice);
 		sessions.put(session.gameId.toString(), session);
@@ -48,13 +55,28 @@ public class Data {
 	}
 
 	public static int getNbExpressions(){
+		if(!init){
+			initialize();
+		}
 		return expressionJouable.size();
 	}
 
 	public static Expression getExpression(int i){
+		if(!init){
+			initialize();
+		}
 		if(i < expressionJouable.size())
-			return expressionJouable.get(i);
-		return expressionJouable.get(0);
+			return expressionJouable.get(i).first;
+		return expressionJouable.get(0).first;
+	}
+
+	public static Expression getExpressionVictory(int i){
+		if(!init){
+			initialize();
+		}
+		if(i < expressionJouable.size())
+			return expressionJouable.get(i).second;
+		return expressionJouable.get(0).second;
 	}
 
 	/**
@@ -71,6 +93,9 @@ public class Data {
 	 * @return the session
 	 */
 	public static Session getSession(String id){
+		if(!init){
+			initialize();
+		}
 		return sessions.get(id);
 	}
 
@@ -80,6 +105,9 @@ public class Data {
 	 * @return True if contain session id
 	 */
 	public static boolean isIn(String id){
+		if(!init){
+			initialize();
+		}
 		return sessions.containsKey(id);
 	}
 
@@ -87,17 +115,25 @@ public class Data {
 	 * @return
 	 */
 	public static LatexConfiguration getConfig() {
+		if(!init){
+			initialize();
+		}
 		return config;
 	}
 
-	public static ArrayList<Expression> getExpressionsList(){
+	public static ArrayList<Pair<Expression,Expression>> getExpressionsList(){
+		if(!init){
+			initialize();
+		}
 		return expressionJouable;
 	}
 
 	private static void readExpressions(){
+		ArrayList<Pair<Expression,Expression>> liste = new ArrayList();
 		String configPath = "config";
 		BufferedReader lecteurAvecBuffer = null;
-		String ligne;
+		String ligne,expression,resultat;
+		int i;
 		try {
 			lecteurAvecBuffer = new BufferedReader(new FileReader(configPath + "/formula.cfg"));
 		}
@@ -106,9 +142,16 @@ public class Data {
 		}
 		try {
 			while ((ligne = lecteurAvecBuffer.readLine()) != null){
+				i = 0;
+				while (i+2 < ligne.length() && ligne.substring(i,i+2).compareTo("=>") != 0){
+					i++;
+				}
+				expression = ligne.substring(0, i-1);
+				resultat = ligne.substring(i+2);
 				try {
-					InputStream stream = new ByteArrayInputStream(ligne.getBytes(StandardCharsets.UTF_8));
-					expressionJouable.add(RuleParser.readExpression(stream));
+					InputStream expInitial = new ByteArrayInputStream(expression.getBytes(StandardCharsets.UTF_8));
+					InputStream expFinal = new ByteArrayInputStream(resultat.getBytes(StandardCharsets.UTF_8));
+					expressionJouable.add(new Pair (RuleParser.readExpression(expInitial),RuleParser.readExpression(expFinal)));
 				} catch (libreDragon.ruleParser.ParseException e) {
 					e.printStackTrace();
 				}

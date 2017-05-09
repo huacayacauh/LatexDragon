@@ -49,15 +49,15 @@ public class PrimaryExpression implements Expression{
 		if( ! (expression instanceof PrimaryExpression) ) return false;
 
 		PrimaryExpression primary_expression = (PrimaryExpression) expression;
-		if( primary_expression.getType() != getType() ) return false;
-		if( primary_expression.getName() != getName() ) return false;
+		if( primary_expression.getType().compareTo(getType()) != 0 ) return false;
+		if( primary_expression.getName().compareTo(getName()) != 0 ) return false;
 
 		return true;
 	}
 
 	@Override
 	public boolean doesMatchModel(Expression model) {
-		if( model instanceof PrimaryExpression && model.getType() == general_expression_type ) return true;
+		if( model instanceof PrimaryExpression && model.getType().compareTo(general_expression_type) == 0 ) return true;
 		if( ! (model instanceof PrimaryExpression) ) return false;
 		if( ! (model.getType() == getType()) ) return false;
 

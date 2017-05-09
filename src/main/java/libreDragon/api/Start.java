@@ -26,18 +26,19 @@ public class Start {
 	@Produces()
 	public String connection (@PathParam("mode") String mode, @PathParam("gameid") String gameid, @PathParam("formulaid") String formulaId, @PathParam("reglecustom") Boolean regleCustom) {
 		Reponse reponse = new Reponse();
-		String status,complementaryInfo;
+		String status,complementaryInfo, gameStatus = "RUNNING";
 		if(!Data.isIn(gameid))
 				try{
 					if(formulaId != null && Integer.valueOf(formulaId) >= 0 && Integer.valueOf(formulaId) < Data.getNbExpressions())
 						gameid = Data.addSession(regleCustom,Integer.valueOf(formulaId));
+					else
+						gameid = Data.addSession(regleCustom,0);
 				}
 				catch(NumberFormatException e){
 					status = "FAILURE";
+					gameStatus = "RUNNING";
 					complementaryInfo = "L'Id de la formule doit être un entier.";
 				}
-			else
-				gameid = Data.addSession(regleCustom,0);
 		if (gameid == null) {
 			status = "FAILURE";
 			complementaryInfo = "Couldn't create a new session, server might be full.";
@@ -45,10 +46,11 @@ public class Start {
 		else {
 			status = "SUCCESS";
 			complementaryInfo = "New session created with id : " + gameid + ".";
+			System.out.println("Start "+gameid+" Expr : "+Data.getSession(gameid).getTree().getRoot().getExpr());
 		}
-		System.out.println("Start "+gameid+" Expr : "+Data.getSession(gameid).getTree().getRoot().getExpr());
 
-		return reponse.info(gameid, status, complementaryInfo);
+
+		return reponse.info(gameid, status, gameStatus, complementaryInfo);
 
 		}
 }

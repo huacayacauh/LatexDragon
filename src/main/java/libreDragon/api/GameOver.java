@@ -23,10 +23,11 @@ public class GameOver {
 	public String closeGame(@PathParam("gameid") String gameId){
 		if (!Data.isIn(gameId)) {
 			Reponse reponse = new Reponse();
-	    String complementaryInfo, status;
+	    String complementaryInfo, status, gameStatus;
 			status = "FAILURE";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Session introuvable !";
-			return reponse.info(gameId, status, complementaryInfo);
+			return reponse.info(gameId, status, gameStatus, complementaryInfo);
 		}
 		Data.closeSession(gameId);
 		return "";

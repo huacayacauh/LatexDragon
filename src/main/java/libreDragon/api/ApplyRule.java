@@ -25,21 +25,24 @@ public class ApplyRule {
 	@Produces()
 	public String answer (@PathParam("gameid") String gameId, @PathParam("exprid") String expId, @PathParam("ruleid") String ruleId, @PathParam("contexid") String context) {
 		Reponse reponse = new Reponse();
-		String complementaryInfo, status;
+		String complementaryInfo, status, gameStatus;
 		if (!Data.isIn(gameId)) {
 			status = "FAILURE";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Session introuvable !";
-			return reponse.info(gameId, status, complementaryInfo);
+			return reponse.info(gameId, status, gameStatus, complementaryInfo);
 		}
 		else if(!Data.getSession(gameId).getTree().idIsIn(expId)){
 			status = "FAILURE";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Id de l'expression introuvable !";
-			return reponse.info(gameId, status, complementaryInfo);
+			return reponse.info(gameId, status, gameStatus, complementaryInfo);
 		}
 		else if(!Data.getSession(gameId).getTree().ruleIsIn(expId,Integer.valueOf(ruleId),context)){
 			status = "FAILURE";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Id de la règle introuvable !";
-			return reponse.info(gameId, status, complementaryInfo);
+			return reponse.info(gameId, status, gameStatus, complementaryInfo);
 		}
 
 

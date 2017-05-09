@@ -77,6 +77,7 @@ public class Session {
 			readRules(globalRules,"/customRules.cfg");
 		trees.add(new KrakenTree(globalRules));
 		trees.get(currentTree).setRoot(Data.getExpression(indice));
+		trees.get(currentTree).setVictory(Data.getExpressionVictory(indice));
 	}
 
 	public void createTheorem (int start, int end) {

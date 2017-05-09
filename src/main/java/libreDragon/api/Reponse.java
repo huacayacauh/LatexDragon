@@ -87,12 +87,12 @@ public class Reponse {
 		return temp+"]";
 	}
 
-	public String generateJsonExpressionList(ArrayList<Expression> list){
+	public String generateJsonExpressionList(ArrayList<Pair<Expression,Expression>> list){
 		String temp ="[";
 		if(list.size() > 0)
-			temp += ("\"$$"+ list.get(0).generateExpression("")+"$$\"");
+			temp += ("\"$$"+ list.get(0).first.generateExpression("")+"$$\"");
 		for(int i = 1; i < list.size(); i++){
-			temp += ",\"$$" + list.get(i).generateExpression("") +"$$\"";
+			temp += ",\"$$" + list.get(i).first.generateExpression("") +"$$\"";
 		}
 		return temp+"]";
 	}
@@ -117,6 +117,9 @@ public class Reponse {
 	 * @return
 	 */
   public String formula (String gameId, String mode, int index) {
+		if(	Data.getSession(gameId).getTree().victoryTest()){
+			return info(gameId,"SUCCESS","END","Victoire !");
+		}
 		Data.getSession(gameId).getTree().cleanIds();
 		Data.getSession(gameId).getTree().cleanRules();
 		KrakenTree tree;
@@ -140,6 +143,7 @@ public class Reponse {
 		int current = Data.getSession(gameId).getCurrentTree();
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
+				+ "\"status\": \"" + "SUCCESS" + "\","
 				+ "\"ids\":"+ids+","
 				+ "\"rules\":["+list+","
 				+ "\"timeline\":{"
@@ -155,22 +159,24 @@ public class Reponse {
 	 * @param complementaryInfo
 	 * @return
 	 */
-	public String info (String playerId, String status, String complementaryInfo) {
+	public String info (String playerId, String status, String gameStatus, String complementaryInfo) {
 
 		return "{ \"id\": \"" + playerId + "\","
 				+ "\"status\": \"" + status + "\","
+				+ "\"gameStatus\": \"" + gameStatus + "\","
 				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}
 
 	public String rulesList (String gameId) {
 		return "{"
+			+ "\"status\": \"" + "SUCCESS" + "\","
 			+	"\"rules\":[" + generateJsonRulesList(Data.getSession(gameId).getTree())
 			+ "}";
 	}
 
 	public String expressionList () {
 		return "{"
-			+	"\"expression\":[" + generateJsonExpressionList(Data.getExpressionsList())
+			+	"\"expression\":" + generateJsonExpressionList(Data.getExpressionsList())
 			+ "}";
 	}
 }

@@ -21,6 +21,7 @@ import libreDragon.latexParser.GraphicExpressionFactory;
  */
 public class KrakenTree {
 	private Expression root;
+	private Expression victory;
 	private HashMap<String, Expression> ids = new HashMap<>();
 	private HashMap<String,ArrayList<Pair<Rule,String>>> rules = new HashMap<>();
 	public RulesConfiguration globalRules;
@@ -94,6 +95,10 @@ public class KrakenTree {
 	public void setRoot(Expression root) {
 		this.root = root;
 		root.setFather(null);
+	}
+
+	public void setVictory(Expression victory){
+		this.victory = victory;
 	}
 
 	/**
@@ -229,6 +234,7 @@ public class KrakenTree {
 	public KrakenTree cloneKrakenTree () {
 		KrakenTree clone = new KrakenTree(globalRules);
 		clone.setRoot(this.root.cloneExpression());
+		clone.setVictory(this.victory.cloneExpression());
 		return clone;
 	}
 
@@ -257,6 +263,10 @@ public class KrakenTree {
 
 	public void addRule(String input_type, Expression input_model, Expression output_model){
 		globalRules.addRule(input_type,new Rule(input_model, output_model));
+	}
+
+	public boolean victoryTest(){
+		return root.compare(victory);
 	}
 
 }

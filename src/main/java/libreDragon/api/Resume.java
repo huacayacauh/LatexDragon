@@ -19,15 +19,17 @@ public class Resume {
 	@Produces()
 	public String answer (@PathParam("gameid") String gameId) {
 		Reponse reponse = new Reponse();
-		String complementaryInfo, status;
+		String complementaryInfo, status, gameStatus;
 		if (!Data.isIn(gameId)) {
 			status = "FAILURE";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Session non trouvée, impossible de reprendre la partie !";
 		}
 		else {
 			status = "SUCCESS";
+			gameStatus = "RUNNING";
 			complementaryInfo = "Session trouvée, possibilité de reprendre la partie : " + gameId + ".";
 		}
-		return reponse.info(gameId, status, complementaryInfo);
+		return reponse.info(gameId, status, gameStatus, complementaryInfo);
 	}
 }
