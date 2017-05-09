@@ -117,8 +117,9 @@ public class Reponse {
 	 * @return
 	 */
   public String formula (String gameId, String mode, int index) {
+		String gameStatus = "RUNNING";
 		if(	Data.getSession(gameId).getTree().victoryTest()){
-			return info(gameId,"SUCCESS","END","Victoire !");
+			gameStatus = "END";
 		}
 		Data.getSession(gameId).getTree().cleanIds();
 		Data.getSession(gameId).getTree().cleanRules();
@@ -144,6 +145,7 @@ public class Reponse {
 		return 	"{"
 				+ "\"math\": \"$$"+math+"$$\","
 				+ "\"status\": \"" + "SUCCESS" + "\","
+				+ "\"gameStatus\": \"" + gameStatus + "\","
 				+ "\"ids\":"+ids+","
 				+ "\"rules\":["+list+","
 				+ "\"timeline\":{"
@@ -159,11 +161,10 @@ public class Reponse {
 	 * @param complementaryInfo
 	 * @return
 	 */
-	public String info (String playerId, String status, String gameStatus, String complementaryInfo) {
+	public String info (String playerId, String status, String complementaryInfo) {
 
 		return "{ \"id\": \"" + playerId + "\","
 				+ "\"status\": \"" + status + "\","
-				+ "\"gameStatus\": \"" + gameStatus + "\","
 				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}
 
