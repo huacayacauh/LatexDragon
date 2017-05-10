@@ -1,4 +1,5 @@
 libreDragon.api
+libreDragon.generateRuleParser
 libreDragon.latexParser
 libreDragon.model
 libreDragon.ruleParser

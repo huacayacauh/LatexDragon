@@ -1,4 +1,5 @@
-package generateRuleParser;
+package libreDragon.generateRuleParser;
+
 public class SpecificationUnaire implements Specification {
 
 	String name;

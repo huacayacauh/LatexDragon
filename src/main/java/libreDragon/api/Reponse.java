@@ -16,13 +16,22 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Class use to create a answer to the client
+ * Cette classe a pour rôle de créer des objet JSON au bon format afin de permettre
+ * la communication de données client / serveur.
  * @author malo
  *
  */
 @XmlRootElement
 public class Reponse {
 
+	/**
+	 * Cette fonction génère le champs rules de l'objet JSON formula.
+	 * Ce champs est composer d'une liste de couple : id d'une expression
+	 * et liste d'id de règles applicables sur cette expression.
+	 * @param tree KrakenTree contenant la formule l'id de ses expression
+	 * et des règles applicables sur celles-ci.
+	 * @return String
+	 */
 	private String generateJsonRules(KrakenTree tree){
 		String temp ="";
 		Expression exp = null;
@@ -48,6 +57,13 @@ public class Reponse {
 		return temp+"]";
 	}
 
+	/**
+	 * Cette fonction génère le champs rules de l'objet JSON rulesList.
+	 * Ce champs est composer d'une liste de règles : le modèle d'entrée
+	 * et le modèle de sortie, le tout au format mathJax.
+	 * @param tree KrakenTree contenant les règles de la session de jeu.
+	 * @return String
+	 */
 	public String generateJsonRulesList(KrakenTree tree){
 		String temp ="";
 		Set<String> listKeys = tree.globalRules.getRules().keySet();
@@ -71,8 +87,11 @@ public class Reponse {
 	}
 
 	/**
-	 *  return the list of expressions in a string
-	 * @return
+	 * Cette fonction génère le champs ids de l'objet JSON formula.
+	 * Ce champs est composer de la liste de d'id des expression de
+	 * la formule courante.
+	 * @param tree KrakenTree contenant la formule courante et les id de ses expression.
+	 * @return String
 	 */
 	public String generateJsonId(KrakenTree tree){
 		String temp ="[";
@@ -87,6 +106,12 @@ public class Reponse {
 		return temp+"]";
 	}
 
+	/**
+	 * Cette fonction génère le champs expression de l'objet JSON expressionList.
+	 * Ce champs est composer de la liste de d'expressions jouables au format mathJax.
+	 * @param tree KrakenTree contenant la formule courante et les id de ses expression.
+	 * @return String
+	 */
 	public String generateJsonExpressionList(ArrayList<Pair<Expression,Expression>> list){
 		String temp ="[";
 		if(list.size() > 0)
@@ -97,6 +122,14 @@ public class Reponse {
 		return temp+"]";
 	}
 
+	/**
+	 * Cette fonction génère le champs timeline de l'objet JSON formula.
+	 * Ce champs est composer de la liste de de formule au format mathJax
+	 * correspondant à l'historique des transformations de la formule courante.
+	 * @param tree KrakenTree contenant l'historique des transformation de la
+	 * formule courante.
+	 * @return String
+	 */
 	public String getJsonTimeline (ArrayList<KrakenTree> trees) {
 		String timeline = "";
 		for (int i = 0 ; i < trees.size() ; i++) {
@@ -112,14 +145,23 @@ public class Reponse {
 
 
 	/**
-	 * return a JSON implementation of the formula and the rules we can applique
-	 * @param gameId
-	 * @return
+	 * Cette fonction génère l'objet JSON formula.
+	 * Cet objet est composé du champs
+	 * 	- math : la formule sous format mathJax
+	 * 	- status : si la requête réussi ou non
+	 * 	- gameStatus : statut du jeu
+	 * 	- ids : id des expression de la formule contenue dans mathJax
+	 * 	- rules : id des règle applicable sur les expression de la formule
+	 * 	- timeline : historique des transformations de la formule courante
+	 * @param gameId : id de la session de jeu.
+	 * @param mode : suivant précedent ou rien.
+	 * @param index : indice dans l'historique des transformations.
+	 * @return String
 	 */
   public String formula (String gameId, String mode, int index) {
 		String gameStatus = "RUNNING";
 		if(	Data.getSession(gameId).getTree().victoryTest()){
-			gameStatus = "END";
+			gameStatus = "VICTORY";
 		}
 		Data.getSession(gameId).getTree().cleanIds();
 		Data.getSession(gameId).getTree().cleanRules();
@@ -155,11 +197,9 @@ public class Reponse {
 	}
 
 	/**
-	 * return a JSON implementation of the connection state
-	 * @param newPlayerId
-	 * @param status
-	 * @param complementaryInfo
-	 * @return
+	 * Cette fonction génère l'objet JSON info.
+	 * Permet d'envoyer des information au client comme des message d'erreur.
+	 * @return String
 	 */
 	public String info (String playerId, String status, String complementaryInfo) {
 
@@ -168,6 +208,13 @@ public class Reponse {
 				+ "\"complementaryInfo\": \"" + complementaryInfo + "\"}";
 	}
 
+	/**
+	 * Cette fonction génère l'objet JSON rulesList.
+	 * Permet d'envoyer la liste de toutes les règles de la session
+	 * ayant comme id gameId au client.
+	 * @param id de la session de jeu.
+	 * @return String
+	 */
 	public String rulesList (String gameId) {
 		return "{"
 			+ "\"status\": \"" + "SUCCESS" + "\","
@@ -175,8 +222,15 @@ public class Reponse {
 			+ "}";
 	}
 
+	/**
+	 * Cette fonction génère l'objet JSON expressionList.
+	 * Permet d'envoyer la liste de toutes les expressions jouables au client.
+	 * @param id de la session de jeu.
+	 * @return String
+	 */
 	public String expressionList () {
 		return "{"
+			+ "\"status\": \"" + "SUCCESS" + "\","
 			+	"\"expression\":" + generateJsonExpressionList(Data.getExpressionsList())
 			+ "}";
 	}

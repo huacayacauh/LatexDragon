@@ -16,33 +16,45 @@ import libreDragon.model.KrakenTree;
 public interface GraphicExpressionFactory {
 
 	/**
-	 * G�n�re un objet graphique.
-	 * @param expression : l'expression binaire � traduire
+	 * Génère les ids des expression et les règles applicables sur celles-ci.
+	 * @param expression : l'expression binaire à traduire
 	 * @param type : Son type
 	 * @param first : l'objet graphique correspondant au premier sous noeud
 	 * @param second : l'objet graphique correspondant au second sous noeud
-	 * @return l'objet graphique utilisateur
+	 * @param id : L'id de l'expression
+	 * @param tree : l'objet contenant les id des règles et des expressions
 	 */
 	public void generateRulesAndIdBinaryExpression(Expression expression, String type, Expression first, Expression second, String id, KrakenTree tree);
 
 	/**
-	 * Génère un objet graphique.
+	 * Génère les ids des expression et les règles applicables sur celles-ci.
 	 * @param expression : l'expression unaire à traduire
 	 * @param type : Son type
 	 * @param sub : l'objet graphique correspondant au sous noeud
-	 * @return l'objet graphique utilisateur
+	 * @param id : L'id de l'expression
+	 * @param tree : l'objet contenant les id des règles et des expressions
 	 */
 	public void generateRulesAndIdUnaryExpression(Expression expression, String type, Expression sub, String id, KrakenTree tree);
 
 	/**
-	 * Génère un objet graphique.
+	 * Génère les ids des expression et les règles applicables sur celles-ci.
 	 * @param expression : l'expression primaire à traduire
 	 * @param type : Son type
 	 * @param name : Le nom de l'instance de l'objet primaire
-	 * @return l'objet graphique utilisateur
+	 * @param id : L'id de l'expression
+	 * @param tree : l'objet contenant les id des règles et des expressions
 	 */
 	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, KrakenTree tree);
 
+	/**
+	 * Génère un objet graphique.
+	 * @param expression : l'expression binaire à traduire
+	 * @param type : Son type
+	 * @param first : l'objet graphique correspondant au premier sous noeud
+	 * @param second : l'objet graphique correspondant au second sous noeud
+	 * @param id : L'id de l'expression
+	 * @return l'objet graphique utilisateur
+	 */
 	public String generateBinaryExpression(Expression expression, String type, Expression first, Expression second, String id);
 
 	/**
@@ -50,6 +62,7 @@ public interface GraphicExpressionFactory {
 	 * @param expression : l'expression unaire à traduire
 	 * @param type : Son type
 	 * @param sub : l'objet graphique correspondant au sous noeud
+	 * @param id : L'id de l'expression
 	 * @return l'objet graphique utilisateur
 	 */
 	public String generateUnaryExpression(Expression expression, String type, Expression sub, String id);
@@ -59,6 +72,7 @@ public interface GraphicExpressionFactory {
 	 * @param expression : l'expression primaire à traduire
 	 * @param type : Son type
 	 * @param name : Le nom de l'instance de l'objet primaire
+	 * @param id : L'id de l'expression
 	 * @return l'objet graphique utilisateur
 	 */
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id);

@@ -52,7 +52,7 @@ sourceSets {
 
 
 task generateRuleParserGrammar (dependsOn: [callCL, modelInitClasses], type: JavaExec) {
-    main = 'generateRuleParser.Main'
+    main = 'libreDragon.generateRuleParser.Main'
     classpath = sourceSets.modelInit.runtimeClasspath
     args = [ "$configPath/operators.cfg", "$buildDir/RPgrammar.jj" ]
 }

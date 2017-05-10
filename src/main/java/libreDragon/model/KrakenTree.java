@@ -29,8 +29,8 @@ public class KrakenTree {
 	 * Ce constructeur initialise la librairie en utilisant la factory utilisateur.
 	 * Cette factory permet de faire le lein entre le support physique et l'interface
 	 * graphique développée indépendament.
-	 * @param factory : la factory utilisateur
-	 * @see view.GraphicExpressionFactory
+	 * @param config : la factory utilisateur
+	 * @see RulesConfiguration
 	 */
 
 	public KrakenTree(RulesConfiguration config) {

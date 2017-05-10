@@ -11,18 +11,18 @@ import java.util.Map;
 public class Memory {
 
 	Map<String, Expression> reductions;
-	
+
 	public Memory() {
 		reductions = new HashMap<String, Expression>();
 	}
-	
+
 	/**
 	 * Renvoit s'il est possible d'enregistrer l'expression généraliste name
 	 * à la valeur expression.
 	 * Quand on applique 1 + 2 au modèle A + A,
 	 * On enregistre A à 1
-	 * puis A à 2 -> ce qui génère une erreur.
-	 * 
+	 * puis A à 2 : ce qui génère une erreur.
+	 *
 	 * Cependant s'il y avait 1 à la place de 2, le processus ne poserait pas de problème.
 	 * @param name : le nom de l'expression généraliste
 	 * @param expression : le nom de l'expression à réduire
@@ -32,7 +32,7 @@ public class Memory {
 		if( ! reductions.containsKey(name) ) return true;
 		else return reductions.get(name).compare(expression);
 	}
-	
+
 	/**
 	 * Enregistre une certaine expression généraliste à une valeur.
 	 * Ne fonctionnement seulement si une valeur n'est pas déjà affectée.
@@ -43,7 +43,7 @@ public class Memory {
 		if( reductions.containsKey(name) ) return;
 		reductions.put(name, expression);
 	}
-	
+
 	/**
 	 * Renvoit si l'expression généraliste name est déjà enregistrée.
 	 * @param name : le nom de l'expression généraliste
@@ -52,7 +52,7 @@ public class Memory {
 	private boolean exists(String name) {
 		return reductions.containsKey(name);
 	}
-	
+
 	/**
 	 * Renvoie l'expression réduite correspodant au terme généralisant name.
 	 * @param name : le nom de l'expression généraliste
@@ -61,7 +61,7 @@ public class Memory {
 	private Expression get(String name) {
 		return reductions.get(name);
 	}
-	
+
 	/**
 	 * Explore récursivement le noeud binaire en argument.
 	 * Appelle explore sur les deux sous noeuds.
@@ -72,15 +72,15 @@ public class Memory {
 	private boolean exploreBinary(Expression input_model, Expression input) {
 		BinaryExpression bi_input_model = (BinaryExpression) input_model;
 		BinaryExpression bi_input	    = (BinaryExpression) 	   input;
-		
+
 		if( ! explore(bi_input_model.firstExpression(),
 							bi_input.firstExpression()) ) return false;
 		if( ! explore(bi_input_model.secondExpression(),
 							bi_input.secondExpression()) ) return false;
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Explore récursivement le noeud unaire en argument.
 	 * Appelle explore sur le sous noeud.
@@ -94,10 +94,10 @@ public class Memory {
 
 		if( ! explore(un_input_model.subExpression(),
 							un_input.subExpression()) ) return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Explore le noeud primaire en argument.
 	 * Si le noeud primaire est une expression généraliste, on essaye d'enregistrer
@@ -113,10 +113,10 @@ public class Memory {
 			if( ! canRegister(pr_input_model.getName(), input) ) return false;
 			register(pr_input_model.getName(), input);
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Explore l'arbre input_model en enregistrant tout les sous arbres de input
 	 * qui correspondent à des noeuds primaires généralistes.
@@ -146,7 +146,7 @@ public class Memory {
 	public boolean init(Expression input_model, Expression input) {
 		return explore(input_model, input);
 	}
-	
+
 	/**
 	 * Processus permettant de transformer récursivement toutes les expression généralistes
 	 * à leur équivalent dans la mémoire.
@@ -155,14 +155,14 @@ public class Memory {
 	 */
 	private Expression fillBinary(Expression input) {
 		BinaryExpression bi_input = (BinaryExpression) input;
-		
+
 		bi_input.setFirstExpression (  fill(bi_input.firstExpression()) );
 		bi_input.setSecondExpression( fill(bi_input.secondExpression()) );
-		
+
 		return bi_input;
 	}
 
-	
+
 	/**
 	 * Processus permettant de transformer récursivement toutes les expression généralistes
 	 * à leur équivalent dans la mémoire.
@@ -173,10 +173,10 @@ public class Memory {
 		UnaryExpression un_input = (UnaryExpression) input;
 
 		un_input.setSubExpression( fill(un_input.subExpression()) );
-		
+
 		return un_input;
 	}
-	
+
 	/**
 	 * Processus permettant de transformer récursivement toutes les expression généralistes
 	 * à leur équivalent dans la mémoire.
@@ -189,11 +189,11 @@ public class Memory {
 		if( pr_input.getType() == PrimaryExpression.general_expression_type )
 			if( exists( pr_input.getName() ) )
 				return get(pr_input.getName()).cloneExpression();
-		
+
 		return input;
 	}
 
-	
+
 	/**
 	 * Processus permettant de transformer récursivement toutes les expression généralistes
 	 * à leur équivalent dans la mémoire.
@@ -209,7 +209,7 @@ public class Memory {
 		else
 			return fillPrimary(input);
 	}
-	
+
 	/**
 	 * Cette fonction permet d'appliquer la mémoire à un résultat de règle.
 	 * La fonction copie le résultat de manière à ce que l'arbre obtenu soit bien

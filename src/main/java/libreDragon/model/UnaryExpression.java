@@ -113,10 +113,6 @@ public class UnaryExpression implements Expression {
 		return this.id;
 	}
 
-	public int getSize(){
-		return sub_expression.getSize()+1;
-	}
-
 	public String getExpr(){
 		return "( "+ sub_expression.getExpr() +" )";
 	}

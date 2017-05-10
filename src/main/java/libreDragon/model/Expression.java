@@ -10,7 +10,7 @@ import libreDragon.api.Session;
  * @author Pacôme
  */
 public interface Expression {
-	int getSize();
+
 	String getExpr();
 	/**
 	 * Cette fonction génère l'équivalent graphique du noeud.
@@ -20,6 +20,11 @@ public interface Expression {
 	 */
 	Object generateExpression(String id);
 
+	/**
+	 * Cette fonction génère les ids des expressions et des règles.
+	 * @param id : id de l'expression
+	 * @param tree : l'objet contenant les id des règles et des expressions
+	 */
 	void generateRulesAndIdExpression(String id,KrakenTree tree);
 
 	/**

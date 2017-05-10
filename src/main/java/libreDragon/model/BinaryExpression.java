@@ -158,10 +158,6 @@ public class BinaryExpression implements Expression {
 		return this.id;
 	}
 
-	public int getSize(){
-		return first_expression.getSize() + second_expression.getSize()+1;
-	}
-
 	@Override
 	public String getExpr() {
 		return first_expression.getExpr() +" "+ Operator.convert(type)  +" "+  second_expression.getExpr();

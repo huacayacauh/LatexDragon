@@ -22,7 +22,7 @@ public class ApplyRule {
 	 * @param gameId session id
 	 * @param expId expression id
 	 * @param ruleId rule id
-	 * @param context if it's a drag and drop rule or a context menu rule
+	 * @param context contexte d'application de la règle le plus souvent drag_and_drop ou contextMenu.
 	 * @return
 	 */
 	@GET
@@ -46,7 +46,7 @@ public class ApplyRule {
 		}
 
 		System.out.println("Game "+gameId);
-		Data.getSession(gameId).applicRule(expId,Integer.valueOf(ruleId),context);
-		return reponse.formula(gameId,"",-1);
+		Data.getSession(gameId).applicRule(expId,Integer.valueOf(ruleId),context); // on applique la règle
+		return reponse.formula(gameId,"",-1); // on renvoie la nouvelle formule
 		}
 }

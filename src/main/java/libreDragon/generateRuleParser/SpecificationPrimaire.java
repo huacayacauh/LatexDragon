@@ -1,4 +1,4 @@
-package generateRuleParser;
+package libreDragon.generateRuleParser;
 
 public class SpecificationPrimaire implements Specification {
 
