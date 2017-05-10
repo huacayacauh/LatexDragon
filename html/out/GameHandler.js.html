@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gameHandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gameHandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//TODO: sort out the mathId/gameId bullshit in the start request
+
+/**
+ * module containing all the function for handling the elements/event of the game tab
+ * @module gameHandler
+ */
+var self = module.exports = {
+  /**
+   * Set the events for the game tab.
+	 * Only the mouse clicks events are working right now.
+   */
+  setEvents: () => {
+		const mouseClickHandler = require('./mouseClickHandler')
+
+    mouseClickHandler.setEvents();
+    //DragNDropHandler.setEvents(obj);
+  },
+
+  /**
+   * Request used to start a new game, will ask the server to start a new game
+   * with the mathId formula.
+   * @param {String} mathId id of the formula the user want to play with
+   */
+  startNewGame: (mathId) => {
+		const instance = require('./Application')
+		const Request = require('./Request')
+
+    var request = Request.buildRequest("START", self.startNewGameResponse);
+
+    instance.formulaId = mathId;
+
+    request.send("/" + mathId);
+  },
+
+  /**
+   * Response of the startNewGame request.
+   * Will display an error message if the server can't create a new game.
+   * If it's a success it will register the game ID and send a request to get the
+   * game state.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  startNewGameResponse: (response, status) => {
+		const instance = require('./Application')
+		const Request = require('./Request')
+
+    //Request error
+    if (status != "success")
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+
+    var obj = JSON.parse(response.responseText);
+
+    //Server error
+    if (obj.status == "FAILURE")
+      instance.displayErrorNotification("#gameNotification", obj.complementaryInfo);
+
+    instance.gameId = obj.id;
+
+    var request = Request.buildRequest("GAMESTATE", self.gameStartResponse);
+    request.send("/" + obj.id);
+  },
+
+  /**
+   * Response of the request to get the game state after a new game is created.
+   * Will start a timer if it's enabled and delegate the processing of the response
+   * to gameUpdateMathResponse.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  gameStartResponse: (response, status) => {
+		const instance = require('./Application')
+
+    self.gameUpdateMathResponse(response, status);
+
+    //Stop timer
+    if (instance.countdown != null) {
+      instance.countdown.stopCountdown();
+      $("#gameTimer").html("");
+    }
+
+    //Start timer
+		const Countdown = require ('./Countdown')
+    instance.countdown = new Countdown (Countdown.minutesToMilliseconds(1), self.timerOnOver, self.timerOnUpdate);
+    instance.countdown.startCountdown();
+
+    //Hide start button
+    $(".jumbotron:visible").hide("fast");
+
+    //Show game tools
+    $("#tools").fadeIn(800);
+  },
+
+  /**
+   * Send a request to get the game state.
+   */
+	gameStateRequest: () => {
+		const Request = require('./Request')
+		var request = Request.buildRequest("GAMESTATE", self.gameUpdateMathResponse);
+		request.send();
+  },
+
+  /**
+   * Function that process the response from the server containing the formula state.
+   * Will throw an error if the request failed.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   * @throws if the request fail and the function receive a status diffrent than success.
+   */
+  gameUpdateMathResponse: (response, status) => {
+		const instance = require('./Application')
+
+    if (status == "success")
+      instance.json = JSON.parse(response.responseText);
+    else {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    //Set new math
+    $("#main-formule").text(instance.json.math).hide("fast");
+
+    //Call mathJax typeset and show the formule once it's done
+    self.typesetMath(() => {
+      $("#main-formule").show("fast");
+      //Set events
+      self.setEvents(instance.json);
+    });
+  },
+
+  /**
+   * Send a request to the server to apply a rule to the formula.
+   * Call gameUpdateMathResponse to process the response.
+   * @param {Event} event jQuery Event object
+   */
+  gameRuleRequest: (event) => {
+		const instance = require('./Application')
+		const Request = require('./Request')
+
+    event.stopPropagation();
+
+    var request = Request.buildRequest("APPLYRULE", self.gameUpdateMathResponse);
+    request.send("/" + instance.gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
+
+    if ($("#tooltip").is(":visible"))
+      $("#tooltip").hide(100);
+  },
+
+  /**
+   * Call mathJax to typeset any latex elements in the window.
+   * @param {function} callback fonction to call after the typeset is done
+   */
+  typesetMath: (callback) => {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
+    if (callback != undefined)
+      MathJax.Hub.Queue(callback);
+  },
+
+  /**
+   * Function handling the end of the countdown.
+   * When the countdown is over an OVER request is send to the server
+   * to signal the game is over.
+   * When the request is over call gameOverResponse to handle the end of the game
+   * clientside.
+   */
+  timerOnOver: () => {
+		const instance = require('./Application')
+		const Request = require('./Request')
+
+		//Clear timer text
+    $("#gameTimer").html("");
+
+    instance.displaySuccessNotification("#gameNotification", "Temps écouler, partie finie.");
+
+		//Delete timer
+    instance.countdown = null;
+
+    Request.buildRequest("OVER", self.gameOverResponse).send("/" + instance.gameId);
+  },
+
+  /**
+   * Function handling the end of the game clientside, restart the window by hiding
+   * the formula and the tools and then show the start button.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  gameOverResponse: (response, status) => {
+		const instance = require('./Application')
+
+    if (status != "success") {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    $("#tools").hide("slow");
+
+    $("#main-formule").hide("slow");
+
+    $(".jumbotron:hidden").show("slow");
+  },
+
+  /**
+   * Function handling the update of the countdown.
+   * Each time the countdown is updated the timer text element in the window is updated too.
+   * @param {Countdown} countdown countdown object
+   */
+  timerOnUpdate: (countdown) => {
+    $("#gameTimer").html($("&lt;h1>&lt;/h1>").text(countdown.toString()));
+  },
+
+  /**
+   * Function handling the restart button.
+   * Send an OVER request then send a START request using the default handler for
+   * those request.
+   */
+  restartGame: () => {
+		const instance = require('./Application')
+		const Request = require('./Request')
+
+    Request.buildRequest("OVER", self.startNewGame(instance.formulaId)).send("/" + instance.gameId);
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-mouseClickHandler.html">mouseClickHandler</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Mar 08 2017 15:31:01 GMT+0100 (Paris, Madrid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

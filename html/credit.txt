@@ -1,0 +1,6 @@
+electron
+jquery 3
+bootstrap 4
+font awesome
+animate.css
+tether (bootstrap tooltip)

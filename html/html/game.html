@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+		<div id="game-ui">
+			<div class="toolbar sidebar-container">
+				<ul class="nav nav-margin">
+					<li><button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Recommencer" onclick="require('./js/handlers/gameHandler').restartGame()"><i class="fa fa-undo" aria-hidden="true"></i></button></li>
+					<li><button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Précédent" onclick="require('./js/handlers/gameHandler').previousState()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button></li>
+					<li><button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Suivant" onclick="require('./js/handlers/gameHandler').nextState()"><i class="fa fa-chevron-right" aria-hidden="true"></i></button></li>
+					<li><button class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Règles" onclick="require('./js/handlers/gameHandler').toggleRulesList()"><i class="fa fa-book" aria-hidden="true"></i></button></li>
+				</ul>
+			</div>
+			<div class="row">
+				<!-- Main content -->
+				<div id="main-content" class="col-md-12 container-fluid">
+					<!-- Notification div -->
+					<div id="gameNotification">
+					</div>
+					<!-- Formule -->
+					<div id="main-formule">
+					</div>
+					<div id="tools">
+						<!-- Timer -->
+						<div id="gameTimer">
+						</div>
+					</div>
+				</div>
+				<!-- Timeline -->
+				<div id="timeline">
+					<div id="timeline-controls">
+						<select id="gameSelect" class="form-control"></select>
+						<a id="newGame" class="game-select-element btn-green" onclick="require('./js/Application').requestHtml('GAMEMODE')" data-toggle="tooltip" data-placement="right" title="Nouvelle partie"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+						<a id="deleteGame" class="game-select-element btn-red" onclick="require('./js/handlers/gameHandler').deleteGame()" data-toggle="tooltip" data-placement="right" title="Supprimer partie"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+						<a id="syncGame" class="game-select-element text-info" onclick="require('./js/handlers/gameHandler').synchronize()" data-toggle="tooltip" data-placement="right" title="Synchronizer"><i class="fa fa-refresh fa-2x" aria-hidden="true"></i></a>
+						<a id="hideTimeline" class="timeline-controls-button btn-red" onclick="require('./js/handlers/gameHandler').toggleTimeline()" data-toggle="tooltip" data-placement="left" title="Cacher"><i class="fa fa-chevron-down fa-2x" aria-hidden="true"></i></a>
+						<a id="showTimeline" class="timeline-controls-button btn-yellow" onclick="require('./js/handlers/gameHandler').toggleTimeline()" data-toggle="tooltip" data-placement="left" title="Afficher"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></a>
+						<a id="addTheorem" class="timeline-controls-button btn-green" onclick="require('./js/handlers/gameHandler').toggleCreateTheorem()" data-toggle="tooltip" data-placement="left" title="Créer un théorème"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+						<a id="validTheorem" class="timeline-controls-button btn-green" onclick="require('./js/handlers/gameHandler').validTheorem()" data-toggle="tooltip" data-placement="left" title="Confirmer"><i class="fa fa-check-square-o fa-2x" aria-hidden="true"></i></a>
+						<a id="cancelTheorem" class="timeline-controls-button btn-red" onclick="require('./js/handlers/gameHandler').toggleCreateTheorem()" data-toggle="tooltip" data-placement="left" title="Annuler"><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+					</div>
+					<div id="timeline-elements">
+					</div>
+				</div>
+				<!-- Rules list -->
+				<div id="rules-list">
+					<div id="rules-loader">
+						<h1 class="display-1 align-middle"><i class="fa fa-spinner fa-spin align-middle" aria-hidden="true"></i></h1>
+					</div>
+					<div id="rules-content">
+					</div>
+				</div>
+			</div>
+			<!-- Tooltip -->
+	    <div class="list-group" id="tooltip">
+	    </div>
+		</div>
+		<div id="game-something-went-wrong">
+		</div>
+  </body>
+</html>

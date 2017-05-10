@@ -8,11 +8,26 @@ var self = module.exports = {
 	 */
 	init: () => {
 		const instance = require('../Application')
-		const utils = require('../utils')
 
-		self.setAnimations()
+		if (!instance.serverStatus) {
+			$('#game-ui').hide()
+			$('#game-something-went-wrong').append('<h1 class="display-1">Serveur hors ligne <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></h1>').show()
+		}
+		else if (instance.gameState == null) {
+			$('#game-ui').hide()
+			$('#game-something-went-wrong').append('<h1 class="display-1">Synchronization en cours <i class="fa fa-refresh fa-spin"></i></h1>').show()
+		}
+		else {
+			self.onStart()
 
-		utils.typesetMath(instance.settings.applySettings)
+			self.setAnimations()
+		}
+	},
+
+	unload: () => {
+		const instance = require('../Application')
+		if (instance.gameState != null)
+			instance.gameState.stopCountdown()
 	},
 
   /**
@@ -22,8 +37,8 @@ var self = module.exports = {
   setEvents: () => {
 		const mouseEventHandler = require('./mouseEventHandler')
 
-    mouseEventHandler.setEvents();
-    //DragNDropHandler.setEvents(obj);
+    mouseEventHandler.setEvents()
+    //DragNDropHandler.setEvents(obj)
   },
 
 	setAnimations: () => {
@@ -31,7 +46,39 @@ var self = module.exports = {
 			$('#main-content').show().animateCss('slideInLeft', 0.3)
 			$('#timeline').show().animateCss('slideInUp', 0.3)
 		})
+	},
 
+	onStart: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+		const utils = require('../utils')
+
+		if (instance.gameState.getCurrent().gameId == undefined)
+			self.startNewGame()
+		else
+			Request.buildRequest('RESUME', self.canResume).send('/' + instance.gameState.getCurrent().gameId)
+
+		$('#gameSelect').html('')
+		$('#gameSelect').change(self.selectGameHandler)
+		for (var i in instance.gameState.array) {
+			if (i == instance.gameState.currentGame) {
+				$('#gameSelect').append('<option value="' + i + '" selected><div>' + instance.gameState.array[i].formulaLatex + '</div></option>')
+			}
+			else{
+				$('#gameSelect').append('<option value="' + i + '">' + instance.gameState.array[i].formulaLatex + '</option>')
+			}
+		}
+		utils.typesetMath(undefined, 'gameSelect')
+	},
+
+	canResume: (response, status) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		if (Request.checkError(response, status, '#gameNotification') === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
+
+		Request.buildRequest('GAMESTATE', self.gameStartResponse).send('/' + instance.gameState.getCurrent().gameId)
 	},
 
   /**
@@ -43,9 +90,9 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    var request = Request.buildRequest("START", self.startNewGameResponse);
+    var request = Request.buildRequest('START', self.startNewGameResponse)
 
-    request.send('/' + instance.gameState.mode + '/' + instance.gameState.ruleSet + '/' + instance.gameState.formulaId + '/' + instance.gameState.useTheorem);
+    request.send('/' + instance.gameState.getCurrent().mode + '/' + instance.gameState.getCurrent().ruleSet + '/' + instance.gameState.getCurrent().formulaId + '/' + instance.gameState.getCurrent().useTheorem)
   },
 
   /**
@@ -60,20 +107,14 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    //Request error
-    if (status != "success")
-      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+		var o = Request.checkError(response, status, '#gameNotification')
 
-    var obj = JSON.parse(response.responseText);
+		if (o === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
 
-    //Server error
-    if (obj.status == "FAILURE")
-      instance.displayErrorNotification("#gameNotification", obj.complementaryInfo);
+    instance.gameState.getCurrent().gameId = o.id
 
-    instance.gameState.gameId = obj.id;
-
-    var request = Request.buildRequest("GAMESTATE", self.gameStartResponse);
-    request.send("/" + obj.id);
+    var request = Request.buildRequest('GAMESTATE', self.gameStartResponse).send("/" + o.id)
   },
 
   /**
@@ -82,49 +123,41 @@ var self = module.exports = {
    * to gameUpdateMathResponse.
    * @param {Object} response response from the request (jQuery ajax response)
    * @param {String} status response status from the request
+	 * @throws Will throw an error if the countdown is already over
    */
   gameStartResponse: (response, status) => {
 		const instance = require('../Application')
-		const Countdown = require ('../Countdown')
 
-    self.gameUpdateMathResponse(response, status);
+    self.gameUpdateMathResponse(response, status)
 
-    //Stop timer
-    if (instance.countdown != null) {
-      instance.countdown.stopCountdown();
-      $("#gameTimer").html("");
-    }
+    //Stop any timer currently running
+    instance.gameState.stopCountdown()
+		$('#game-timer').hide()
+		$('#game-timer').tooltip('hide')
 
     //Start timer
-		if (instance.gameState.mode == 'NORMAL') {
-			instance.countdown = new Countdown (Countdown.minutesToMilliseconds(1), self.timerOnOver, self.timerOnUpdate);
-			instance.countdown.startCountdown();
-		}
+		self.startTimer()
   },
 
   /**
    * Send a request to get the game state.
+	 * @throws Will throw an error if the countdown is already over
    */
 	gameStateRequest: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
-		const Countdown = require ('../Countdown')
 
 		var request = Request.buildRequest('GAMESTATE', self.gameUpdateMathResponse)
 
-		request.send('/' + instance.gameState.gameId)
+		request.send('/' + instance.gameState.getCurrent().gameId)
 
-		//Stop timer
-    if (instance.countdown != null) {
-      instance.countdown.stopCountdown();
-      $("#gameTimer").html("");
-    }
+		//Stop any timer currently running
+    instance.gameState.stopCountdown()
+		$('#game-timer').hide()
+		$('#game-timer').tooltip('hide')
 
     //Start timer
-		if (instance.gameState.mode == 'NORMAL') {
-			instance.countdown = new Countdown (Countdown.minutesToMilliseconds(1), self.timerOnOver, self.timerOnUpdate);
-			instance.countdown.startCountdown();
-		}
+		self.startTimer()
   },
 
   /**
@@ -137,27 +170,49 @@ var self = module.exports = {
   gameUpdateMathResponse: (response, status) => {
 		const instance = require('../Application')
 		const utils = require('../utils')
+		const Request = require('../Request')
 
-    if (status == "success")
-      instance.gameState.currentState = JSON.parse(response.responseText);
-    else {
-      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
-      throw "[ERROR]: request response invalid, request might have failed.";
-    }
+		var o = Request.checkError(response, status, '#gameNotification')
+
+		if (o === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
+
+		instance.gameState.getCurrent().currentState = o
 
     //Set new math
-    $("#main-formule").text(instance.gameState.currentState.math).hide("fast");
+    $('#main-formule').hide('fast')
+		$('#main-formule').text(instance.gameState.getCurrent().currentState.math)
 
 		//Update Timeline
-		self.updateTimeline(instance.gameState.currentState.timeline)
+		self.updateTimeline(instance.gameState.getCurrent().currentState.timeline)
 
     //Call mathJax typeset and show the formule once it's done
     utils.typesetMath(() => {
-      $("#main-formule").show("fast")
-      //Set events
-      self.setEvents()
+			$('#main-formule').show('fast')
+
+			//Set events
+			self.setEvents()
+
 			instance.settings.applySettings()
-    });
+    })
+
+		//Check for VICTORY
+		if ((o.gameStatus == 'VICTORY') && (instance.gameState.getCurrent().mode == 'NORMAL')) {
+			$('#game-timer').hide()
+			$('#game-timer').tooltip('hide')
+			instance.gameState.getCurrent().countdown.stopCountdown()
+			var elapsedTime = instance.gameState.getCurrent().countdown.timeElapsed()
+			instance.displayPopup('Victoire', 'Bravo, vous avez résolu la formule en ' + elapsedTime + ' minutes', 'Accueil', 'Recommencer',
+			() => {
+				instance.gameState.delete(instance.gameState.getCurrent().gameId)
+				instance.requestHtml('HOME')
+				$('#popup').modal('hide')
+			}, () => {
+				self.restartGame()
+				$('#popup').modal('hide')
+			})
+			Request.buildRequest('OVER').send('/' + instance.gameState.getCurrent().gameId)
+		}
   },
 
   /**
@@ -169,13 +224,13 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    event.stopPropagation();
+    event.stopPropagation()
 
-    var request = Request.buildRequest("APPLYRULE", self.gameUpdateMathResponse);
-    request.send("/" + instance.gameState.gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
+    var request = Request.buildRequest("APPLYRULE", self.gameUpdateMathResponse)
+    request.send("/" + instance.gameState.getCurrent().gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context)
 
     if ($("#tooltip").is(":visible"))
-      $("#tooltip").hide(100);
+      $("#tooltip").hide(100)
   },
 
   /**
@@ -190,14 +245,12 @@ var self = module.exports = {
 		const Request = require('../Request')
 
 		//Clear timer text
-    $("#gameTimer").html("");
+		$('#game-timer').hide()
+		$('#game-timer').tooltip('hide')
 
-    instance.displaySuccessNotification("#gameNotification", "Temps écouler, partie finie.");
+    instance.displaySuccessNotification('#gameNotification', 'Temps écouler, partie finie.')
 
-		//Delete timer
-    instance.countdown = null;
-
-    Request.buildRequest("OVER", self.gameOverResponse).send("/" + instance.gameState.gameId);
+    Request.buildRequest('OVER', self.gameOverResponse).send('/' + instance.gameState.getCurrent().gameId)
   },
 
   /**
@@ -208,17 +261,20 @@ var self = module.exports = {
    */
   gameOverResponse: (response, status) => {
 		const instance = require('../Application')
+		const Request = require('../Request')
 
-    if (status != "success") {
-      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
-      throw "[ERROR]: request response invalid, request might have failed.";
-    }
+		if (Request.checkError(response, status, '#gameNotification') === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
 
-    $("#tools").hide("slow");
-
-    $("#main-formule").hide("slow");
-
-    $(".jumbotron:hidden").show("slow");
+		instance.displayPopup('Défaite', 'Temps écouler, vous avez perdu !', 'Accueil', 'Recommencer',
+		() => {
+			instance.gameState.delete(instance.gameState.getCurrent().gameId)
+			instance.requestHtml('HOME')
+			$('#popup').modal('hide')
+		}, () => {
+			self.restartGame()
+			$('#popup').modal('hide')
+		})
   },
 
   /**
@@ -227,7 +283,8 @@ var self = module.exports = {
    * @param {Countdown} countdown countdown object
    */
   timerOnUpdate: (countdown) => {
-    $("#gameTimer").html($("<h1></h1>").text(countdown.toString()));
+		$('#game-timer').tooltip('show')
+    $("#game-timer").attr('data-original-title', 'Temps restant : ' + countdown.toString())
   },
 
   /**
@@ -239,7 +296,9 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    Request.buildRequest("OVER", self.startNewGame(instance.gameState.formulaId)).send("/" + instance.gameState.gameId);
+		instance.gameState.getCurrent().countdown = null
+
+    Request.buildRequest("OVER", self.startNewGame).send("/" + instance.gameState.getCurrent().gameId)
   },
 
 	/**
@@ -249,7 +308,7 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-		Request.buildRequest('PREVIOUS', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId)
+		Request.buildRequest('PREVIOUS', self.gameUpdateMathResponse).send('/' + instance.gameState.getCurrent().gameId)
 	},
 
 	/**
@@ -259,7 +318,7 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-		Request.buildRequest('NEXT', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId)
+		Request.buildRequest('NEXT', self.gameUpdateMathResponse).send('/' + instance.gameState.getCurrent().gameId)
 	},
 
 	/**
@@ -324,7 +383,7 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId + '/' + index)
+		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.getCurrent().gameId + '/' + index)
 	},
 
 	/**
@@ -449,7 +508,7 @@ var self = module.exports = {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-		Request.buildRequest('CREATETHEOREM').send('/' + instance.gameState.gameId + '/' + self.theoremSelection.start + '/' + self.theoremSelection.end)
+		Request.buildRequest('CREATETHEOREM').send('/' + instance.gameState.getCurrent().gameId + '/' + self.theoremSelection.start + '/' + self.theoremSelection.end)
 
 		self.toggleCreateTheorem()
 		$('#popup').modal('hide')
@@ -465,7 +524,7 @@ var self = module.exports = {
 		const Request = require('../Request')
 
 		if ($('#rules-list').is(':hidden')) {
-			Request.buildRequest('RULESLIST', self.rulesListReply).send('/' + instance.gameState.gameId)
+			Request.buildRequest('RULESLIST', self.rulesListReply).send('/' + instance.gameState.getCurrent().gameId)
 
 			$('#rules-list').animateCss('slideInDown', 0.3)
 			$('#rules-list').show()
@@ -489,13 +548,14 @@ var self = module.exports = {
    */
 	rulesListReply: (response, status) => {
 		const instance = require('../Application')
+		const Request = require('../Request')
 
-    if (status != "success") {
-      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
-      throw "[ERROR]: request response invalid, request might have failed.";
-    }
+		var o = Request.checkError(response, status, '#gameNotification')
 
-		self.displayRulesList(JSON.parse(response.responseText).rules)
+		if (o === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
+
+		self.displayRulesList(o.rules)
 	},
 
 	/**
@@ -517,6 +577,119 @@ var self = module.exports = {
 		}
 
 		$('#rules-loader').hide()
-		$('#rules-content').show()
+		utils.typesetMath(() => { $('#rules-content').show('fast') }, 'rules-content')
+	},
+
+	synchronize: () => {
+		const instance = require('../Application')
+		const utils = require('../utils')
+		const {ipcRenderer} = require('electron')
+
+		utils.writeConfig('gamestate.json', app.gameState, 'sync')
+		instance.gameState = null
+		ipcRenderer.send('new-background-process', 'require("./js/synchronize").synchronize()')
+		instance.loadGameHandler()
+	},
+
+	deleteGame: (index) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		var gameId
+
+		if (index && typeof index === 'number')
+			gameId = instance.gameState.array[index].gameId
+		else
+			gameId = instance.gameState.getCurrent().gameId
+
+		//Stop any timer currently running
+		instance.gameState.stopCountdown()
+		$('#game-timer').hide()
+		$('#game-timer').tooltip('hide')
+
+		Request.buildRequest('DELETE').send('/' + gameId)
+
+		instance.gameState.delete(gameId)
+
+		instance.gameState.updateCurrent()
+
+		instance.loadGameHandler()
+	},
+
+	/**
+	 * @throws Will throw an error if the countdown is already over
+	 */
+	startTimer: () => {
+		const instance = require('../Application')
+		const Countdown = require('../Countdown')
+
+		var current = instance.gameState.getCurrent()
+
+		if (current.mode == 'NORMAL') {
+			if (current.countdown == null)
+				current.countdown = new Countdown (Countdown.minutesToMilliseconds(2), self.timerOnOver, self.timerOnUpdate)
+
+			else if (typeof current.countdown === 'number')
+				current.countdown = new Countdown (current.countdown, self.timerOnOver, self.timerOnUpdate)
+
+			else if (current.countdown.state == 'OVER') {
+				instance.displayErrorNotification('#gameNotification', 'Le timer est fini, la partie est donc fini et devrait être supprimer ou recommencer.')
+				throw '[ERROR]: Countdown is over game should be deleted or restarted'
+			}
+
+			current.countdown.startCountdown()
+
+			instance.gameState.getCurrent().countdown = current.countdown
+
+			$('#game-timer').show()
+			$('#game-timer').tooltip('show')
+		}
+	},
+
+	toggleGameList: () => {
+		if ($('#game-list').is(':hidden')) {
+			$('#game-list').animateCss('slideInDown', 0.3)
+			$('#game-list').show()
+			$('#game-list-content').hide()
+			self.buildGameList()
+		}
+		else {
+			$('#game-list').animateCss('slideOutUp', 0.3, 0, () => {
+				$('#game-list').hide()
+			})
+		}
+		$('[data-toggle="tooltip"]').tooltip('hide')
+	},
+
+	buildGameList: () => {
+		const instance = require('../Application')
+		const utils = require('../utils')
+
+		$('#game-list-content').html('')
+
+		for (var i in instance.gameState.array) {
+			var elem = $('<div></div>')
+			if (i == instance.gameState.currentGame)
+				elem.append('<div><i class="fa fa-long-arrow-right fa-fw text-info"></i><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
+			else
+				elem.append('<div><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
+
+			elem.append('<div>' + instance.gameState.array[i].formulaLatex + '</div>')
+
+			elem.addClass('game-select-element')
+
+			elem.on('click', {index: i},(event) => {
+				instance.gameState.currentGame = event.data.index
+				self.gameStateRequest()
+				self.toggleGameList()
+			})
+
+			$('#game-list-content').append(elem)
+			$('#game-list-content').append('<hr class="white-hr"></hr>')
+		}
+
+		utils.typesetMath(() => {
+			$('#game-list-content').show('fast')
+		}, 'game-list-content')
 	}
 }

@@ -1,0 +1,256 @@
+[
+  {
+    "gameId": "a0d452fe-b144-430c-919e-49ce5813d799",
+    "formulaId": "0",
+    "formulaLatex": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}}$$",
+    "mode": "SANDBOX",
+    "ruleSet": 1,
+    "useTheorem": false,
+    "countdown": null,
+    "currentState": {
+      "status": "SUCCESS",
+      "math": "$$\\cssId{exp0}{\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}}=\\cssId{exp01}{2}}$$",
+      "gameStatus": "RUNNING",
+      "ids": [
+        "exp01",
+        "exp00",
+        "exp000",
+        "exp0",
+        "exp001"
+      ],
+      "rules": [
+        {
+          "exp01": [
+            {
+              "text": "$$\\cssId{exp}{2} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{2})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{2} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{2})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp00": [
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}}$$",
+              "ruleId": 0,
+              "type": "drag_and_drop"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{(\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}})}$$",
+              "ruleId": 2,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{a}*\\cssId{exp1}{(\\cssId{exp10}{\\cssId{exp100}{1}+\\cssId{exp101}{1}})}}$$",
+              "ruleId": 3,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{2}}$$",
+              "ruleId": 4,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 5,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp000": [
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp0": [
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{(\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}})}-\\cssId{exp01}{a}}=\\cssId{exp1}{\\cssId{exp10}{2}-\\cssId{exp11}{a}}}$$",
+              "ruleId": 0,
+              "type": "drag_and_drop"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}}=\\cssId{exp001}{2}})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}}=\\cssId{exp001}{2}})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 2,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp001": [
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        }
+      ],
+      "timeline": {
+        "current": 0,
+        "elements": [
+          {
+            "index": 0,
+            "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}}$$"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "gameId": "560d2c49-8ae8-4b01-b118-139c94ff9d7f",
+    "formulaId": "0",
+    "formulaLatex": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}}$$",
+    "mode": "NORMAL",
+    "ruleSet": 1,
+    "useTheorem": false,
+    "countdown": 104890,
+    "currentState": {
+      "status": "SUCCESS",
+      "math": "$$\\cssId{exp0}{\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}}=\\cssId{exp01}{2}}$$",
+      "gameStatus": "RUNNING",
+      "ids": [
+        "exp01",
+        "exp00",
+        "exp000",
+        "exp0",
+        "exp001"
+      ],
+      "rules": [
+        {
+          "exp01": [
+            {
+              "text": "$$\\cssId{exp}{2} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{2})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{2} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{2})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp00": [
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}}$$",
+              "ruleId": 0,
+              "type": "drag_and_drop"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{(\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}})}$$",
+              "ruleId": 2,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{a}*\\cssId{exp1}{(\\cssId{exp10}{\\cssId{exp100}{1}+\\cssId{exp101}{1}})}}$$",
+              "ruleId": 3,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{2}}$$",
+              "ruleId": 4,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{a}+\\cssId{exp1}{a}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{a}+\\cssId{exp001}{a}})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 5,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp000": [
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp0": [
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{(\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}})}-\\cssId{exp01}{a}}=\\cssId{exp1}{\\cssId{exp10}{2}-\\cssId{exp11}{a}}}$$",
+              "ruleId": 0,
+              "type": "drag_and_drop"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}}=\\cssId{exp001}{2}})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{\\cssId{exp000}{\\cssId{exp0000}{a}+\\cssId{exp0001}{a}}=\\cssId{exp001}{2}})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 2,
+              "type": "contextMenu"
+            }
+          ]
+        },
+        {
+          "exp001": [
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}+\\cssId{exp1}{0}}$$",
+              "ruleId": 0,
+              "type": "contextMenu"
+            },
+            {
+              "text": "$$\\cssId{exp}{a} => \\cssId{exp}{\\cssId{exp0}{(\\cssId{exp00}{a})}*\\cssId{exp1}{1}}$$",
+              "ruleId": 1,
+              "type": "contextMenu"
+            }
+          ]
+        }
+      ],
+      "timeline": {
+        "current": 0,
+        "elements": [
+          {
+            "index": 0,
+            "text": "$$\\cssId{exp}{\\cssId{exp0}{\\cssId{exp00}{a}+\\cssId{exp01}{a}}=\\cssId{exp1}{2}}$$"
+          }
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: handlers/gameHandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: handlers/gameHandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * module containing all the function for handling the elements/event of the game tab
+ * @module gameHandler
+ */
+var self = module.exports = {
+	/**
+	 * Initialize everything the tab need in order to run properly.
+	 */
+	init: () => {
+		const utils = require('../utils')
+
+		self.setAnimations()
+
+		utils.typesetMath()
+	},
+
+  /**
+   * Set the events for the game tab.
+	 * Only the mouse clicks events are working right now.
+   */
+  setEvents: () => {
+		const mouseEventHandler = require('./mouseEventHandler')
+
+    mouseEventHandler.setEvents();
+    //DragNDropHandler.setEvents(obj);
+  },
+
+	setAnimations: () => {
+		$('.toolbar').show().animateCss('slideInLeft', 0.3, 0, () => {
+			$('#main-content').show().animateCss('slideInLeft', 0.3)
+			$('#timeline').show().animateCss('slideInUp', 0.3)
+		})
+
+	},
+
+  /**
+   * Request used to start a new game, will ask the server to start a new game
+	 * using the parameters contained in gameState to define the configuration of the
+	 * game.
+   */
+  startNewGame: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+    var request = Request.buildRequest("START", self.startNewGameResponse);
+
+    request.send('/' + instance.gameState.mode + '/' + instance.gameState.ruleSet + '/' + instance.gameState.formulaId + '/' + instance.gameState.useTheorem);
+  },
+
+  /**
+   * Response of the startNewGame request.
+   * Will display an error message if the server can't create a new game.
+   * If it's a success it will register the game ID and send a request to get the
+   * game state.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  startNewGameResponse: (response, status) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+    //Request error
+    if (status != "success")
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+
+    var obj = JSON.parse(response.responseText);
+
+    //Server error
+    if (obj.status == "FAILURE")
+      instance.displayErrorNotification("#gameNotification", obj.complementaryInfo);
+
+    instance.gameState.gameId = obj.id;
+
+    var request = Request.buildRequest("GAMESTATE", self.gameStartResponse);
+    request.send("/" + obj.id);
+  },
+
+  /**
+   * Response of the request to get the game state after a new game is created.
+   * Will start a timer if it's enabled and delegate the processing of the response
+   * to gameUpdateMathResponse.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  gameStartResponse: (response, status) => {
+		const instance = require('../Application')
+		const Countdown = require ('../Countdown')
+
+    self.gameUpdateMathResponse(response, status);
+
+    //Stop timer
+    if (instance.countdown != null) {
+      instance.countdown.stopCountdown();
+      $("#gameTimer").html("");
+    }
+
+    //Start timer
+		if (instance.gameState.mode == 'NORMAL') {
+			instance.countdown = new Countdown (Countdown.minutesToMilliseconds(1), self.timerOnOver, self.timerOnUpdate);
+			instance.countdown.startCountdown();
+		}
+  },
+
+  /**
+   * Send a request to get the game state.
+   */
+	gameStateRequest: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+		const Countdown = require ('../Countdown')
+
+		var request = Request.buildRequest('GAMESTATE', self.gameUpdateMathResponse)
+
+		request.send('/' + instance.gameState.gameId)
+
+		//Stop timer
+    if (instance.countdown != null) {
+      instance.countdown.stopCountdown();
+      $("#gameTimer").html("");
+    }
+
+    //Start timer
+		if (instance.gameState.mode == 'NORMAL') {
+			instance.countdown = new Countdown (Countdown.minutesToMilliseconds(1), self.timerOnOver, self.timerOnUpdate);
+			instance.countdown.startCountdown();
+		}
+  },
+
+  /**
+   * Function that process the response from the server containing the formula state.
+   * Will throw an error if the request failed.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   * @throws if the request fail and the function receive a status diffrent than success.
+   */
+  gameUpdateMathResponse: (response, status) => {
+		const instance = require('../Application')
+		const utils = require('../utils')
+
+    if (status == "success")
+      instance.gameState.currentState = JSON.parse(response.responseText);
+    else {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    //Set new math
+    $("#main-formule").text(instance.gameState.currentState.math).hide("fast");
+
+		//Update Timeline
+		self.updateTimeline(instance.gameState.currentState.timeline)
+
+    //Call mathJax typeset and show the formule once it's done
+    utils.typesetMath(() => {
+      $("#main-formule").show("fast")
+      //Set events
+      self.setEvents()
+			instance.settings.applySettings()
+    });
+  },
+
+  /**
+   * Send a request to the server to apply a rule to the formula.
+   * Call gameUpdateMathResponse to process the response.
+   * @param {Event} event jQuery Event object
+   */
+  gameRuleRequest: (event) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+    event.stopPropagation();
+
+    var request = Request.buildRequest("APPLYRULE", self.gameUpdateMathResponse);
+    request.send("/" + instance.gameState.gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context);
+
+    if ($("#tooltip").is(":visible"))
+      $("#tooltip").hide(100);
+  },
+
+  /**
+   * Function handling the end of the countdown.
+   * When the countdown is over an OVER request is send to the server
+   * to signal the game is over.
+   * When the request is over call gameOverResponse to handle the end of the game
+   * clientside.
+   */
+  timerOnOver: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		//Clear timer text
+    $("#gameTimer").html("");
+
+    instance.displaySuccessNotification("#gameNotification", "Temps écouler, partie finie.");
+
+		//Delete timer
+    instance.countdown = null;
+
+    Request.buildRequest("OVER", self.gameOverResponse).send("/" + instance.gameState.gameId);
+  },
+
+  /**
+   * Function handling the end of the game clientside, restart the window by hiding
+   * the formula and the tools and then show the start button.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+  gameOverResponse: (response, status) => {
+		const instance = require('../Application')
+
+    if (status != "success") {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+    $("#tools").hide("slow");
+
+    $("#main-formule").hide("slow");
+
+    $(".jumbotron:hidden").show("slow");
+  },
+
+  /**
+   * Function handling the update of the countdown.
+   * Each time the countdown is updated the timer text element in the window is updated too.
+   * @param {Countdown} countdown countdown object
+   */
+  timerOnUpdate: (countdown) => {
+    $("#gameTimer").html($("&lt;h1>&lt;/h1>").text(countdown.toString()));
+  },
+
+  /**
+   * Function handling the restart button.
+   * Send an OVER request then send a START request using the default handler for
+   * those request.
+   */
+  restartGame: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+    Request.buildRequest("OVER", self.startNewGame(instance.gameState.formulaId)).send("/" + instance.gameState.gameId);
+  },
+
+	/**
+	 * Request the previous state of the game.
+	 */
+	previousState: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('PREVIOUS', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId)
+	},
+
+	/**
+	 * Request the next state of the game.
+	 */
+	nextState: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('NEXT', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId)
+	},
+
+	/**
+	 * Toggle the display of the timeline.
+	 */
+	toggleTimeline: () => {
+		if ($('#hideTimeline').is(':visible')) {
+			$('#hideTimeline').hide()
+			$('#showTimeline').show().css('display', 'flex')
+
+			$('#timeline').animateCss('slideOutDown', 0.2, 0, () => {
+				$('#timeline-elements').hide()
+			})
+		}
+		else {
+			$('#hideTimeline').show().css('display', 'flex')
+			$('#showTimeline').hide()
+
+			$('#timeline-elements').show()
+			$('#timeline').animateCss('slideInUp', 0.2, 0)
+		}
+	},
+
+	/**
+	 * Update the content of the timeline.
+	 * Called each time the current game update.
+	 * @param {Object} timeline timeline object from the gameState object
+	 */
+	updateTimeline: (timeline) => {
+		$('#timeline-elements').html('')
+
+		for (var i = timeline.elements.length-1 ; i >= 0 ; i--) {
+			var elem
+			if (i == timeline.current)
+				elem = $('&lt;div>&lt;/div>').addClass('timeline-element current-element btn btn-danger').text(timeline.elements[i].text)
+			else
+				elem = $('&lt;div>&lt;/div>').addClass('timeline-element btn btn-info').text(timeline.elements[i].text)
+
+			elem.click({ param: i }, self.timelineOnClickHandler)
+
+			$('#timeline-elements').append(elem)
+		}
+	},
+
+	/**
+	 * Depending on if the game is in theorem mode or not the handler for the
+	 * onclick event differ.
+	 * @param {Event} event Jquery event object
+	 */
+	timelineOnClickHandler: (event) => {
+		if ($('#addTheorem').is(':visible'))
+			self.requestStateFromTimeline(event.data.param)
+		else
+			self.selectForTheorem(event.data.param, event.currentTarget)
+	},
+
+	/**
+	 * Reqest the gameState of the index state.
+	 * @param {int} index Number of the state requested.
+	 */
+	requestStateFromTimeline: (index) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('TIMELINE', self.gameUpdateMathResponse).send('/' + instance.gameState.gameId + '/' + index)
+	},
+
+	/**
+	 * Object containing the index for the theorem creation.
+	 * Is always null expect if timeline elements are selectionned for theorem
+	 * creation.
+	 */
+	theoremSelection: { start: null, end: null},
+
+	/**
+	 * Toggle the timeline between the theorem mode and "history" mode.
+	 * When in theorem mode you can't hide the timeline and if the timeline was
+	 * hiddden it will be showed automatically.
+	 * Will also clear theoremSelection each time this function is called.
+	 */
+	toggleCreateTheorem: () => {
+		const instance = require('../Application')
+
+		if ($('#addTheorem').is(':visible')) {
+			$('#addTheorem').hide()
+
+			if ($('#timeline-elements').is(':hidden'))
+				self.toggleTimeline()
+
+			$('#hideTimeline').hide()
+
+			$('#validTheorem').show().css('display', 'flex')
+			$('#cancelTheorem').show().css('display', 'flex')
+		}
+		else {
+			$('#addTheorem').show().css('display', 'flex')
+
+			$('#hideTimeline').show().css('display', 'flex')
+
+			$('#validTheorem').hide()
+			$('#cancelTheorem').hide()
+
+			$('.timeline-element').each(function () {
+				$(this).removeClass('btn-warning')
+				if ($(this).hasClass('current-element'))
+					$(this).addClass('btn-danger')
+				else
+					$(this).addClass('btn-info')
+			})
+		}
+
+		self.theoremSelection.start = null
+		self.theoremSelection.end = null
+	},
+
+	/**
+	 * Will select for the theorem creation the target element.
+	 * If the target is already selected will unselect it.
+	 * If not the target is added in the theoremSelection object.
+	 * @param {int} index Number of the state clicked.
+	 * @param {Object} target DOM element of the event target.
+	 */
+	selectForTheorem: (index, target) => {
+		const instance = require('../Application')
+
+		//If we click on an already selectionned item we unselect it
+		if (self.theoremSelection.start == index) {
+			self.theoremSelection.start = null
+			$(target).removeClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).addClass('btn-danger')
+			else
+				$(target).addClass('btn-info')
+		}
+		else if (self.theoremSelection.end == index) {
+			self.theoremSelection.end = null
+			$(target).removeClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).addClass('btn-danger')
+			else
+				$(target).addClass('btn-info')
+		}
+		//Else we first select the starting point then the end one
+		else if (self.theoremSelection.start == null) {
+			self.theoremSelection.start = index
+			$(target).addClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).removeClass('btn-danger')
+			else
+				$(target).removeClass('btn-info')
+		}
+		else if (self.theoremSelection.end == null) {
+			self.theoremSelection.end = index
+			$(target).addClass('btn-warning')
+			if ($(target).hasClass('current-element'))
+				$(target).removeClass('btn-danger')
+			else
+				$(target).removeClass('btn-info')
+		}
+	},
+
+	/**
+	 * Check for the creation of the theorem. Will display a popup with either a
+	 * Error message or a success message and ask the user if he want to process
+	 * with the theorem creation.
+	 */
+	validTheorem: () => {
+		const instance = require('../Application')
+
+		if (self.theoremSelection.start > self.theoremSelection.end) {
+			var tmp = self.theoremSelection.start
+			self.theoremSelection.start = self.theoremSelection.end
+			self.theoremSelection.end = tmp
+		}
+
+		if ((self.theoremSelection.start == null) || (self.theoremSelection.end == null))
+			instance.displayPopup('Création d\'un théorème', 'L\' une des 2 valeurs n\'est pas selectionné.', 'OK', 'Annuler', () => { $('#popup').modal('hide') }, () => { $('#popup').modal('hide') })
+		else
+			instance.displayPopup('Création d\'un théorème', 'Voulez-vous créer ce théorème ?', 'Oui', 'Annuler', self.sendTheoremCreation, () => { $('#popup').modal('hide') })
+	},
+
+	/**
+	 * Send a CREATETHEOREM request then toggle off the theorem mode and hide
+	 * the popup.
+	 */
+	sendTheoremCreation: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		Request.buildRequest('CREATETHEOREM').send('/' + instance.gameState.gameId + '/' + self.theoremSelection.start + '/' + self.theoremSelection.end)
+
+		self.toggleCreateTheorem()
+		$('#popup').modal('hide')
+	},
+
+	/**
+	 * Toggle the rules list.
+	 * If hidden will send a request RULESLIST and display the list container.
+	 * If visible will hide the list container
+	 */
+	toggleRulesList: () => {
+		const instance = require('../Application')
+		const Request = require('../Request')
+
+		if ($('#rules-list').is(':hidden')) {
+			Request.buildRequest('RULESLIST', self.rulesListReply).send('/' + instance.gameState.gameId)
+
+			$('#rules-list').animateCss('slideInDown', 0.3)
+			$('#rules-list').show()
+			$('#rules-loader').show()
+		}
+		else {
+			$('#rules-list').animateCss('slideOutUp', 0.3, 0, () => {
+				$('#rules-list').hide()
+				$('#rules-content').hide()
+			})
+		}
+
+	},
+
+	/**
+   * Response to the RULESLIST request.
+	 * Call displayRulesList to display the rules list with the JSON Object
+	 * received from the request.
+   * @param {Object} response response from the request (jQuery ajax response)
+   * @param {String} status response status from the request
+   */
+	rulesListReply: (response, status) => {
+		const instance = require('../Application')
+
+    if (status != "success") {
+      instance.displayErrorNotification("#gameNotification", "Erreur lors de la requête, status : " + status + " (" + response.status + ").");
+      throw "[ERROR]: request response invalid, request might have failed.";
+    }
+
+		self.displayRulesList(JSON.parse(response.responseText).rules)
+	},
+
+	/**
+	 * Build the rules list and displays it.
+	 * @param {Object} rules JSON object containing all the rules.
+	 */
+	displayRulesList: (rules) => {
+		$('#rules-content').html('')
+
+		for (var item in rules) {
+			for (var type in rules[item]) {
+				var title = $('&lt;h1>&lt;/h1>').addClass('display-3').text(type)
+				$('#rules-content').append(title)
+				for (var rule in rules[item][type]) {
+					var elem = $('&lt;div>&lt;/div>').addClass('notif alert alert-info').text(rules[item][type][rule])
+					$('#rules-content').append(elem)
+				}
+			}
+		}
+
+		$('#rules-loader').hide()
+		$('#rules-content').show()
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Apr 23 2017 19:50:52 GMT+0200 (Paris, Madrid (heure d’été))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
