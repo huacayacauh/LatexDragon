@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/GameState.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/GameState.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const utils = require('./utils')
+
+class GameState {
+	constructor () {
+		//Array containing all the informations on the state of the differents games
+		this.array = []
+
+		//Index of the current game
+		this.currentGame = -1
+
+		//maximum number of gameState
+		this.maxGame = 20
+
+		this.inCreation = null
+	}
+
+	/**
+	 *
+	 */
+	static initGameState () {
+		var data = utils.readConfigSync('gamestate.json')
+
+		var gameState = new GameState()
+
+		if (data == null)
+			return gameState
+
+		data = JSON.parse(data)
+
+		for (var i in data) {
+			var game = new Game()
+			Object.assign(game, data[i])
+
+			gameState.addGame(game)
+
+			gameState.currentGame = i
+		}
+		return gameState
+	}
+
+	isComplete () {
+		return this.array[this.currentGame].isComplete()
+	}
+
+	addGame (game) {
+		if (this.array.length &lt; this.maxGame)
+			this.array.push(game)
+	}
+
+	getCurrent () {
+		return this.array[this.currentGame]
+	}
+
+	delete (id) {
+		for (var i in this.array) {
+			if (this.array[i].gameId == id) {
+				this.array.splice(i, 1)
+				break
+			}
+		}
+		this.updateCurrent()
+	}
+
+	updateCurrent () {
+		if (this.array.length == 0)
+			this.currentGame = -1
+		else
+			this.currentGame = 0
+	}
+
+	startCreation () {
+		this.inCreation = new Game()
+	}
+
+	finishCreation () {
+		this.addGame(this.inCreation)
+		this.inCreation = null
+		this.currentGame = this.array.length-1
+	}
+
+	stopCountdown () {
+		for (var i in this.array) {
+			if ((this.array[i].countdown != null) &amp;&amp; (this.array[i].countdown.state == 'STARTED'))
+				this.array[i].countdown.stopCountdown()
+		}
+	}
+
+	static getNewGame () {
+		return new Game()
+	}
+
+	toString () {
+		return JSON.stringify(this.array, null, 2)
+	}
+}
+
+module.exports = GameState
+
+class Game {
+
+	constructor () {
+		//Id of the client on the server
+		this.gameId = null
+
+		//Id of which formula the game is using
+		this.formulaId = null
+
+		//Latex string of the formula
+		this.formulaLatex = null
+
+		//Which mode the player is currently playing with
+		this.mode = null
+
+		//Which set of rules the player is currently playing with
+		this.ruleSet = null
+
+		//Boolean, Do the game use theorem created by users ?
+		this.useTheorem = null
+
+		//The countdown of the game, is null expect if the game mode is normal
+		this.countdown = null
+
+		//Json object of the last/current game request to the server
+		this.currentState = null
+	}
+
+	/**
+	 * Return true if the object is complete meaning all his fields are filled in.
+	 * Return false otherwise.
+	 */
+	isComplete () {
+		if ((this.gameId != null) &amp;&amp; (this.formulaId != null) &amp;&amp; (this.mode != null) &amp;&amp; (this.ruleSet != null) &amp;&amp; (this.useTheorem != null))
+			return true
+		return false
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

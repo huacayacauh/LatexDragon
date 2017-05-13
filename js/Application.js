@@ -12,7 +12,6 @@
  * @property {Array} windows Array of BrowserWindow containing all the windows of the app (app & doc)
  * @property {jQuery} loader DOM element used to display while the tab is being loaded
  * @property {GameState} gameState Array containing all the informations on the state of the differents games
- * @property {Countdown} countdown Countdown object of the game (used to keep an eye on the countdown and not having multiple wountdown running at the same time)
  * @property {Notification[]} notifLog Log of all the notifications issued since the start of the app
  * @property {Application} instance Reference to the only instance of Application
  */
@@ -47,9 +46,6 @@ class Application {
 
 			//Status of ther server (true = online, false = offline)
 			this.serverStatus = false
-
-      //State of the countdown
-      this.countdown = null
 
 			//Log of all the notifications issued since the start of the app
 			this.notifLog = []
@@ -152,18 +148,8 @@ class Application {
 		if (this.handler != undefined)
 			this.handler.init()
 
-		this.settings.applySettings()
-	}
-
-	/**
-	 * Special handler for when we load the game.
-	 * If no game old game are present
-	 */
-	loadGameHandler () {
-		if ((this.gameState == null) || (!this.serverStatus) || (this.gameState.currentGame >= 0))
-			this.requestHtml('GAME')
-		else
-			this.requestHtml('GAMEMODE')
+		if (this.currentTab != 'GAME')
+			this.settings.applySettings()
 	}
 
   /**
@@ -277,7 +263,7 @@ class Application {
 	 * @param {function} leftButtonHandler left button onclick event handler
 	 * @param {function} rightButtonHandler right button onclick event handler
 	 */
-	displayPopup (title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler) {
+	displayPopup (title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler, onHide) {
 		$('#popup-title').text(title)
 		$('#popup-body').text(content)
 
@@ -291,15 +277,17 @@ class Application {
 		else
 			$('#popup-button-right').hide()
 
-		if (leftButtonHandler != undefined) {
-			$('#popup-button-left').off('click')
+		$('#popup-button-left').off('click')
+		if (leftButtonHandler != undefined)
 			$('#popup-button-left').on('click', leftButtonHandler)
-		}
 
-		if (leftButtonHandler != undefined) {
-			$('#popup-button-right').off('click')
+		$('#popup-button-right').off('click')
+		if (leftButtonHandler != undefined)
 			$('#popup-button-right').on('click', rightButtonHandler)
-		}
+
+		$('#popup').off('hide.bs.modal')
+		if (onHide != undefined)
+			$('#popup').on('hide.bs.modal', onHide)
 
 		$('#popup').modal('show')
 	}
@@ -324,6 +312,15 @@ class Application {
 
     return remote.process
   }
+
+	synchronize () {
+		const utils = require('./utils')
+		const {ipcRenderer} = require('electron')
+
+		utils.writeConfig('gamestate.json', this.gameState, 'sync')
+		this.gameState = null
+		ipcRenderer.send('new-background-process', 'require("./js/synchronize").synchronize()')
+	}
 }
 
 module.exports = new Application()

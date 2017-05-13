@@ -30,7 +30,7 @@
     
         <h2>Request</h2>
         
-            <div class="class-description">Class Request, used to send request to the Java rest api</div>
+            <div class="class-description">Class Request, used to send HTTP request to the Java rest api</div>
         
     
 </header>
@@ -245,7 +245,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">Request.js</a>, <a href="Request.js.html#line2">line 2</a>
+        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">Request.js</a>, <a href="Request.js.html#line64">line 64</a>
+        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -478,6 +478,253 @@
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".checkError"><span class="type-signature">(static) </span>checkError<span class="signature">(response, status, element<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object|bool}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Check if the request was successfull. Check first the status and then try to convertthe response to a JSON object to check for additional informations.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">response from the request (jQuery ajax response)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">status response from the request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">dom element used to display the notification</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+<ul>
+        <li>
+<div class="param-desc">
+    return the JSON object if there's no error.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+</li>
+    
+        <li>
+<div class="param-desc">
+    return false if there's an error.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">bool</span>
+
+
+    </dd>
+</dl>
+</li>
+    </ul>
 
 
 
@@ -609,7 +856,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">Request.js</a>, <a href="Request.js.html#line47">line 47</a>
+        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -752,7 +999,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">Request.js</a>, <a href="Request.js.html#line24">line 24</a>
+        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -794,13 +1041,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Apr 23 2017 19:50:53 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

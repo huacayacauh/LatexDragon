@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Source: js/synchronize.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,218 +17,85 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Source: js/synchronize.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
-    
-        <h2></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="backgroundProcess"><span class="type-signature"></span>backgroundProcess<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to all the background process
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="windowsArray"><span class="type-signature"></span>windowsArray<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to the windows
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const utils = require('./utils')
+const Request = require('./Request')
+const GameState = require('./GameState')
+const {ipcRenderer} = require('electron')
 
-    
+/**
+ * module containing all the function for handling the synchronizing of the games with the server
+ * @module synchronize
+ */
+var self = module.exports = {
 
-    
+	toSynchronize: [],
 
-    
+	areSynchronied: [],
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line13">line 13</a>
-    </li></ul></dd>
-    
+	requestDone: 0,
 
-    
+	synchronize: () => {
+		var data = utils.readConfigSync('gamestate.json')
 
-    
+		if (data != null) {
+			data = JSON.parse(data)
 
-    
-</dl>
+			self.toSynchronize = []
 
+			for (var i in data) {
+				var game = GameState.getNewGame()
+				Object.assign(game, data[i])
 
+				if (game.isComplete())
+					self.toSynchronize.push(game)
+			}
 
+			self.areSynchronied = []
 
+			for (var i in self.toSynchronize)
+				Request.buildRequest('RESUME', self.synchronizeReply).send('/' + self.toSynchronize[i].gameId)
 
+			if (self.toSynchronize == 0)
+				self.synchronizationDone()
+		}
+	},
 
-        
-    
+	synchronizeReply: (response, status) => {
+		if (status == 'success') {
+			var obj = JSON.parse(response.responseText)
 
-    
 
-    
+			if (obj.status == 'SUCCESS') {
+				for (var i in self.toSynchronize) {
+					if (self.toSynchronize[i].gameId == obj.id)
+						self.areSynchronied.push(self.toSynchronize[i])
+				}
+			}
+		}
+		self.requestDone++
 
-    
-</article>
+		if (self.requestDone == self.toSynchronize.length)
+			self.synchronizationDone()
+	},
 
-</section>
+	synchronizationDone: () => {
+		utils.writeConfig('gamestate.json', JSON.stringify(self.areSynchronied, null, 2), 'sync')
+		ipcRenderer.send('synchronization-done')
+		ipcRenderer.send('boom')
+	}
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

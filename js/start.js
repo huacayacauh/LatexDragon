@@ -41,11 +41,16 @@ ipcRenderer.on('server-status', (event, arg) => {
 		$('#serverStatus').removeClass('text-danger')
 		$('#serverStatus').addClass('text-success')
 		$('#serverStatus').attr('data-original-title', 'Serveur en ligne')
+		app.synchronize()
+		if (app.currentTab == 'GAME')
+			app.requestHtml('GAME')
 	}
 	else {
 		$('#serverStatus').removeClass('text-success')
 		$('#serverStatus').addClass('text-danger')
 		$('#serverStatus').attr('data-original-title', 'Serveur hors ligne')
+		if (app.currentTab == 'GAME')
+			app.requestHtml('GAME')
 	}
 })
 

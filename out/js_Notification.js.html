@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Source: js/Notification.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,218 +17,58 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Source: js/Notification.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
-    
-        <h2></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="backgroundProcess"><span class="type-signature"></span>backgroundProcess<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to all the background process
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class Notification {
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="windowsArray"><span class="type-signature"></span>windowsArray<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to the windows
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
+	constructor (type = 'info', text) {
+		//date at which the notif was issued/emitted
+		this.date = new Date()
+		//danger/warning ...
+		this.type = type
+		//content
+		this.text = text
+	}
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+	display (element, lifeTime = 0, mode = 'replace') {
+		if (mode == 'replace')
+			$(element).children('.notif').hide('fast', () => {
+	      $(this).remove()
+	    })
 
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line13">line 13</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
+		var notif = $('&lt;div>&lt;/div>').addClass('notif alert alert-' + this.type + ' alert-dismissible').text(this.text).css('display', 'none')
 
+		$('&lt;span>&lt;/span>').attr('aria-hidden', 'true').append('&lt;i class="fa fa-times" aria-hidden="true">&lt;/i>').appendTo(
+			$('&lt;button>&lt;/button>').addClass('close').attr('data-dismiss', 'alert').appendTo(notif)
+		)
 
+		$(notif).appendTo(element).show('fast')
 
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
+		if (lifeTime > 0)
+			setTimeout(() => {
+				$(notif).hide('fast', function() {
+					$(this).remove()
+				})
+			}, lifeTime)
+	}
+}
 
-</section>
+/**
+ * Notification module.
+ * @module notification
+ * @see {@link Notification}
+ */
+module.exports = Notification
+</code></pre>
+        </article>
+    </section>
 
 
 

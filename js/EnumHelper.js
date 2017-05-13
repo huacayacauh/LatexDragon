@@ -116,6 +116,10 @@ const EnumHelper = {
 		"GAMERULESET":{
 			"name":"GAMERULESET",
 			"handler":"gameRuleSetHandler"
+		},
+		"HELP":{
+			"name":"HELP",
+			"handler":"helpHandler"
 		}
 	}
 }

@@ -30,17 +30,17 @@
 class Countdown {
 
   /**
-   * @param {int} duration duration of the ocuntdowns (in milliseconds)
+   * @param {int} duration duration of the countdown (in milliseconds)
    * @param {function} [overHandler] function called when the countdown is over
    * @param {function} [updateHandler] function called each time the countdown update
    */
   constructor (duration, overHandler, updateHandler) {
-    this.remainingTime;
-    this.end;
-    this.duration = duration;
-    this.onOver = overHandler;
-    this.onUpdate = updateHandler;
-    this.state = "NOT_STARTED";
+    this.remainingTime
+    this.end
+    this.duration = duration
+    this.onOver = overHandler
+    this.onUpdate = updateHandler
+    this.state = 'NOT_STARTED'
   }
 
   /**
@@ -48,56 +48,98 @@ class Countdown {
    * @throws Will throw an error if the countdown is already started
    */
   startCountdown () {
-    if (this.state == "NOT_STARTED") {
-      this.end = Date.now() + this.duration;
-      this.state = "STARTED";
-      Countdown.updateCountdown(this);
+    if (this.state == 'NOT_STARTED') {
+      this.end = Date.now() + this.duration
+      this.state = 'STARTED'
+      Countdown.updateCountdown(this)
     }
+		else if (this.state == 'STOPPED') {
+			this.end = Date.now() + this.remainingTime
+			this.state = 'STARTED'
+			Countdown.updateCountdown(this)
+		}
     else
-      throw "[ERROR]: Countdown already started.";
+      throw '[ERROR]: Countdown already started.'
   }
 
   /**
    * Function updating the countdown, only if the countdown is started.
    * @param {Countdown} countdown countdown object to update
-   * @throws Will throw an error if the countdown is not started
+   * @throws Will throw an error if the countdown is over
    * @static
    */
   static updateCountdown (countdown) {
-    var time = Date.now();
+    var time = Date.now()
 
-    if (countdown.state == "STARTED") {
+		this.end = time + this.remainingTime
+
+    if (countdown.state == 'STARTED') {
       if (time >= countdown.end) {
-        console.log("[CLIENT]: Countdown fini.");
+        console.log('[CLIENT]: Countdown fini.')
+				countdown.state = 'OVER'
         if (countdown.onOver != undefined)
-          countdown.onOver(countdown);
+          countdown.onOver(countdown)
       }
       else {
-        countdown.remainingTime = countdown.end - time;
+        countdown.remainingTime = countdown.end - time
         if (countdown.onUpdate != undefined)
-          countdown.onUpdate(countdown);
-        setTimeout(Countdown.updateCountdown, 1000, countdown);
+          countdown.onUpdate(countdown)
+        setTimeout(Countdown.updateCountdown, 1000, countdown)
       }
     }
-    else if (countdown.state != "STOPED")
-      throw "[ERROR]: Countdown not started."
+    else if (countdown.state == 'OVER')
+      throw '[ERROR]: Countdown over can\'t update.'
   }
 
   /**
    * Stop the countdown.
    */
   stopCountdown () {
-    this.state = "STOPED";
+    this.state = 'STOPPED'
   }
 
+	/**
+	 * Return the time elapsedTime since the start of the countdown.
+	 */
+	timeElapsed () {
+		if (this.state == 'NOT_STARTED')
+			return '00:00'
+
+		var elapsedTime = new Date(this.duration - this.remainingTime)
+
+		var minutes = elapsedTime.getMinutes()
+    var seconds = elapsedTime.getSeconds()
+
+    if (minutes.toString().length == 1)
+      minutes = '0' + minutes
+
+    if (seconds.toString().length == 1)
+      seconds = '0' + seconds
+
+		return minutes + ':' + seconds
+	}
+
   /**
-   * Convert the countdown in a readable string.
+   * Convert the countdown into a readable string.
    * @returns {String}
    */
   toString () {
-    var date = new Date(this.remainingTime);
-    return "Temps restant : " + date.getMinutes() + ":" + date.getSeconds();
+    var date = new Date(this.remainingTime)
+    var minutes = date.getMinutes()
+    var seconds = date.getSeconds()
+
+    if (minutes.toString().length == 1)
+      minutes = '0' + minutes
+
+    if (seconds.toString().length == 1)
+      seconds = '0' + seconds
+
+    return minutes + ':' + seconds
   }
+
+	toJSON () {
+		return this.remainingTime
+	}
 
   /**
    * Convert minutes in to milliseconds.
@@ -106,9 +148,16 @@ class Countdown {
    * @static
    */
   static minutesToMilliseconds (minutes) {
-    return minutes * 60 * 1000;
+    return minutes * 60 * 1000
   }
 }
+
+/**
+ * Countdown module.
+ * @module countdown
+ * @see {@link Countdown}
+ */
+module.exports = Countdown
 </code></pre>
         </article>
     </section>
@@ -119,13 +168,13 @@ class Countdown {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="DragNDropHandler.html">DragNDropHandler</a></li><li><a href="GameHandler.html">GameHandler</a></li><li><a href="MouseClickHandler.html">MouseClickHandler</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li><li><a href="SettingsHandler.html">SettingsHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Global">Global</a></li><li><a href="global.html#loadScripts">loadScripts</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Nov 29 2016 21:45:28 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

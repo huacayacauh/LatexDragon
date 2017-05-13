@@ -3,11 +3,7 @@
  */
 var self = module.exports = {
 	init: () => {
-		self.setEvents()
 		self.setAnimations()
-	},
-
-	setEvents: () => {
 	},
 
 	setAnimations: () => {

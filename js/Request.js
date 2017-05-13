@@ -1,6 +1,6 @@
 const EnumHelper = require ('./EnumHelper')
 
-/** Class Request, used to send request to the Java rest api */
+/** Class Request, used to send HTTP request to the Java rest api */
 class Request {
   /**
    * @param {String} serverUrl server url to which the request is send to

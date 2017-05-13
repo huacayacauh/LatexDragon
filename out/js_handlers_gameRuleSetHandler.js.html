@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Source: js/handlers/gameRuleSetHandler.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,218 +17,90 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Source: js/handlers/gameRuleSetHandler.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
-    
-        <h2></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="backgroundProcess"><span class="type-signature"></span>backgroundProcess<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to all the background process
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="windowsArray"><span class="type-signature"></span>windowsArray<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global reference to the windows
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module gameRuleSetHandler
+ */
+var self = module.exports = {
+	init: () => {
+		self.setEvents()
+		self.setAnimations()
+		self.getFormulaList()
+	},
 
-    
+	setEvents: () => {
+		const utils = require('../utils')
 
-    
+		utils.typesetMath()
+	},
 
-    
+	setAnimations: () => {
+			$('.j1').animateCss('slideInDown', 0.5)
+			$('.j2').animateCss('slideInDown', 0.5, 0.1)
+			$('.j3').animateCss('slideInDown', 0.5, 0.2)
+	},
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line13">line 13</a>
-    </li></ul></dd>
-    
+	selectRuleSet: (ruleSet, formula) => {
+		const instance = require('../Application')
 
-    
+		instance.gameState.inCreation.ruleSet = ruleSet
+		instance.gameState.inCreation.useTheorem = $('#rule1-theorem').is(':checked')
+		instance.gameState.inCreation.formulaId = formula
+		instance.gameState.inCreation.formulaLatex = self.formulaList[$('#rule1-formula').val()]
 
-    
+		instance.gameState.finishCreation()
 
-    
-</dl>
+		instance.requestHtml('GAME')
+	},
 
+	formulaList: null,
 
+	getFormulaList: () => {
+		const Request = require('../Request')
+		Request.buildRequest('FORMULALIST', self.getFormulaListReply).send()
+	},
 
+	getFormulaListReply: (response, status) => {
+		const instance = require('../Application')
+		const Request = require('../Request')
 
+		var o = Request.checkError(response, status)
 
+		if (o === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
 
-        
-    
+		self.formulaList = o.expression
 
-    
+		self.setFormulaList()
+	},
 
-    
+	setFormulaList: () => {
+		const utils = require('../utils')
 
-    
-</article>
+		$('#rule1-formulas').html('')
+		for (var i in self.formulaList) {
+			var elem = $('&lt;a>&lt;/a>').text(self.formulaList[i]).addClass('formula-select')
+			elem.on('click', {index: i}, (event) => {
+				self.selectRuleSet(1, event.data.index)
+			})
+			$('#rule1-formulas').append(elem)
+			$('#rule1-formulas').append('&lt;hr class="my-4">')
+		}
 
-</section>
+		utils.typesetMath(null, 'rule1-formulas')
+	}
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

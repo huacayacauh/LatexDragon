@@ -44,17 +44,13 @@ body {
   padding: 0;
 }
 
-.sidebar-container {
-  background-color: #2c3e50;
-}
-
 .sidebar-button {
   width: 50px;
   height: 50px;
   background-color: Transparent;
   background-repeat:no-repeat;
   border: none;
-  cursor:pointer;
+  cursor: pointer;
   overflow: hidden;
   outline:none;
   color: white;
@@ -74,12 +70,45 @@ body {
 	margin-bottom: 50px;
 }
 
+.sidebar-container {
+  background-color: #2c3e50;
+}
+
 #devmode {
 	display: none;
 }
 
 .white-hr {
 	border-color: #eee;
+}
+
+.sidebar-not-a-button {
+  width: 50px;
+  height: 50px;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  color: white;
+}
+
+.tabulation {
+	margin-left: 50px;
+}
+
+.toolbar-bg-color {
+	background-color: #1d2a36;
+}
+
+.sidebar-bg-color {
+	background-color: #2c3e50;
+}
+
+.formula-select:hover {
+	font-size: 150%;
+	cursor: pointer;
 }
 
 /*=========================notiflog/rule list/game list=======================*/
@@ -256,6 +285,7 @@ body {
 #main-formule {
   width: 100%;
   display: inline-block;
+	text-align: center;
 }
 
 #tooltip {

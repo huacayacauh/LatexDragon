@@ -41,17 +41,20 @@
 				<!-- SIDEBAR -->
 				<div class="col-fixed-50 sidebar-container">
 					<ul class="nav sidebar-button-container">
-						<button id="serverStatus" class="sidebar-button sidebar-button-active text-danger" data-toggle="tooltip" data-placement="right" title="Serveur hors ligne">
+						<button id="serverStatus" class="sidebar-not-a-button text-danger" data-toggle="tooltip" data-placement="right" title="Serveur hors ligne">
 							<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
 						</button>
 						<button id="home" class="sidebar-button sidebar-button-active" data-toggle="tooltip" data-placement="right" title="Accueil" onclick="require('./js/Application').requestHtml('HOME')">
 							<i class="fa fa-home" aria-hidden="true"></i>
 						</button>
-						<button id="game" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Jouer" onclick="require('./js/Application').loadGameHandler()">
+						<button id="game" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Jouer" onclick="require('./js/Application').requestHtml('GAME')">
 							$f(x)$
 						</button>
 						<button id="settings" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Paramètres" onclick="require('./js/Application').requestHtml('SETTINGS')">
 							<i class="fa fa-cogs" aria-hidden="true"></i>
+						</button>
+						<button id="help" class="sidebar-button" data-toggle="tooltip" data-placement="right" title="Aide" onclick="require('./js/Application').requestHtml('HELP')">
+							<i class="fa fa-question fa-lg" aria-hidden="true"></i>
 						</button>
 					</ul>
 					<ul class="nav sidebar-button-container" id="devmode">

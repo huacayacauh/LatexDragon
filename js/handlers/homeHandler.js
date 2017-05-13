@@ -13,6 +13,6 @@ var self = module.exports = {
 	},
 
 	setAnimations: () => {
-			$('.main').animateCss('slideInDown', 0.5)
+			$('.main').animateCss('slideInDown', 0.3)
 	}
 }
