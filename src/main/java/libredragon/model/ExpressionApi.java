@@ -1145,7 +1145,6 @@ list.add(exprToExpression(
 tom_make_Com().visit(
 tom_make_Plus(e1,e2))));
 } catch(VisitFailure f) {
-lolo
 System.out.println("the strategy failed");
 }
 }

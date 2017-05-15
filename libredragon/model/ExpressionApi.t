@@ -174,7 +174,6 @@ public  class ExpressionApi {
                 try {
                   list.add(exprToExpression(`Com().visit(`Plus(e1, e2))));
                 } catch(VisitFailure f) {
-                  lolo
                   System.out.println("the strategy failed");
                 }
               }
