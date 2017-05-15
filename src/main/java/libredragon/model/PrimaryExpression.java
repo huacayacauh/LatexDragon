@@ -51,6 +51,11 @@ public class PrimaryExpression implements Expression{
 	}
 
 	@Override
+	public String generateSimpleExpression() {
+		return Configuration.graphic.generateSimplePrimaryExpression(this, type, name);
+	}
+
+	@Override
 	public boolean compare(Expression expression) {
 		if( ! (expression instanceof PrimaryExpression) ) return false;
 

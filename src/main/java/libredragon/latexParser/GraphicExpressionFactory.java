@@ -78,6 +78,41 @@ public interface GraphicExpressionFactory {
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id);
 
 	/**
+	 * Génère un objet graphique sans id.
+	 * @param expression : l'expression binaire à traduire
+	 * @param type : Son type
+	 * @param first : l'objet graphique correspondant au premier sous noeud
+	 * @param second : l'objet graphique correspondant au second sous noeud
+	 * @return l'objet graphique utilisateur
+	 */
+
+	 public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second);
+
+	 /**
+	  * Génère un objet graphique sans id.
+	  * @param expression : l'expression unaire à traduire
+	  * @param type : Son type
+	  * @param sub : l'objet graphique correspondant au sous noeud
+	  * @return l'objet graphique utilisateur
+	  */
+	 public String generateSimpleUnaryExpression(Expression expression, String type, Expression sub);
+
+	 /**
+	  * Génère un objet graphique sans id.
+	  * @param expression : l'expression primaire à traduire
+	  * @param type : Son type
+	  * @param name : Le nom de l'instance de l'objet primaire
+	  * @return l'objet graphique utilisateur
+	  */
+	 public String generateSimplePrimaryExpression(Expression expression, String type, String name);
+
+	 /**
+	  * Génère un objet graphique correspondant à une règle.
+	  * @param rule : la règle à traduire
+	  * @return l'objet graphique utilisateur
+	  */
+
+	/**
 	 * Génère un objet graphique correspondant à une règle.
 	 * @param rule : la règle à traduire
 	 * @return l'objet graphique utilisateur

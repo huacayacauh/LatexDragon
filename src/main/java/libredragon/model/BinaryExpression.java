@@ -51,6 +51,15 @@ public class BinaryExpression implements Expression {
 					id);
 	}
 
+	@Override
+	public String generateSimpleExpression() {
+		return Configuration.graphic.generateSimpleBinaryExpression(
+					this,
+					type,
+					first_expression,
+					second_expression);
+	}
+
 	public Expr expressionToExpr(){
 		return ExpressionApi.binaryExpressionToExpr(this, type, first_expression, second_expression);
 	}

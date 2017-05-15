@@ -34,6 +34,14 @@ public class UnaryExpression implements Expression {
 	}
 
 	@Override
+	public String generateSimpleExpression() {
+		return Configuration.graphic.generateSimpleUnaryExpression(
+					this,
+					type,
+					sub_expression);
+	}
+
+	@Override
 	public Expr expressionToExpr(){
 		return ExpressionApi.unaryExpressionToExpr(this, type, sub_expression);
 	}
