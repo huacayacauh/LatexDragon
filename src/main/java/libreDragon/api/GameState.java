@@ -116,15 +116,17 @@ public class GameState {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String deleteGame (@PathParam("gameid") String gameId) {
+		Reponse reponse = new Reponse();
+		String complementaryInfo, status;
 		if (!Data.isIn(gameId)) { // on test si la session de jeu existe
-			Reponse reponse = new Reponse();
-	    String complementaryInfo, status;
 			status = "FAILURE";
 			complementaryInfo = "Session introuvable !";
 			return reponse.info(gameId, status, complementaryInfo);
 		}
 		Data.closeSession(gameId);
 		System.out.println("Delete " + gameId);
-		return "cool";
+		status = "SUCCESS";
+		complementaryInfo = "Session ferme !";
+		return reponse.info(gameId, status, complementaryInfo);
 	}
 }
