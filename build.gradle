@@ -33,12 +33,17 @@ task callCL(type: Exec) {
     commandLine './cleanRuleParser.sh'
 }
 
+task generateExpression(type: Exec) {
+	executable "sh"
+  	args "-c", "./build.sh 'libredragon'"
+}
+
 
 // Set source directory
 sourceSets {
 	modelInit {
         java {
-            srcDir 'src/main/java/libreDragon/generateRuleParser'
+            srcDir 'src/main/java/libredragon/generateRuleParser'
         }
 }
         main {
@@ -52,31 +57,32 @@ sourceSets {
 
 
 task generateRuleParserGrammar (dependsOn: [callCL, modelInitClasses], type: JavaExec) {
-    main = 'libreDragon.generateRuleParser.Main'
+    main = 'libredragon.generateRuleParser.Main'
     classpath = sourceSets.modelInit.runtimeClasspath
     args = [ "$configPath/operators.cfg", "$buildDir/RPgrammar.jj" ]
 }
 
 task generateRuleParser (dependsOn: generateRuleParserGrammar, type: Exec) {
-    outputs.dir file("src/main/java/libreDragon/ruleParser")
-    commandLine "javacc-6.0/bin/javacc", "-OUTPUT_DIRECTORY=src/main/java/libreDragon/ruleParser", "$buildDir/RPgrammar.jj"
+    outputs.dir file("src/main/java/libredragon/ruleParser")
+    commandLine "javacc-6.0/bin/javacc", "-OUTPUT_DIRECTORY=src/main/java/libredragon/ruleParser", "$buildDir/RPgrammar.jj"
 }
 
 compileJava.dependsOn generateRuleParser.outputs.files
+compileJava.dependsOn generateExpression.outputs.files
 
 dependencies {
-    compile("javax.ws.rs:jsr311-api:1.1.1")
-	
+  compile("javax.ws.rs:jsr311-api:1.1.1")
+	compile files('tom/lib/tom-runtime-full.jar')
 	compile 'com.sun.jersey:jersey-server:1.19.1'
 	compile 'com.sun.jersey:jersey-core:1.19.1'
 	compile 'com.sun.jersey:jersey-servlet:1.19.1'
-    	testCompile "junit:junit-dep:4.10"
+  testCompile "junit:junit-dep:4.10"
 	def tomcatVersion = '7.0.57'
-    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
-    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
-        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
-    }
+  tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+    "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+  tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+    exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+  }
 }
 war {
 	archiveName 'LibreDragon.war'
@@ -87,4 +93,3 @@ war {
 // context where tomcat is deployed, by defautl localhost:8080/
 tomcatRun.contextPath = 'LibreDragon'
 tomcatRunWar.contextPath = 'LibreDragon'
-

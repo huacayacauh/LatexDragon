@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant for Tom-examples" default="examples" basedir=".">
+  <description>
+    This script prepare a bundle of Tom examples
+  </description>
+
+  <!-- set local properties for this build -->
+  <property file="../local.properties"/>
+
+  <property name="tomfork" value="on"/>
+  <property environment="env"/>
+  <property name="tom.home"        value="${env.TOM_HOME}"/>
+  <property name="tom.common.path" value="${tom.home}/lib"/>
+  <import file="${tom.common.path}/tom-common.xml"/>
+
+  <!-- some used directory location -->
+  <property name="examples.dir"   location="."/>
+  <property name="examples.dist"  location="dist"/>
+
+  <!-- where the examples a build: javac destDir -->
+  <property name="examples.gen"   location="src/main/java"/>
+  <property name="examples.lib"   value="lib"/>
+
+  <target name="prepare.examples">
+    <mkdir dir="${examples.dist}"/>
+  </target>
+
+  <!-- target debug to help finding properties problems -->
+  <target name="debug">
+    <echoproperties/>
+  </target>
+
+  <target name="clean.examples" description="Cleans examples directory">
+    <delete dir="${examples.gen}"/>
+  </target>
+
+  <target name="build">
+    <fail unless="example">
+      Please define the "example" to build
+    </fail>
+    <echo>Building example: ${example}</echo>
+    <subant target="build">
+      <filelist dir=".">
+        <file name="${example}/build.xml"/>
+      </filelist>
+      
+    </subant>
+      <!-- Exclude tests that run only with the new typer -->
+      <!--exclude name="subtypeinference/*"/-->
+  </target>
+
+  <target name="examples"
+          description="Builds the examples (at least some)"
+          depends="sub.all">
+  </target>
+
+  <target name="sub.all">
+    <subant target="build">
+      <fileset dir="." 
+        includes="*/build.xml" 
+      />
+    </subant>
+  </target>
+
+  <target name="clean"
+          description="Cleans everything in the project"
+          depends="clean.examples">
+  </target>
+</project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build the acmatching example" default="build" basedir="..">
+  <import file="../common.xml"/>
+  <property name="example" value="tuto"/>
+  <target name="build" depends="init">
+    <gomcompile/>
+    <tom.preset srcdir="${examples.dir}"
+      pretty="on"
+      optimize="off"
+      inline="off"
+      inlineplus="off"
+      optimize2="off"
+      destdir="src/main/java">
+      <include name="${example}/**/*.t"/>
+    </tom.preset>
+  </target>
+  <property name="distribute" value="yes"/>
+</project>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="common">
+  <property environment="env"/>
+  <property name="tom.home"        value="${env.TOM_HOME}"/>
+  <property name="tom.common.path" value="${tom.home}/lib"/>
+  <property name="nowarnings"      value="false"/>
+  <property name="javacDebug"      value="on"/>
+  <import file="${tom.common.path}/tom-common.xml"/>
+
+  <!-- set local properties for this build -->
+  <property file="../local.properties"/>
+
+  <!-- some used directory location -->
+  <property name="examples.dir"   location="."/>
+  <property name="examples.dist"  location="dist"/>
+
+  <property name="examples.lib"   value="lib"/>
+
+  <!-- where the examples a build: javac destDir -->
+  <property name="examples.build" location="build"/>
+
+  <target name="init" depends="tom.init">
+    <!-- to have something correct, check tom.home is defined to something meaningful
+    <fail unless="TOM_HOME"
+          message="TOM_HOME has to be defined in your environment, 
+          to find the Tom classes"/>-->
+    <mkdir dir="${examples.build}"/>
+    <path id="tom.examples.classpath">
+      <fileset dir="${examples.dir}/${examples.lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement path="${tom.classpath}"/>
+    </path>
+
+    <macrodef name="tomcompile">
+      <sequential>
+        <tom.preset srcdir="${examples.dir}"
+                    destdir="${examples.gen}">          
+          <include name="${example}/**/*.t"/>
+          <exclude name="${example}/**/*.g.t"/>
+        </tom.preset>
+      </sequential>
+    </macrodef>
+    <macrodef name="gomcompile">
+      <sequential>
+        <gom.preset srcdir="${examples.dir}"
+                    package="${example}">
+          <include name="${example}/**/*.gom"/>
+        </gom.preset>
+      </sequential>
+    </macrodef>
+  </target> 
+</project>
