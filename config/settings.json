@@ -5,6 +5,6 @@
   "notifTimer": 2000,
   "highlighting": true,
   "highlightColor": "#5ffe36",
-  "displayTooltip": false,
+  "displayTooltip": true,
   "devmode": true
 }
