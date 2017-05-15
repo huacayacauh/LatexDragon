@@ -33,10 +33,13 @@ const {ipcRenderer} = require('electron')
 
 /**
  * Called when the document finished loading and is ready.
- * Request the game html file (By default the app start on the game "tab")
+ * Initialize the window control buttons, the animateCss function, create the
+ * background process for the server status and synchronize the client with
+ * the server.
+ * Request the game html file (By default the app start on the 'HOME' tab)
  */
 $(document).ready (function () {
-	utils.setWindowsControlEvents()
+	utils.setWindowControlEvents()
 
 	utils.initAnimateCss()
 
@@ -55,6 +58,7 @@ $(document).ready (function () {
 
 /**
  * Called before the window close. Save everything (settings, gamestate ...).
+ * And close all  the background process.
  * @listens window~event:onbeforeunload
  */
 window.onbeforeunload = () => {
@@ -63,13 +67,21 @@ window.onbeforeunload = () => {
 	ipcRenderer.send('close-background-process')
 }
 
+/**
+ * Event received when the status of the server change. Update the server status
+ * variable in the app object and if the server was offline will synchronize
+ * automatically with the server. Also if the user was in the 'GAME' tab the tab
+ * will be reloaded.
+ * @listens module:main~event:server-status
+ */
 ipcRenderer.on('server-status', (event, arg) => {
 	app.serverStatus = arg
 	if (arg) {
 		$('#serverStatus').removeClass('text-danger')
 		$('#serverStatus').addClass('text-success')
 		$('#serverStatus').attr('data-original-title', 'Serveur en ligne')
-		app.synchronize()
+		if (app.gameState != null)
+			app.synchronize()
 		if (app.currentTab == 'GAME')
 			app.requestHtml('GAME')
 	}
@@ -82,11 +94,16 @@ ipcRenderer.on('server-status', (event, arg) => {
 	}
 })
 
+/**
+ * Event received when the synchronization is done, create the GameState object
+ * and if the user was on the game tab the tab is reloaded.
+ * @listens module:main~event:synchronization-done
+ */
 ipcRenderer.on('synchronization-done', (event, arg) => {
 	app.gameState = GameState.initGameState()
 
 	if (app.currentTab == 'GAME')
-		app.loadGameHandler()
+		app.requestHtml('GAME')
 })
 </code></pre>
         </article>
@@ -98,13 +115,13 @@ ipcRenderer.on('synchronization-done', (event, arg) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-application.html">application</a></li><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-gameState.html">gameState</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="GameState.html">GameState</a></li><li><a href="module-gameState-Game.html">Game</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enumHelper">enumHelper</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Request</title>
+    <title>JSDoc: Module: utils</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Request</h1>
+    <h1 class="page-title">Module: utils</h1>
 
     
 
@@ -28,9 +28,8 @@
 
 <header>
     
-        <h2>Request</h2>
         
-            <div class="class-description">Class Request, used to send HTTP request to the Java rest api</div>
+            
         
     
 </header>
@@ -39,177 +38,20 @@
     <div class="container-overview">
     
         
-
-    
-    <h2>Constructor</h2>
-    
-
-    <h4 class="name" id="Request"><span class="type-signature"></span>new Request<span class="signature">(serverUrl, type, dataType, responseHandler<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
+            <div class="description">Module containing a bunch of 'useful' functions.</div>
         
 
         
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>serverUrl</code></td>
             
 
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
 
 
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">server url to which the request is send to</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
 
 
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">type of the http request (GET, POST ...)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dataType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
 
 
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">type of the response (HTML, JSON, TEXT ...)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseHandler</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
 
 
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">function called when the request is completed, can be omitted</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -245,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line7">line 7</a>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -271,6 +113,7 @@
 
 
 
+        
     
     </div>
 
@@ -294,14 +137,14 @@
 
     
 
-    <h4 class="name" id=".buildRequest"><span class="type-signature">(static) </span>buildRequest<span class="signature">(requestName, responseHandler<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Request.html">Request</a>}</span></h4>
+    <h4 class="name" id=".initAnimateCss"><span class="type-signature">(static) </span>initAnimateCss<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Static method that create a request using EnumHelper.
+    Initialize animateCss by adding a function to jQuery handling the animation.
 </div>
 
 
@@ -310,98 +153,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>requestName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">name of the request defined in EnumHelper</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseHandler</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">function called when the request is completed, can be omitted</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -437,7 +188,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line72">line 72</a>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -460,24 +211,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Request.html">Request</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -486,14 +219,14 @@
 
     
 
-    <h4 class="name" id=".checkError"><span class="type-signature">(static) </span>checkError<span class="signature">(response, status, element<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object|bool}</span></h4>
+    <h4 class="name" id=".readConfigSync"><span class="type-signature">(static) </span>readConfigSync<span class="signature">(filename)</span><span class="type-signature"> &rarr; {Object|null}</span></h4>
 
     
 
 
 
 <div class="description">
-    Check if the request was successfull. Check first the status and then try to convertthe response to a JSON object to check for additional informations.
+    Read synchronously a file in /config if it exist.
 </div>
 
 
@@ -517,8 +250,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -531,38 +262,7 @@
 
         <tr>
             
-                <td class="name"><code>response</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">response from the request (jQuery ajax response)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>status</code></td>
+                <td class="name"><code>filename</code></td>
             
 
             <td class="type">
@@ -575,51 +275,10 @@
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">status response from the request</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>element</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">dom element used to display the notification</td>
+            <td class="description last">Name of then file</td>
         </tr>
 
     
@@ -660,7 +319,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line86">line 86</a>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -687,7 +346,7 @@
 <ul>
         <li>
 <div class="param-desc">
-    return the JSON object if there's no error.
+    If the fils exist
 </div>
 
 
@@ -707,7 +366,7 @@
     
         <li>
 <div class="param-desc">
-    return false if there's an error.
+    If the file doesn't exist
 </div>
 
 
@@ -718,7 +377,7 @@
     </dt>
     <dd>
         
-<span class="param-type">bool</span>
+<span class="param-type">null</span>
 
 
     </dd>
@@ -733,14 +392,14 @@
 
     
 
-    <h4 class="name" id="response"><span class="type-signature"></span>response<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".setWindowControlEvents"><span class="type-signature">(static) </span>setWindowControlEvents<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Store the response from the request, and if defined call the responseHandler function.
+    Set the event handler for the buttons controlling the window (close,maximize and minimize)
 </div>
 
 
@@ -749,78 +408,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>response</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">response from the request (jQuery ajax response)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>status</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">status response from the request</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -856,7 +443,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line55">line 55</a>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -887,14 +474,14 @@
 
     
 
-    <h4 class="name" id="send"><span class="type-signature"></span>send<span class="signature">(item<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".typesetMath"><span class="type-signature">(static) </span>typesetMath<span class="signature">(callback<span class="signature-attributes">opt</span>, elementId<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Execute an asynchronous HTTP request to the server and call this.response() when complete.
+    Call mathJax to typeset any latex elements in the window.If the elementId parameter is present mathJax will only typeset the element.
 </div>
 
 
@@ -932,7 +519,40 @@
 
         <tr>
             
-                <td class="name"><code>item</code></td>
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">fonction to call after the typeset is done</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>elementId</code></td>
             
 
             <td class="type">
@@ -958,7 +578,7 @@
 
             
 
-            <td class="description last">string of arguments that need to be sent</td>
+            <td class="description last">Id of the dom element to typeset (not a jQuery selector)</td>
         </tr>
 
     
@@ -999,7 +619,452 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_Request.js.html">js/Request.js</a>, <a href="js_Request.js.html#line29">line 29</a>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".writeConfig"><span class="type-signature">(static) </span>writeConfig<span class="signature">(filename, data, type<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Write data to a file synchronously or asynchronously to the config/ folder.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filename</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">name of the file</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">data to write</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">synchronous/asynchronous, default is asynchronous</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~animateCss"><span class="type-signature">(inner) </span>animateCss<span class="signature">(animationName, duration<span class="signature-attributes">opt</span>, delay<span class="signature-attributes">opt</span>, onanimationend<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Animate a DOM element using css animations.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>animationName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Name of the animation, refer to animateCss doc</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">duration of the animation in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">delay before the start of the animation in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onanimationend</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">callback called when the animation is over</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_utils.js.html">js/utils.js</a>, <a href="js_utils.js.html#line43">line 43</a>
     </li></ul></dd>
     
 

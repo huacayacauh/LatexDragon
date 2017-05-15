@@ -139,11 +139,11 @@ body {
 	text-align: center;
 }
 
-#rules-list::-webkit-scrollbar, #game-list::-webkit-scrollbar {
+#rules-list::-webkit-scrollbar, #game-list::-webkit-scrollbar, #tooltip-container::-webkit-scrollbar {
 	width: 10px;
 }
 
-#rules-list::-webkit-scrollbar-thumb, #game-list::-webkit-scrollbar-thumb {
+#rules-list::-webkit-scrollbar-thumb, #game-list::-webkit-scrollbar-thumb, #tooltip-container::-webkit-thumb {
 	border-radius: 8px;
 	background-color: #eee;
 }
@@ -290,8 +290,18 @@ body {
 
 #tooltip {
   position: absolute;
-  display: none;
+  display: hidden;
   z-index: 101;
+	overflow: hidden;
+}
+
+#tooltip-container {
+	position: relative;
+	overflow-y: scroll;
+}
+
+.tooltip-content {
+	display: block;
 }
 
 #timeline {

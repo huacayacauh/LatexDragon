@@ -590,9 +590,12 @@ var self = module.exports = {
 		instance.requestHtml('GAME')
 	},
 
-	deleteGame: (index) => {
+	deleteGame: (event, index) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
+
+		if (event != undefined)
+			event.stopPropagation()
 
 		var gameId
 
@@ -612,6 +615,8 @@ var self = module.exports = {
 
 		instance.gameState.updateCurrent()
 
+		console.log(instance.gameState.currentGame)
+
 		instance.requestHtml('GAME')
 	},
 
@@ -628,8 +633,8 @@ var self = module.exports = {
 			if (current.countdown == null)
 				current.countdown = new Countdown (Countdown.minutesToMilliseconds(2), self.timerOnOver, self.timerOnUpdate)
 
-			else if (typeof current.countdown === 'number')
-				current.countdown = new Countdown (current.countdown, self.timerOnOver, self.timerOnUpdate)
+			else if (current.countdown.state  == null)
+				current.countdown = new Countdown (current.countdown.duration, self.timerOnOver, self.timerOnUpdate, current.countdown.remainingTime)
 
 			else if (current.countdown.state == 'OVER') {
 				instance.displayErrorNotification('#gameNotification', 'Le timer est fini, la partie est donc fini et devrait être supprimer ou recommencer.')
@@ -670,16 +675,21 @@ var self = module.exports = {
 			var elem = $('<div></div>')
 			if (i == instance.gameState.currentGame) {
 				if (instance.gameState.array[i].mode == 'NORMAL')
-					elem.append('<div><i class="fa fa-long-arrow-right fa-fw text-info"></i><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + ' -> Temps restant : ' + instance.gameState.array[i].countdown + ' </div>')
+					elem.append('<div><i class="fa fa-long-arrow-right fa-fw text-info"></i><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(event,' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + ' -> Temps restant : ' + instance.gameState.array[i].countdown + ' </div>')
 				else
-					elem.append('<div><i class="fa fa-long-arrow-right fa-fw text-info"></i><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
+					elem.append('<div><i class="fa fa-long-arrow-right fa-fw text-info"></i><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(event,' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
 			}
 			else {
 				if (instance.gameState.array[i].mode == 'NORMAL')
-					elem.append('<div><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + ' -> Temps restant : ' + instance.gameState.array[i].countdown + ' </div>')
+					elem.append('<div><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(event,' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + ' -> Temps restant : ' + instance.gameState.array[i].countdown + ' </div>')
 				else
-					elem.append('<div><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
+					elem.append('<div><a onclick="require(\'./js/handlers/gameHandler\').deleteGame(event,' + i + ')" class="text-danger"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>' + instance.gameState.array[i].mode + '</div>')
 			}
+
+			if (instance.gameState.array[i].useTheorem)
+				elem.append('Avec théorème')
+			else
+				elem.append('Sans théorème')
 
 			if (instance.gameState.array[i].currentState != null)
 				elem.append('<div>' + instance.gameState.array[i].currentState.timeline.elements[instance.gameState.array[i].currentState.timeline.current].text + '</div>')

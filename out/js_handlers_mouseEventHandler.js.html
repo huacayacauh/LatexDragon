@@ -30,7 +30,7 @@
 const instance = require ('../Application')
 
 /**
- * module containing handler for all mouse click related events in the game tab
+ * Module containing handlers for all mouse click related events in the game tab
  * @module mouseEventHandler
  */
 var self = module.exports = {
@@ -62,7 +62,7 @@ var self = module.exports = {
   },
 
   /**
-   * Handler of the mouseenter event, when triggered create the tooltip and displays it.
+   * Handler of the mouseover event, when triggered create the tooltip and displays it.
    * @param {Event} event jQuery Event object
    */
   mouseoverHandler: function (event) {
@@ -74,7 +74,9 @@ var self = module.exports = {
 
     if ($('#tooltip:hidden'))
       $('#tooltip').show(100)
-    $('#tooltip').css('top', event.pageY+20)
+
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip').css('top', event.pageY+10)
     $('#tooltip').css('left', event.pageX+10)
   },
 
@@ -95,13 +97,15 @@ var self = module.exports = {
   mousemoveHandler: (event) => {
     event.stopPropagation()
 
-    $('#tooltip:visible').css('top', event.pageY+20)
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip:visible').css('top', event.pageY+10)
     $('#tooltip:visible').css('left', event.pageX+10)
   },
 
   /**
    * Handler of the contextmenu event, when triggered create the tooltip and displays it
-   * but also deactivate the mouseover, mouseleave and mousemove handlers.
+   * but also deactivate the mouseover, mouseleave and mousemove handlers this
+	 * way the tooltip stay in place.
    * @param {Event} event jQuery Event object
    */
   contextmenuHandler: function (event) {
@@ -112,7 +116,8 @@ var self = module.exports = {
 
     if ($('#tooltip:hidden'))
       $('#tooltip').show(100)
-    $('#tooltip').css('top', event.pageY+20)
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip').css('top', event.pageY+10)
     $('#tooltip').css('left', event.pageX+10)
 
     for (var i in event.data.value.ids) {
@@ -125,11 +130,11 @@ var self = module.exports = {
   /**
    * Create the list of elements that the tooltip displays.
    * @param {Object} list list of elements to be displayed in the tooltip
-   * @param {string} id id of the elment who triggered the event, used to display the correct informations
+   * @param {String} id id of the elment who triggered the event, used to display the correct informations
    */
   getTooltipList: (list, id) => {
 		const gameHandler = require('./gameHandler')
-		
+
     var options = new Array()
 
     for (var i in list) {
@@ -139,7 +144,7 @@ var self = module.exports = {
       }
     }
 
-    $('#tooltip').html('')
+    $('#tooltip-container').html('')
     for (var i in options) {
       var obj = {expId:id, ruleId:options[i].ruleId, context:options[i].type}
       var color = 'info'
@@ -148,8 +153,8 @@ var self = module.exports = {
       else if (options[i].type == 'drag_and_drop') color = 'danger'
 
       var tmp = $('&lt;a>' + options[i].text + '&lt;/a>').on(
-        'click', { value:obj }, gameHandler.gameRuleRequest).addClass('list-group-item').addClass('list-group-item-' + color)
-      $('#tooltip').append(tmp)
+        'click', { value:obj }, gameHandler.gameRuleRequest).addClass('list-group-item tooltip-content').addClass('list-group-item-' + color)
+      $('#tooltip-container').append(tmp)
     }
 
 		utils.typesetMath(null, 'tooltip')
@@ -169,7 +174,36 @@ var self = module.exports = {
 
       self.setEvents()
     }
-  }
+  },
+
+	/**
+	 * Set the tooltip size depending on the size of the screen.
+	 * The size of the tooltip is 700*500 (couting the scrollbars) if there is
+	 * enough space on the screen, otherwise the size of the tooltip is whatever
+	 * space is left.
+	 * The calcul is screenWidth - (cursorX + offsetFromTheCursor + scrollbarSize)
+	 * and the same from the height.
+	 * @param {int} cursorX X position of the cursor on the screen
+	 * @param {int} cursorY Y position of the cursor on the screen
+	 */
+	checkForTooltipSize: (cursorX, cursorY) => {
+		var width, height
+		var screenWidth = $(document).width(), screenHeight = $(document).height()
+		var tooltipMaxWidth = screenWidth - (cursorX + 10 + 8), tooltipMaxHeight = screenHeight - (cursorY + 10 + 8)
+
+		if (tooltipMaxWidth >= 700)
+			width = 700
+		else
+			width = tooltipMaxWidth
+		if (tooltipMaxHeight >= 500)
+			height = 500
+		else
+			height = tooltipMaxHeight
+
+		$('#tooltip-container').width(width)
+		$('#tooltip-container').height(height)
+
+	}
 }
 </code></pre>
         </article>
@@ -181,13 +215,13 @@ var self = module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-application.html">application</a></li><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-gameState.html">gameState</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="GameState.html">GameState</a></li><li><a href="module-gameState-Game.html">Game</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enumHelper">enumHelper</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

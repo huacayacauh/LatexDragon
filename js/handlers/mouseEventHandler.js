@@ -2,7 +2,7 @@ const utils = require('../utils')
 const instance = require ('../Application')
 
 /**
- * module containing handler for all mouse click related events in the game tab
+ * Module containing handlers for all mouse click related events in the game tab
  * @module mouseEventHandler
  */
 var self = module.exports = {
@@ -34,7 +34,7 @@ var self = module.exports = {
   },
 
   /**
-   * Handler of the mouseenter event, when triggered create the tooltip and displays it.
+   * Handler of the mouseover event, when triggered create the tooltip and displays it.
    * @param {Event} event jQuery Event object
    */
   mouseoverHandler: function (event) {
@@ -46,7 +46,9 @@ var self = module.exports = {
 
     if ($('#tooltip:hidden'))
       $('#tooltip').show(100)
-    $('#tooltip').css('top', event.pageY+20)
+
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip').css('top', event.pageY+10)
     $('#tooltip').css('left', event.pageX+10)
   },
 
@@ -67,13 +69,15 @@ var self = module.exports = {
   mousemoveHandler: (event) => {
     event.stopPropagation()
 
-    $('#tooltip:visible').css('top', event.pageY+20)
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip:visible').css('top', event.pageY+10)
     $('#tooltip:visible').css('left', event.pageX+10)
   },
 
   /**
    * Handler of the contextmenu event, when triggered create the tooltip and displays it
-   * but also deactivate the mouseover, mouseleave and mousemove handlers.
+   * but also deactivate the mouseover, mouseleave and mousemove handlers this
+	 * way the tooltip stay in place.
    * @param {Event} event jQuery Event object
    */
   contextmenuHandler: function (event) {
@@ -84,7 +88,8 @@ var self = module.exports = {
 
     if ($('#tooltip:hidden'))
       $('#tooltip').show(100)
-    $('#tooltip').css('top', event.pageY+20)
+		self.checkForTooltipSize(event.pageX, event.pageY)
+    $('#tooltip').css('top', event.pageY+10)
     $('#tooltip').css('left', event.pageX+10)
 
     for (var i in event.data.value.ids) {
@@ -97,11 +102,11 @@ var self = module.exports = {
   /**
    * Create the list of elements that the tooltip displays.
    * @param {Object} list list of elements to be displayed in the tooltip
-   * @param {string} id id of the elment who triggered the event, used to display the correct informations
+   * @param {String} id id of the elment who triggered the event, used to display the correct informations
    */
   getTooltipList: (list, id) => {
 		const gameHandler = require('./gameHandler')
-		
+
     var options = new Array()
 
     for (var i in list) {
@@ -111,7 +116,7 @@ var self = module.exports = {
       }
     }
 
-    $('#tooltip').html('')
+    $('#tooltip-container').html('')
     for (var i in options) {
       var obj = {expId:id, ruleId:options[i].ruleId, context:options[i].type}
       var color = 'info'
@@ -120,8 +125,8 @@ var self = module.exports = {
       else if (options[i].type == 'drag_and_drop') color = 'danger'
 
       var tmp = $('<a>' + options[i].text + '</a>').on(
-        'click', { value:obj }, gameHandler.gameRuleRequest).addClass('list-group-item').addClass('list-group-item-' + color)
-      $('#tooltip').append(tmp)
+        'click', { value:obj }, gameHandler.gameRuleRequest).addClass('list-group-item tooltip-content').addClass('list-group-item-' + color)
+      $('#tooltip-container').append(tmp)
     }
 
 		utils.typesetMath(null, 'tooltip')
@@ -141,5 +146,34 @@ var self = module.exports = {
 
       self.setEvents()
     }
-  }
+  },
+
+	/**
+	 * Set the tooltip size depending on the size of the screen.
+	 * The size of the tooltip is 700*500 (couting the scrollbars) if there is
+	 * enough space on the screen, otherwise the size of the tooltip is whatever
+	 * space is left.
+	 * The calcul is screenWidth - (cursorX + offsetFromTheCursor + scrollbarSize)
+	 * and the same from the height.
+	 * @param {int} cursorX X position of the cursor on the screen
+	 * @param {int} cursorY Y position of the cursor on the screen
+	 */
+	checkForTooltipSize: (cursorX, cursorY) => {
+		var width, height
+		var screenWidth = $(document).width(), screenHeight = $(document).height()
+		var tooltipMaxWidth = screenWidth - (cursorX + 10 + 8), tooltipMaxHeight = screenHeight - (cursorY + 10 + 8)
+
+		if (tooltipMaxWidth >= 700)
+			width = 700
+		else
+			width = tooltipMaxWidth
+		if (tooltipMaxHeight >= 500)
+			height = 500
+		else
+			height = tooltipMaxHeight
+
+		$('#tooltip-container').width(width)
+		$('#tooltip-container').height(height)
+
+	}
 }

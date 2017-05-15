@@ -4,3 +4,5 @@ bootstrap 4
 font awesome
 animate.css
 tether (bootstrap tooltip)
+
+jsdoc --readme README.md ./main.js ./js ./js/handlers

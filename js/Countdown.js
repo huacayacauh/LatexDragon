@@ -5,19 +5,27 @@ class Countdown {
    * @param {int} duration duration of the countdown (in milliseconds)
    * @param {function} [overHandler] function called when the countdown is over
    * @param {function} [updateHandler] function called each time the countdown update
+	 * @param {int} [remainingTime] remaining time, optional used to create and already started countdown
    */
-  constructor (duration, overHandler, updateHandler) {
-    this.remainingTime
+  constructor (duration, overHandler, updateHandler, remainingTime) {
+		if (remainingTime != undefined) {
+			this.remainingTime = remainingTime
+			this.state = 'STOPPED'
+		}
+		else {
+			this.remainingTime
+			this.state = 'NOT_STARTED'
+		}
+
     this.end
     this.duration = duration
     this.onOver = overHandler
     this.onUpdate = updateHandler
-    this.state = 'NOT_STARTED'
   }
 
   /**
-   * Funciton used to start the countdown if it's not already started.
-   * @throws Will throw an error if the countdown is already started
+   * Function used to start the countdown.
+   * @throws Will throw an error if the countdown is over
    */
   startCountdown () {
     if (this.state == 'NOT_STARTED') {
@@ -109,8 +117,14 @@ class Countdown {
     return minutes + ':' + seconds
   }
 
+	/**
+	 * Function called when the object is serialized.
+	 */
 	toJSON () {
-		return this.remainingTime
+		return {
+			'duration': this.duration,
+			'remainingTime': this.remainingTime
+		}
 	}
 
   /**
@@ -126,6 +140,7 @@ class Countdown {
 
 /**
  * Countdown module.
+ * Check the Countdown class for more informations.
  * @module countdown
  * @see {@link Countdown}
  */

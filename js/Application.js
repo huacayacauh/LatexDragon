@@ -2,16 +2,16 @@
 
 /**
  * Class controlling the different tab of the application.
- * The application is divided in 3 (4 counting the doc) 'tab'.
+ * The application is divided in 'tabs' which this class is supposed to control.
  * This class is used to switch between tab and to initialize everything the tabs
  * need in order to run.
  * Can be considered as the 'main' object running the application.
  * @property {Settings} settings Settings of the application
  * @property {String} currentTab String containing the name of the tab currently loaded
  * @property {module} handler Module handling the current tab
- * @property {Array} windows Array of BrowserWindow containing all the windows of the app (app & doc)
- * @property {jQuery} loader DOM element used to display while the tab is being loaded
+ * @property {BrowserWindow[]} windows Array of BrowserWindow containing all the windows of the app (app & doc)
  * @property {GameState} gameState Array containing all the informations on the state of the differents games
+ * @property {bool} serverStatus Boolean representing the status of the server (true = online, false = offline)
  * @property {Notification[]} notifLog Log of all the notifications issued since the start of the app
  * @property {Application} instance Reference to the only instance of Application
  */
@@ -38,13 +38,10 @@ class Application {
       //Array containing the app windows (app & doc)
       this.windows = remote.getGlobal('windowsArray')
 
-      //Dom element of the spinner used during tab loading
-      this.loader = $('<div></div>').addClass('spinner')
-
 			//Array containing all the informations on the state of the differents games
 			this.gameState = null
 
-			//Status of ther server (true = online, false = offline)
+			//Status of the server (true = online, false = offline)
 			this.serverStatus = false
 
 			//Log of all the notifications issued since the start of the app
@@ -61,7 +58,7 @@ class Application {
    * Send a request to get an html file, and change the active tab.
    * Used to get the diffrent html file composing the app 'tabs'.
    * Call loadHtml() when completed.
-   * @param {String} string Name of the request (in this case it's also the name of the tab)
+   * @param {String} string Name of the request (which is also the name of the tab)
    */
   requestHtml (string) {
 		const Request = require('./Request')
@@ -69,8 +66,6 @@ class Application {
 		$('[data-toggle="tooltip"]').tooltip('hide')
 
     var request = Request.buildRequest(string, this.loadHtml)
-
-    $('.main').html(this.loader)
 
     request.send()
 
@@ -133,6 +128,7 @@ class Application {
 	loadHandler () {
 		const EnumHelper = require('./EnumHelper')
 
+		//Unload the old tab (optionnal)
 		if (this.handler && typeof this.handler.unload === 'function') {
 			console.log('[CLIENT]: unloading...')
 			this.handler.unload()
@@ -140,14 +136,17 @@ class Application {
 
 		this.handler = undefined
 
+		//Look for the new handler
 		for (var i in EnumHelper.TABS) {
 			if (EnumHelper.TABS[i].name == this.currentTab)
 				this.handler = require('./handlers/' + EnumHelper.TABS[i].handler)
 		}
 
+		//If a handler has been found for the tab
 		if (this.handler != undefined)
 			this.handler.init()
 
+		//Don't apply the settings for the GAME tab to prevent a bug with mathJax font size property
 		if (this.currentTab != 'GAME')
 			this.settings.applySettings()
 	}
@@ -180,7 +179,7 @@ class Application {
    * Display an error notification.
    * Call displayNotification who handle the creation and display of the
    * notification.
-   * @param {String} element identifier of the dom element who will append the notification
+   * @param {String} [element] identifier of the dom element who will append the notification
    * @param {String} message message to be displayed on the notification
    */
   displayErrorNotification (element, message) {
@@ -191,7 +190,7 @@ class Application {
    * Display a success notification.
    * Call displayNotification who handle the creation and display of the
    * notification.
-   * @param {String} element identifier of the dom element who will append the notification
+   * @param {String} [element] identifier of the dom element who will append the notification
    * @param {String} message message to be displayed on the notification
    */
   displaySuccessNotification (element, message) {
@@ -202,10 +201,10 @@ class Application {
    * Display a notification.
 	 * Create a new notification and display it, the newly created notification is
 	 * then added to the notification log list. If no element is given the notification
-	 * won't be displayed but still added to the log
+	 * won't be displayed but still added to the log.
    * @param {String} [element] identifier of the DOM element who will append the notification
    * @param {String} message message to be displayed on the notification
-   * @param {String} type type of the notification (error, success ...) correspond to bootsrap 4 colors (danger, warning, success and info)
+   * @param {String} type type of the notification (error, success ...) correspond to bootsrap colors (danger, warning, success, ...)
 	 * @see {@link Notification}
    */
   displayNotification (element, message, type) {
@@ -258,10 +257,11 @@ class Application {
 	 * The Strings parameters for the buttons can be empty.
 	 * @param {String} title title text
 	 * @param {String} content content text
-	 * @param {String} leftButton left button text
-	 * @param {String} rightButton right button text
-	 * @param {function} leftButtonHandler left button onclick event handler
-	 * @param {function} rightButtonHandler right button onclick event handler
+	 * @param {String} [leftButton] left button text
+	 * @param {String} [rightButton] right button text
+	 * @param {function} [leftButtonHandler] left button onclick event handler
+	 * @param {function} [rightButtonHandler] right button onclick event handler
+	 * @param {function} [onHide] handler for when the popup is closed
 	 */
 	displayPopup (title, content, leftButton, rightButton, leftButtonHandler, rightButtonHandler, onHide) {
 		$('#popup-title').text(title)
@@ -313,6 +313,13 @@ class Application {
     return remote.process
   }
 
+	/**
+	 * synchronize the client with the server.
+	 * Ask the main process to create a backgournd process to handle the
+	 * synchronization, when the synchronization is over this process should receive
+	 * a 'synchronization-done' event.
+	 * While the synchronization is occuring the gameState object is null.
+	 */
 	synchronize () {
 		const utils = require('./utils')
 		const {ipcRenderer} = require('electron')
@@ -323,4 +330,10 @@ class Application {
 	}
 }
 
+/**
+ * Application module.
+ * Check the Application class for more informations.
+ * @module application
+ * @see {@link Application}
+ */
 module.exports = new Application()

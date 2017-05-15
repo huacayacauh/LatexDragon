@@ -28,22 +28,33 @@
         <article>
             <pre class="prettyprint source linenums"><code>const utils = require('./utils')
 
+/**
+ *Class handling the states of the games
+ * @property {Game[]} array Array containing all the informations on the state of the differents games
+ * @property {int} currentGame Index of the current game (-1 if there's no game)
+ * @property {int} maxGame Maximum number of game
+ * @property {Game} inCreation Game in creation used to keep a reference of a game being created without adding it to the main array, at least not until we finished creating it
+ */
 class GameState {
 	constructor () {
 		//Array containing all the informations on the state of the differents games
 		this.array = []
 
-		//Index of the current game
+		//Index of the current game (-1 if there's no game)
 		this.currentGame = -1
 
 		//maximum number of gameState
 		this.maxGame = 20
 
+		//Game in creation used to keep a reference of a game being created without adding it to the main array, at least not until we finished creating it.
 		this.inCreation = null
 	}
 
 	/**
-	 *
+	 * Create a GameState object and initialize it with the game contained in the
+	 * 'config/gamestate.json' file.
+	 * @returns {GameState} Return the GameState created
+	 * @static
 	 */
 	static initGameState () {
 		var data = utils.readConfigSync('gamestate.json')
@@ -66,29 +77,59 @@ class GameState {
 		return gameState
 	}
 
+	/**
+	 * Return true if the current game is complete, return false otherwise.
+	 * @return {bool}
+	 */
 	isComplete () {
 		return this.array[this.currentGame].isComplete()
 	}
 
+	/**
+	 * Take a game as an argument and add it to the array if there's still room
+	 * for it.
+	 * @param {Game} game Game object to add to the array
+	 * @return {bool} return true if the game was successfully added, false otherwise
+	 */
 	addGame (game) {
-		if (this.array.length &lt; this.maxGame)
+		if (this.array.length &lt; this.maxGame) {
 			this.array.push(game)
+			return true
+		}
+		else {
+			console.log('[CLIENT]: can\' add any more games, no more place left')
+			return false
+		}
 	}
 
+	/**
+	 * Return the current game.
+	 * @return {Game}
+	 */
 	getCurrent () {
 		return this.array[this.currentGame]
 	}
 
+	/**
+	 * Delete the game with the id, and update the currentGame if we deleted the
+	 * current game.
+	 * @param {String} id id of the game to be deleted
+	 */
 	delete (id) {
 		for (var i in this.array) {
 			if (this.array[i].gameId == id) {
 				this.array.splice(i, 1)
+				if (this.currentGame == i)
+					this.updateCurrent()
 				break
 			}
 		}
-		this.updateCurrent()
 	}
 
+	/**
+	 * Update the current game, if there's no game in the array the value of
+	 * currentGame is -1, otherwise it's the first one (0).
+	 */
 	updateCurrent () {
 		if (this.array.length == 0)
 			this.currentGame = -1
@@ -96,16 +137,30 @@ class GameState {
 			this.currentGame = 0
 	}
 
+	/**
+	 * Start the creation of a new Game soon to be added to the array (when it's
+   * completed).
+	 */
 	startCreation () {
 		this.inCreation = new Game()
 	}
 
+	/**
+	 * Finish the creation of the game by adding it to the array and updating the
+	 * currentGame to be the one newly created.
+	 * @throws will throw an error if the game to add is null
+	 */
 	finishCreation () {
+		if (this.inCreation == null)
+			throw '[ERROR]: game to add is null'
 		this.addGame(this.inCreation)
 		this.inCreation = null
 		this.currentGame = this.array.length-1
 	}
 
+	/**
+	 * Will stop the countdown of every game that has one currently running.
+	 */
 	stopCountdown () {
 		for (var i in this.array) {
 			if ((this.array[i].countdown != null) &amp;&amp; (this.array[i].countdown.state == 'STARTED'))
@@ -113,17 +168,43 @@ class GameState {
 		}
 	}
 
+	/**
+	 * Create a new Game object.
+	 * Wanted to make Game private and only accesible to GameState but if there's a
+	 * function that make it public anyway whats the point.
+	 * @return {Game}
+	 */
 	static getNewGame () {
 		return new Game()
 	}
 
+	/**
+	 * Mainly used for serialization, only serialize the array of games.
+	 */
 	toString () {
 		return JSON.stringify(this.array, null, 2)
 	}
 }
 
+/**
+ * GameState module.
+ * Check the GameState class for more informations.
+ * @module gameState
+ * @see {@link GameState}
+ */
 module.exports = GameState
 
+/**
+ * Class representing the state of a game
+ * @property {String} gameId Id of the client on the server.
+ * @property {int} formulaId Id of which formula the game is using.
+ * @property {String} formulaLatex Latex string of the formula.
+ * @property {String} mode Which mode the player is currently playing with.
+ * @property {int} ruleSet Which set of rules the player is currently playing with.
+ * @property {bool} useTheorem Boolean, Do the game use theorem created by users ?
+ * @property {Countdown} countdown The countdown of the game, is null expect if the game mode is normal.
+ * @property {Object} currentState Json object of the last/current game request to the server (see wiki for more informations)
+ */
 class Game {
 
 	constructor () {
@@ -155,6 +236,7 @@ class Game {
 	/**
 	 * Return true if the object is complete meaning all his fields are filled in.
 	 * Return false otherwise.
+	 * @return {bool}
 	 */
 	isComplete () {
 		if ((this.gameId != null) &amp;&amp; (this.formulaId != null) &amp;&amp; (this.mode != null) &amp;&amp; (this.ruleSet != null) &amp;&amp; (this.useTheorem != null))
@@ -172,13 +254,13 @@ class Game {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-application.html">application</a></li><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-gameState.html">gameState</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="GameState.html">GameState</a></li><li><a href="module-gameState-Game.html">Game</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enumHelper">enumHelper</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

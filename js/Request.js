@@ -1,6 +1,9 @@
 const EnumHelper = require ('./EnumHelper')
 
-/** Class Request, used to send HTTP request to the Java rest api */
+/**
+ * Class Request, used to send HTTP request to the Java rest api
+ *
+ */
 class Request {
   /**
    * @param {String} serverUrl server url to which the request is send to
@@ -63,7 +66,7 @@ class Request {
    * Static method that create a request using EnumHelper.
    * @param {String} requestName name of the request defined in EnumHelper
    * @param {function} [responseHandler] function called when the request is completed, can be omitted
-   * @returns {Request}
+   * @return {Request}
    * @static
    */
 	static buildRequest (requestName, responseHandler) {

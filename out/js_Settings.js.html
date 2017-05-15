@@ -30,10 +30,14 @@
 class Settings {
 
 	/**
-	* @param {string} color color of the background (grandient)
-	* @param {string} mathSize font size of the mathJax contained in the div #main-formule
+	* @param {String} color color of the background (grandient), default is
+	* @param {String} mathSize font size of the mathJax contained in the div #main-formule
 	* @param {bool} autoCloseNotif boolean used to determine if the app notifications are closed automatically or not
 	* @param {int} notifTimer value (in milliseconds) used for the notif lifespan if autoCloseNotif is true
+	* @param {bool} highlighting do we highlight the formula ?
+	* @param {String} highlightColor color of the highlight
+	* @param {bool} displayTooltip do we display the tooltip when the user mouse over the formula ?
+	* @param {bool} devmode is the app using devmode ?
 	*/
 	constructor (color = 'linear-gradient(to bottom, #1AD6FD, #1D62F0)', mathSize = '50px', autoCloseNotif = true, notifTimer = 2000, highlighting = true, highlightColor = '#eee', displayTooltip = true, devmode = false) {
 		this.color = color
@@ -79,8 +83,6 @@ class Settings {
 		//Apply background color
 		$('html').css('background-image', this.color)
 		//Apply mathJax font size
-		/*if ($('#main-formule')[0] != undefined)
-			$('#main-formule')[0].style.setProperty('font-size', this.mathSize, 'important')*/
 		$('#main-formule').css('font-size', this.mathSize)
 
 		console.log('[CLIENT]: Settings applied')
@@ -88,6 +90,7 @@ class Settings {
 
 	/**
 	* Set the color attribute, apply the changes and display a message.
+	* @param {String} value value of the new color
 	*/
 	setColor (value) {
 		this.color = value
@@ -99,6 +102,7 @@ class Settings {
 
 	/**
 	* Set the mathSize attribute, apply the changes and display a message.
+	* @param {String} value value of the font size
 	*/
 	setMathSize (value) {
 		this.mathSize = value
@@ -110,6 +114,7 @@ class Settings {
 
 	/**
 	* Set the autoCloseNotif attribute and display a message.
+	* @param {bool} value
 	*/
 	setAutoCloseNotif (value) {
 		this.autoCloseNotif = value
@@ -120,6 +125,7 @@ class Settings {
 
 	/**
 	* Set the highlighting attribute and display a message.
+	* @param {bool} value
 	*/
 	setHighlighting (value) {
 		this.highlighting = value
@@ -130,6 +136,7 @@ class Settings {
 
 	/**
 	* Set the highlight color attribute and display a message.
+	* @param {String} value value of the new highlight color
 	*/
 	setHighlightColor (value) {
 		this.highlightColor = value
@@ -140,6 +147,7 @@ class Settings {
 
 	/**
 	* Set the display tooltip attribute and display a message.
+	* @param {bool} value
 	*/
 	setDisplayTooltip (value) {
 		this.displayTooltip = value
@@ -158,6 +166,7 @@ class Settings {
 
 /**
 * Settings module.
+* Check the Settings class for more informations.
 * @module settings
 * @see {@link Settings}
 */
@@ -172,13 +181,13 @@ module.exports = Settings
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-application.html">application</a></li><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-gameState.html">gameState</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="GameState.html">GameState</a></li><li><a href="module-gameState-Game.html">Game</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enumHelper">enumHelper</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

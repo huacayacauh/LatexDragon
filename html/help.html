@@ -96,6 +96,16 @@
 					<br/>
 					<div class="tabulation">
 						<h5>Timeline</h5>
+						La timeline contient tous les états de la partie, du début à l'état actuel, l'état réprésenté en rouge est l'état actuel, ceux à gauche de l'état rouge sont les précédent, ceux à droite sont les suivants. Cliquer sur l'un de ces états va vous placer sur l'état sur lequel vous avez cliquer. Si vous n'êtes pas sur le dernier état dans la liste et que vous effectuer une action (appliquer une règles) tout les états suivant seront perdu.<br/><br/>
+						<a class="btn-red" disabled><i class="fa fa-chevron-down fa-2x" aria-hidden="true"></i></a>
+						<a class="btn-yellow" disabled><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i></a>
+						- Ces boutons permettent d'afficher/cacher la timeline.<br/><br/>
+						<a class="btn-green" disabled><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+						- Ce bouton vous permet de passer en mode 'théorème' dans ce mode cliquer sur les éléments de la timeline les sélectionnera pour la création d'un théorème.<br/><br/>
+						<a class="btn-green" disabled><i class="fa fa-check-square-o fa-2x" aria-hidden="true"></i></a>
+						- Ce bouton vous permet de valider la création d'un théorème, pour créer un théorème vous devez sélectionner 2 éléments dans la timeline, une fois sléctionner cliquer sur ce bouton fera apparaître une popup vous demandant la confirmation, une fois confirmer le théorème sera créer.<br/><br/>
+						<a class="btn-red" disabled><i class="fa fa-times fa-2x" aria-hidden="true"></i></a>
+						- Ce bouton vous permet d'annuler la création d'un théorème de revenir en mode 'normal'.
 					</div>
 					<br/>
 					<div class="tabulation">
@@ -142,6 +152,7 @@
 					</button>
 					- Ce bouton affiche la liste des notifications.
 				</div>
+				<br/>
 	    </div>
 		</div>
   </body>

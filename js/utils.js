@@ -1,5 +1,14 @@
+/**
+ * Module containing a bunch of 'useful' functions.
+ * @module utils
+ */
 module.exports = {
-	setWindowsControlEvents: () => {
+
+	/**
+	 * Set the event handler for the buttons controlling the window (close,
+   * maximize and minimize)
+	 */
+	setWindowControlEvents: () => {
 		$('.btn-red').on('click', () => {
 	  	const window = require('electron').remote.getCurrentWindow()
 	  	window.close()
@@ -19,8 +28,18 @@ module.exports = {
 	  })
 	},
 
+	/**
+	 * Initialize animateCss by adding a function to jQuery handling the animation.
+	 */
 	initAnimateCss: () => {
 		$.fn.extend({
+			/**
+			 * Animate a DOM element using css animations.
+			 * @param {String} animationName Name of the animation, refer to animateCss doc
+			 * @param {Number} [duration] duration of the animation in seconds
+			 * @param {Number} [delay] delay before the start of the animation in seconds
+			 * @param {function} [onanimationend] callback called when the animation is over
+			 */
 			animateCss: function (animationName, duration, delay, onanimationend) {
 				if (duration != undefined)
 					$(this).css('-webkit-animation-duration', duration + 's')
@@ -41,8 +60,8 @@ module.exports = {
 	/**
 	 * Call mathJax to typeset any latex elements in the window.
 	 * If the elementId parameter is present mathJax will only typeset the element.
-	 * @param {function} callback fonction to call after the typeset is done
-	 * @param {String} elementId Id of the dom element to typeset
+	 * @param {function} [callback] fonction to call after the typeset is done
+	 * @param {String} [elementId] Id of the dom element to typeset (not a jQuery selector)
 	 */
 	typesetMath: (callback, elementId) => {
 		const instance = require('./Application')
@@ -56,6 +75,12 @@ module.exports = {
 			MathJax.Hub.Queue(callback)
 	},
 
+	/**
+	 * Write data to a file synchronously or asynchronously to the config/ folder.
+	 * @param {String} filename name of the file
+	 * @param {String} data data to write
+	 * @param {String} [type] synchronous/asynchronous, default is asynchronous
+	 */
 	writeConfig: (filename, data, type) => {
 		const fs = require('fs')
 		const appFolder = require('electron').remote.app.getAppPath()
@@ -72,8 +97,8 @@ module.exports = {
 	/**
 	 * Read synchronously a file in /config if it exist.
 	 * @param {String} filename Name of then file
-	 * @returns {Object} If the fils exist
-	 * @returns {null} If the file doesn't exist
+	 * @return {Object} If the fils exist
+	 * @return {null} If the file doesn't exist
 	 */
 	readConfigSync: (filename) => {
 		const fs = require('fs')

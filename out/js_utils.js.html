@@ -26,8 +26,17 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>module.exports = {
-	setWindowsControlEvents: () => {
+            <pre class="prettyprint source linenums"><code>/**
+ * Module containing a bunch of 'useful' functions.
+ * @module utils
+ */
+module.exports = {
+
+	/**
+	 * Set the event handler for the buttons controlling the window (close,
+   * maximize and minimize)
+	 */
+	setWindowControlEvents: () => {
 		$('.btn-red').on('click', () => {
 	  	const window = require('electron').remote.getCurrentWindow()
 	  	window.close()
@@ -47,8 +56,18 @@
 	  })
 	},
 
+	/**
+	 * Initialize animateCss by adding a function to jQuery handling the animation.
+	 */
 	initAnimateCss: () => {
 		$.fn.extend({
+			/**
+			 * Animate a DOM element using css animations.
+			 * @param {String} animationName Name of the animation, refer to animateCss doc
+			 * @param {Number} [duration] duration of the animation in seconds
+			 * @param {Number} [delay] delay before the start of the animation in seconds
+			 * @param {function} [onanimationend] callback called when the animation is over
+			 */
 			animateCss: function (animationName, duration, delay, onanimationend) {
 				if (duration != undefined)
 					$(this).css('-webkit-animation-duration', duration + 's')
@@ -69,8 +88,8 @@
 	/**
 	 * Call mathJax to typeset any latex elements in the window.
 	 * If the elementId parameter is present mathJax will only typeset the element.
-	 * @param {function} callback fonction to call after the typeset is done
-	 * @param {String} elementId Id of the dom element to typeset
+	 * @param {function} [callback] fonction to call after the typeset is done
+	 * @param {String} [elementId] Id of the dom element to typeset (not a jQuery selector)
 	 */
 	typesetMath: (callback, elementId) => {
 		const instance = require('./Application')
@@ -84,6 +103,12 @@
 			MathJax.Hub.Queue(callback)
 	},
 
+	/**
+	 * Write data to a file synchronously or asynchronously to the config/ folder.
+	 * @param {String} filename name of the file
+	 * @param {String} data data to write
+	 * @param {String} [type] synchronous/asynchronous, default is asynchronous
+	 */
 	writeConfig: (filename, data, type) => {
 		const fs = require('fs')
 		const appFolder = require('electron').remote.app.getAppPath()
@@ -100,8 +125,8 @@
 	/**
 	 * Read synchronously a file in /config if it exist.
 	 * @param {String} filename Name of then file
-	 * @returns {Object} If the fils exist
-	 * @returns {null} If the file doesn't exist
+	 * @return {Object} If the fils exist
+	 * @return {null} If the file doesn't exist
 	 */
 	readConfigSync: (filename) => {
 		const fs = require('fs')
@@ -125,13 +150,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-enumHelper.html">enumHelper</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backgroundProcess">backgroundProcess</a></li><li><a href="global.html#windowsArray">windowsArray</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-application.html">application</a></li><li><a href="module-countdown.html">countdown</a></li><li><a href="module-dragNDropHandler.html">dragNDropHandler</a></li><li><a href="module-gameHandler.html">gameHandler</a></li><li><a href="module-gameModeHandler.html">gameModeHandler</a></li><li><a href="module-gameRuleSetHandler.html">gameRuleSetHandler</a></li><li><a href="module-gameState.html">gameState</a></li><li><a href="module-helpHandler.html">helpHandler</a></li><li><a href="module-homeHandler.html">homeHandler</a></li><li><a href="module-main.html">main</a></li><li><a href="module-mouseEventHandler.html">mouseEventHandler</a></li><li><a href="module-notification.html">notification</a></li><li><a href="module-request.html">request</a></li><li><a href="module-serverStatus.html">serverStatus</a></li><li><a href="module-settings.html">settings</a></li><li><a href="module-settingsHandler.html">settingsHandler</a></li><li><a href="module-synchronize.html">synchronize</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Application.html">Application</a></li><li><a href="Countdown.html">Countdown</a></li><li><a href="GameState.html">GameState</a></li><li><a href="module-gameState-Game.html">Game</a></li><li><a href="Notification.html">Notification</a></li><li><a href="Request.html">Request</a></li><li><a href="Settings.html">Settings</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enumHelper">enumHelper</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri May 12 2017 21:04:10 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>
