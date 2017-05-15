@@ -71,6 +71,26 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 	}
 
 	@Override
+	public String generateSimpleBinaryExpression(Expression expression, String type, Expression first, Expression second) {
+		BinaryExpression bexpression = (BinaryExpression) expression;
+		String operator = getConfiguration(expression.getType()).getOperators().first;
+		return "{" +bexpression.firstExpression().generateSimpleExpression() + operator.substring(1, operator.length()-1)+bexpression.secondExpression().generateSimpleExpression()+ "}";
+	}
+
+
+	@Override
+	public String generateSimpleUnaryExpression(Expression expression, String type, Expression sub) {
+		String firstOperator = getConfiguration(expression.getType()).getOperators().first;
+		String secondOperator = getConfiguration(expression.getType()).getOperators().second;
+		return "{"+ firstOperator.substring(1, firstOperator.length()-1)  + sub.generateSimpleExpression() + secondOperator.substring(1, secondOperator.length()-1)+"}";
+	}
+
+	@Override
+	public String generateSimplePrimaryExpression(Expression expression, String type, String name) {
+		return "{"+ name +"}";
+	}
+
+	@Override
 	public void generateRulesAndIdPrimaryExpression(Expression expression, String type, String name, String id, KrakenTree tree) {
 		tree.addIds("exp"+id,expression);
 		tree.addRules("exp"+id, tree.generateRules(expression));
@@ -93,7 +113,7 @@ public class LatexConfiguration implements GraphicExpressionFactory {
 
 	@Override
 	public String generateRuleExpression(Rule rule) {
-		return rule.getInputModel().generateExpression("") + "=>" + rule.getResultModel().generateExpression("");
+		return rule.getInputModel().generateSimpleExpression() + "=>" + rule.getResultModel().generateSimpleExpression();
 	}
 
 

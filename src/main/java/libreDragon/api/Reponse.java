@@ -44,10 +44,10 @@ public class Reponse {
 			exp = tree.getIds(key);
 			ArrayList<Pair<Rule,String>> liste = tree.getRules(key);
 			if(liste.size() > 0){
-				temp += ("{\"text\":\"$$"+exp.generateExpression("") + " => "+liste.get(0).first.applic(exp).generateExpression("")+"$$\","+"\"ruleId\":"+0+",\"type\":"+"\""+liste.get(0).second+"\"}");
+				temp += ("{\"text\":\"$$"+exp.generateSimpleExpression() + " => "+liste.get(0).first.applic(exp).generateSimpleExpression()+"$$\","+"\"ruleId\":"+0+",\"type\":"+"\""+liste.get(0).second+"\"}");
 			}
 			for(int i = 1; i < liste.size(); i++){
-				temp += ","+("{\"text\":\"$$"+exp.generateExpression("") + " => "+liste.get(i).first.applic(exp).generateExpression("")+"$$\","+"\"ruleId\":"+i+",\"type\":"+"\""+liste.get(i).second+"\"}");
+				temp += ","+("{\"text\":\"$$"+exp.generateSimpleExpression() + " => "+liste.get(i).first.applic(exp).generateSimpleExpression()+"$$\","+"\"ruleId\":"+i+",\"type\":"+"\""+liste.get(i).second+"\"}");
 			}
 			if(iterateur.hasNext())
 				temp+="]},";
@@ -115,9 +115,9 @@ public class Reponse {
 	public String generateJsonExpressionList(ArrayList<Pair<Expression,Expression>> list){
 		String temp ="[";
 		if(list.size() > 0)
-			temp += ("\"$$"+ list.get(0).first.generateExpression("")+"$$\"");
+			temp += ("\"$$"+ list.get(0).first.generateSimpleExpression()+"$$\"");
 		for(int i = 1; i < list.size(); i++){
-			temp += ",\"$$" + list.get(i).first.generateExpression("") +"$$\"";
+			temp += ",\"$$" + list.get(i).first.generateSimpleExpression() +"$$\"";
 		}
 		return temp+"]";
 	}
@@ -133,7 +133,7 @@ public class Reponse {
 	public String getJsonTimeline (ArrayList<KrakenTree> trees) {
 		String timeline = "";
 		for (int i = 0 ; i < trees.size() ; i++) {
-			String tmp = (String) trees.get(i).getRoot().generateExpression("");
+			String tmp = (String) trees.get(i).getRoot().generateSimpleExpression();
 			timeline += "{\"index\":" + i + ",";
 			timeline += "\"text\":\"$$" + tmp +"$$\"}";
 			if (i != trees.size() - 1)

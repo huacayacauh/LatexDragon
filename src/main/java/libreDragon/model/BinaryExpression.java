@@ -50,6 +50,16 @@ public class BinaryExpression implements Expression {
 	}
 
 	@Override
+	public String generateSimpleExpression() {
+		this.id = id;
+		return Configuration.graphic.generateSimpleBinaryExpression(
+					this,
+					type,
+					first_expression,
+					second_expression);
+	}
+
+	@Override
 	public void generateRulesAndIdExpression(String id,KrakenTree tree) {
 		this.id = id;
 		Configuration.graphic.generateRulesAndIdBinaryExpression(

@@ -33,6 +33,16 @@ public class UnaryExpression implements Expression {
 	}
 
 	@Override
+	public String generateSimpleExpression() {
+		this.id = id;
+		return Configuration.graphic.generateSimpleUnaryExpression(
+					this,
+					type,
+					sub_expression);
+	}
+
+
+	@Override
 	public void generateRulesAndIdExpression(String id, KrakenTree tree) {
 		this.id = id;
 		Configuration.graphic.generateRulesAndIdUnaryExpression(

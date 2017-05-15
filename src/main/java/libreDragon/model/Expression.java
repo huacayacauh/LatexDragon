@@ -21,6 +21,12 @@ public interface Expression {
 	Object generateExpression(String id);
 
 	/**
+	 * Cette fonction génère l'équivalent graphique Simple du noeud.
+	 * @return L'objet graphique (le type dépend de la factory de la configuration)
+	 */
+	Object generateSimpleExpression();
+
+	/**
 	 * Cette fonction génère les ids des expressions et des règles.
 	 * @param id : id de l'expression
 	 * @param tree : l'objet contenant les id des règles et des expressions
