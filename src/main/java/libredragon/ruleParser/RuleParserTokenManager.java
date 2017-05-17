@@ -6,6 +6,14 @@ import libredragon.model.*;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /** Token Manager. */
 @SuppressWarnings("unused")public class RuleParserTokenManager implements RuleParserConstants {

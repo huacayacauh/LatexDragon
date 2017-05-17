@@ -33,12 +33,6 @@ task callCL(type: Exec) {
     commandLine './cleanRuleParser.sh'
 }
 
-task generateExpression(type: Exec) {
-	executable "sh"
-  	args "-c", "./build.sh 'libredragon'"
-}
-
-
 // Set source directory
 sourceSets {
 	modelInit {
@@ -67,7 +61,11 @@ task generateRuleParser (dependsOn: generateRuleParserGrammar, type: Exec) {
     commandLine "javacc-6.0/bin/javacc", "-OUTPUT_DIRECTORY=src/main/java/libredragon/ruleParser", "$buildDir/RPgrammar.jj"
 }
 
-compileJava.dependsOn generateRuleParser.outputs.files
+task generateExpression(dependsOn: generateRuleParser, type: Exec) {
+	executable "sh"
+  	args "-c", "./build.sh 'libredragon'"
+}
+
 compileJava.dependsOn generateExpression.outputs.files
 
 dependencies {

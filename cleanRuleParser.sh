@@ -1,2 +1,2 @@
 #!/bin/sh
-rm -f src/main/java/libreDragon/ruleParser/*.java
+rm -f src/main/java/libredragon/ruleParser/*.java
