@@ -6,15 +6,15 @@ module.exports = {
 
 	/**
 	 * Set the event handler for the buttons controlling the window (close,
-   * maximize and minimize)
+	 * maximize and minimize)
 	 */
 	setWindowControlEvents: () => {
 		$('.btn-red').on('click', () => {
-	  	const window = require('electron').remote.getCurrentWindow()
-	  	window.close()
-	  })
+			const window = require('electron').remote.getCurrentWindow()
+			window.close()
+		})
 
-	  $('.btn-green').on('click', () => {
+		$('.btn-green').on('click', () => {
 			const window = require('electron').remote.getCurrentWindow()
 			if (window.isMaximized())
 				window.unmaximize()
@@ -22,10 +22,10 @@ module.exports = {
 				window.maximize()
 		})
 
-	  $('.btn-yellow').on('click', () => {
-	    const window = require('electron').remote.getCurrentWindow()
-	    window.minimize()
-	  })
+		$('.btn-yellow').on('click', () => {
+			const window = require('electron').remote.getCurrentWindow()
+			window.minimize()
+		})
 	},
 
 	/**
@@ -67,9 +67,9 @@ module.exports = {
 		const instance = require('./Application')
 
 		if (elementId == undefined)
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub])
+			MathJax.Hub.Queue(['Typeset', MathJax.Hub])
 		else
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementId])
+			MathJax.Hub.Queue(['Typeset', MathJax.Hub, elementId])
 
 		if (callback != undefined)
 			MathJax.Hub.Queue(callback)
@@ -104,7 +104,7 @@ module.exports = {
 		const fs = require('fs')
 		const appFolder = require('electron').remote.app.getAppPath()
 
-		console.log("[CLIENT]: Reading /config/" + filename + " ...")
+		console.log('[CLIENT]: Reading /config/' + filename + ' ...')
 
 		if (fs.existsSync(appFolder + '/config/' + filename))
 			return fs.readFileSync(appFolder + '/config/' + filename, 'utf8')

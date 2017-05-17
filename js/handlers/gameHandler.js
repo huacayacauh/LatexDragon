@@ -1,5 +1,5 @@
 /**
- * module containing all the function for handling the elements/event of the game tab
+ * Module containing all the function for handling the elements/event of the game tab
  * @module gameHandler
  */
 var self = module.exports = {
@@ -8,15 +8,19 @@ var self = module.exports = {
 	 */
 	init: () => {
 		const instance = require('../Application')
+		const Request = require('../Request')
 
+		//The server is offline
 		if (!instance.serverStatus) {
 			$('#game-ui').hide()
 			$('#game-something-went-wrong').append('<h1 class="display-1">Serveur hors ligne <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></h1>').show()
 		}
+		//The synchronization is not done
 		else if (instance.gameState == null) {
 			$('#game-ui').hide()
 			$('#game-something-went-wrong').append('<h1 class="display-1">Synchronization en cours <i class="fa fa-refresh fa-spin"></i></h1>').show()
 		}
+		//There's no game
 		else if (instance.gameState.currentGame == -1) {
 			$('.can-be-disabled').prop('disabled', true)
 
@@ -25,29 +29,42 @@ var self = module.exports = {
 			self.setAnimations()
 		}
 		else {
-			self.onStart()
+			//The game has been created client side but not server side
+			if (instance.gameState.getCurrent().gameId == undefined)
+				self.startNewGame()
+			//The game has been created both client and server side
+			else
+				Request.buildRequest('RESUME', self.canResume).send('/' + instance.gameState.getCurrent().gameId)
 
 			self.setAnimations()
 		}
 	},
 
+	/**
+	 * Function called when we unload the tab.
+	 * Will stop all countdowns currently running.
+	 */
 	unload: () => {
 		const instance = require('../Application')
 		if (instance.gameState != null)
 			instance.gameState.stopCountdown()
 	},
 
-  /**
-   * Set the events for the game tab.
+	/**
+	 * Set the events for the game tab.
 	 * Only the mouse clicks events are working right now.
-   */
-  setEvents: () => {
+	 * @see {@link dragNDropHandler} for more informations.
+	 */
+	setEvents: () => {
 		const mouseEventHandler = require('./mouseEventHandler')
 
-    mouseEventHandler.setEvents()
-    //DragNDropHandler.setEvents(obj)
-  },
+		mouseEventHandler.setEvents()
+		//DragNDropHandler.setEvents(obj)
+	},
 
+	/**
+	 * Set the animations, displayed when the tab is loaded.
+	 */
 	setAnimations: (callback) => {
 		$('.toolbar').show().animateCss('slideInLeft', 0.3, 0, () => {
 			$('#main-content').show().animateCss('slideInLeft', 0.3)
@@ -55,17 +72,13 @@ var self = module.exports = {
 		})
 	},
 
-	onStart: () => {
-		const instance = require('../Application')
-		const Request = require('../Request')
-		const utils = require('../utils')
-
-		if (instance.gameState.getCurrent().gameId == undefined)
-			self.startNewGame()
-		else
-			Request.buildRequest('RESUME', self.canResume).send('/' + instance.gameState.getCurrent().gameId)
-	},
-
+	/**
+	 * Response of a 'RESUME' request, if the 'RESUME' request was a success will
+	 * send a 'GAMESTATE' request to start the game.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
 	canResume: (response, status) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -76,29 +89,29 @@ var self = module.exports = {
 		Request.buildRequest('GAMESTATE', self.gameStartResponse).send('/' + instance.gameState.getCurrent().gameId)
 	},
 
-  /**
-   * Request used to start a new game, will ask the server to start a new game
+	/**
+	 * Request used to start a new game, will ask the server to start a new game
 	 * using the parameters contained in gameState to define the configuration of the
 	 * game.
-   */
-  startNewGame: () => {
+	 */
+	startNewGame: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    var request = Request.buildRequest('START', self.startNewGameResponse)
+		var request = Request.buildRequest('START', self.startNewGameResponse)
 
-    request.send('/' + instance.gameState.getCurrent().mode + '/' + instance.gameState.getCurrent().ruleSet + '/' + instance.gameState.getCurrent().formulaId + '/' + instance.gameState.getCurrent().useTheorem)
-  },
+		request.send('/' + instance.gameState.getCurrent().mode + '/' + instance.gameState.getCurrent().ruleSet + '/' + instance.gameState.getCurrent().formulaId + '/' + instance.gameState.getCurrent().useTheorem)
+	},
 
-  /**
-   * Response of the startNewGame request.
-   * Will display an error message if the server can't create a new game.
-   * If it's a success it will register the game ID and send a request to get the
-   * game state.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-   */
-  startNewGameResponse: (response, status) => {
+	/**
+	 * Response of the 'START' request.
+	 * If it's a success it will register the game ID and send a request to get the
+	 * game state and start the game client side.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
+	startNewGameResponse: (response, status) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
@@ -107,37 +120,45 @@ var self = module.exports = {
 		if (o === false)
 			throw '[ERROR]: request response invalid, request might have failed.'
 
-    instance.gameState.getCurrent().gameId = o.id
+		instance.gameState.getCurrent().gameId = o.id
 
-    var request = Request.buildRequest('GAMESTATE', self.gameStartResponse).send("/" + o.id)
-  },
+		var request = Request.buildRequest('GAMESTATE', self.gameStartResponse).send('/' + o.id)
+	},
 
-  /**
-   * Response of the request to get the game state after a new game is created.
-   * Will start a timer if it's enabled and delegate the processing of the response
-   * to gameUpdateMathResponse.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-	 * @throws Will throw an error if the countdown is already over
-   */
-  gameStartResponse: (response, status) => {
+	/**
+	 * Response of the request to get the game state after a new game is created.
+	 * Will stop any timer currently running, and start a new timer if it's a
+	 * 'NORMAL' game and delegate the processing of the response to
+	 * gameUpdateMathResponse.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
+	gameStartResponse: (response, status) => {
 		const instance = require('../Application')
+		const Request = require('../Request')
 
-    self.gameUpdateMathResponse(response, status)
+		var o = Request.checkError(response, status, '#gameNotification')
 
-    //Stop any timer currently running
-    instance.gameState.stopCountdown()
+		if (o === false)
+			throw '[ERROR]: request response invalid, request might have failed.'
+
+		self.gameUpdateMathResponse(response, status)
+
+		//Stop any timer currently running
+		instance.gameState.stopCountdown()
 		$('#game-timer').hide()
 		$('#game-timer').tooltip('hide')
 
-    //Start timer
+		//Start timer
 		self.startTimer()
-  },
+	},
 
-  /**
-   * Send a request to get the game state.
-	 * @throws Will throw an error if the countdown is already over
-   */
+	/**
+	 * Send a request to get the game state.
+	 * Stop any timer currently running and start a new one if it's a 'NORMAl'
+	 * game.
+	 */
 	gameStateRequest: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -147,22 +168,22 @@ var self = module.exports = {
 		request.send('/' + instance.gameState.getCurrent().gameId)
 
 		//Stop any timer currently running
-    instance.gameState.stopCountdown()
+		instance.gameState.stopCountdown()
 		$('#game-timer').hide()
 		$('#game-timer').tooltip('hide')
 
-    //Start timer
+		//Start timer
 		self.startTimer()
-  },
+	},
 
-  /**
-   * Function that process the response from the server containing the formula state.
-   * Will throw an error if the request failed.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-   * @throws if the request fail and the function receive a status diffrent than success.
-   */
-  gameUpdateMathResponse: (response, status) => {
+	/**
+	 * Function that process the response from the server containing the game state.
+	 * Will also check for VICTORY.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
+	gameUpdateMathResponse: (response, status) => {
 		const instance = require('../Application')
 		const utils = require('../utils')
 		const Request = require('../Request')
@@ -174,23 +195,23 @@ var self = module.exports = {
 
 		instance.gameState.getCurrent().currentState = o
 
-    //Set new math
-    $('#main-formule').hide('fast')
+		//Set new math
+		$('#main-formule').hide('fast')
 		$('#main-formule').html('')
 		$('#main-formule').text(instance.gameState.getCurrent().currentState.math)
 
 		//Update Timeline
 		self.updateTimeline(instance.gameState.getCurrent().currentState.timeline)
 
-    //Call mathJax typeset and show the formule once it's done
-    utils.typesetMath(() => {
+		//Call mathJax typeset and show the formule once it's done
+		utils.typesetMath(() => {
 			$('#main-formule').show('fast')
 
 			//Set events
 			self.setEvents()
 
 			instance.settings.applySettings()
-    })
+		})
 
 		//Check for VICTORY
 		if ((o.gameStatus == 'VICTORY') && (instance.gameState.getCurrent().mode == 'NORMAL')) {
@@ -207,39 +228,41 @@ var self = module.exports = {
 				self.restartGame()
 				$('#popup').modal('hide')
 			}, () => {
-				instance.gameState.delete(instance.gameState.getCurrent().gameId)
-				instance.requestHtml('GAME')
+				if (instance.gameState.getCurrent() && instance.gameState.getCurrent().currentState && instance.gameState.getCurrent().currentState.gameStatus == 'VICTORY') {
+					instance.gameState.delete(instance.gameState.getCurrent().gameId)
+					instance.requestHtml('GAME')
+				}
 			})
-			Request.buildRequest('OVER').send('/' + instance.gameState.getCurrent().gameId)
+			Request.buildRequest('DELETE').send('/' + instance.gameState.getCurrent().gameId)
 		}
-  },
+	},
 
-  /**
-   * Send a request to the server to apply a rule to the formula.
-   * Call gameUpdateMathResponse to process the response.
-   * @param {Event} event jQuery Event object
-   */
-  gameRuleRequest: (event) => {
+	/**
+	 * Send a request to the server to apply a rule to the formula.
+	 * Call gameUpdateMathResponse to process the response.
+	 * @param {Event} event jQuery Event object
+	 */
+	gameRuleRequest: (event) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
-    event.stopPropagation()
+		event.stopPropagation()
 
-    var request = Request.buildRequest("APPLYRULE", self.gameUpdateMathResponse)
-    request.send("/" + instance.gameState.getCurrent().gameId + "/" + event.data.value.expId + "/" + event.data.value.ruleId + "/" + event.data.value.context)
+		var request = Request.buildRequest('APPLYRULE', self.gameUpdateMathResponse)
+		request.send('/' + instance.gameState.getCurrent().gameId + '/' + event.data.value.expId + '/' + event.data.value.ruleId + '/' + event.data.value.context)
 
-    if ($("#tooltip").is(":visible"))
-      $("#tooltip").hide(100)
-  },
+		if ($('#tooltip').is(':visible'))
+			$('#tooltip').hide(100)
+	},
 
-  /**
-   * Function handling the end of the countdown.
-   * When the countdown is over an OVER request is send to the server
-   * to signal the game is over.
-   * When the request is over call gameOverResponse to handle the end of the game
-   * clientside.
-   */
-  timerOnOver: () => {
+	/**
+	 * Function handling the end of the countdown.
+	 * When the countdown is over a 'DELETE' request is send to the server
+	 * to signal the game is over.
+	 * When the request is over call gameOverResponse to handle the end of the game
+	 * clientside.
+	 */
+	timerOnOver: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
@@ -247,18 +270,18 @@ var self = module.exports = {
 		$('#game-timer').hide()
 		$('#game-timer').tooltip('hide')
 
-    instance.displaySuccessNotification('#gameNotification', 'Temps écouler, partie finie.')
+		instance.displaySuccessNotification('#gameNotification', 'Temps écouler, partie finie.')
 
-    Request.buildRequest('OVER', self.gameOverResponse).send('/' + instance.gameState.getCurrent().gameId)
-  },
+		Request.buildRequest('DELETE', self.gameOverResponse).send('/' + instance.gameState.getCurrent().gameId)
+	},
 
-  /**
-   * Function handling the end of the game clientside, restart the window by hiding
-   * the formula and the tools and then show the start button.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-   */
-  gameOverResponse: (response, status) => {
+	/**
+	 * Function handling the end of the game clientside, will display a popup.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
+	gameOverResponse: (response, status) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
@@ -274,35 +297,38 @@ var self = module.exports = {
 			self.restartGame()
 			$('#popup').modal('hide')
 		}, () => {
-			instance.gameState.delete(instance.gameState.getCurrent().gameId)
-			instance.requestHtml('GAME')
+			if (instance.gameState.getCurrent() && instance.gameState.getCurrent().countdown && instance.gameState.getCurrent().countdown.state == 'OVER') {
+				instance.gameState.delete(instance.gameState.getCurrent().gameId)
+				instance.requestHtml('GAME')
+			}
 		})
-  },
+	},
 
-  /**
-   * Function handling the update of the countdown.
-   * Each time the countdown is updated the timer text element in the window is updated too.
-   * @param {Countdown} countdown countdown object
-   */
-  timerOnUpdate: (countdown) => {
+	/**
+	 * Function handling the update of the countdown.
+	 * Will update the text box.
+	 * @param {Countdown} countdown countdown object
+	 */
+	timerOnUpdate: (countdown) => {
 		$('#game-timer').tooltip('show')
-    $("#game-timer").attr('data-original-title', 'Temps restant : ' + countdown.toString())
-  },
+		$('#game-timer').attr('data-original-title', 'Temps restant : ' + countdown.toString())
+	},
 
-  /**
-   * Function handling the restart button.
-   * Send an OVER request then send a START request using the default handler for
-   * those request.
-   */
-  restartGame: () => {
+	/**
+	 * Function handling the restart button.
+	 * Send an 'DELETE' request then send a 'START' request using the default handler for
+	 * those request.
+	 */
+	restartGame: () => {
 		const instance = require('../Application')
 		const Request = require('../Request')
 
 		instance.gameState.stopCountdown()
 		instance.gameState.getCurrent().countdown = null
+		instance.gameState.getCurrent().currentState = null
 
-    Request.buildRequest("OVER", self.startNewGame).send("/" + instance.gameState.getCurrent().gameId)
-  },
+		Request.buildRequest('DELETE', self.startNewGame).send('/' + instance.gameState.getCurrent().gameId)
+	},
 
 	/**
 	 * Request the previous state of the game.
@@ -367,6 +393,7 @@ var self = module.exports = {
 	},
 
 	/**
+	 * Handler for the 'click' event for the elements of the timeline.
 	 * Depending on if the game is in theorem mode or not the handler for the
 	 * onclick event differ.
 	 * @param {Event} event Jquery event object
@@ -397,7 +424,7 @@ var self = module.exports = {
 	theoremSelection: { start: null, end: null},
 
 	/**
-	 * Toggle the timeline between the theorem mode and "history" mode.
+	 * Toggle the timeline between the theorem mode and 'history' mode.
 	 * When in theorem mode you can't hide the timeline and if the timeline was
 	 * hiddden it will be showed automatically.
 	 * Will also clear theoremSelection each time this function is called.
@@ -504,7 +531,7 @@ var self = module.exports = {
 	},
 
 	/**
-	 * Send a CREATETHEOREM request then toggle off the theorem mode and hide
+	 * Send a 'CREATETHEOREM' request then toggle off the theorem mode and hide
 	 * the popup.
 	 */
 	sendTheoremCreation: () => {
@@ -519,7 +546,7 @@ var self = module.exports = {
 
 	/**
 	 * Toggle the rules list.
-	 * If hidden will send a request RULESLIST and display the list container.
+	 * If hidden will send a request 'RULESLIST' and display the list container.
 	 * If visible will hide the list container
 	 */
 	toggleRulesList: () => {
@@ -543,12 +570,13 @@ var self = module.exports = {
 	},
 
 	/**
-   * Response to the RULESLIST request.
+	 * Response to the 'RULESLIST' request.
 	 * Call displayRulesList to display the rules list with the JSON Object
 	 * received from the request.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-   */
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
 	rulesListReply: (response, status) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -583,6 +611,10 @@ var self = module.exports = {
 		utils.typesetMath(() => { $('#rules-content').show('fast') }, 'rules-content')
 	},
 
+	/**
+	 * Handler for the synchronize button onclick event.
+	 * Will start a synchronization and reload the 'GAME' tab.
+	 */
 	synchronize: () => {
 		const instance = require('../Application')
 
@@ -590,6 +622,14 @@ var self = module.exports = {
 		instance.requestHtml('GAME')
 	},
 
+	/**
+	 * Function sending a 'DELETE' request to delete a game.
+	 * If no index specified, will delete the current game, otherwise will
+	 * delete the game index.
+	 * The function will also stop any countdown and reload the 'GAME' tab.
+	 * @param {Event} [event] jQuery Event object
+	 * @param {int} [index] index of the game to be deleted
+	 */
 	deleteGame: (event, index) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -615,12 +655,15 @@ var self = module.exports = {
 
 		instance.gameState.updateCurrent()
 
-		console.log(instance.gameState.currentGame)
-
 		instance.requestHtml('GAME')
 	},
 
 	/**
+	 * This function start a new countdown if the current game is a 'NORMAL' game.
+	 * If no countdown existed will create a new one, if the countdown present was
+	 * the serialized form, will create a new countdown using the serialized form,
+	 * if a countdown was present will resume it if it's not over in which case the
+	 * function will throw an error.
 	 * @throws Will throw an error if the countdown is already over
 	 */
 	startTimer: () => {
@@ -633,7 +676,7 @@ var self = module.exports = {
 			if (current.countdown == null)
 				current.countdown = new Countdown (Countdown.minutesToMilliseconds(2), self.timerOnOver, self.timerOnUpdate)
 
-			else if (current.countdown.state  == null)
+			else if (current.countdown.state	== null)
 				current.countdown = new Countdown (current.countdown.duration, self.timerOnOver, self.timerOnUpdate, current.countdown.remainingTime)
 
 			else if (current.countdown.state == 'OVER') {
@@ -650,6 +693,10 @@ var self = module.exports = {
 		}
 	},
 
+	/**
+	 * Toggle the display of the game list.
+	 * Will call buildGameList for the creation of the list.
+	 */
 	toggleGameList: () => {
 		if ($('#game-list').is(':hidden')) {
 			$('#game-list').animateCss('slideInDown', 0.3)
@@ -665,6 +712,9 @@ var self = module.exports = {
 		$('[data-toggle="tooltip"]').tooltip('hide')
 	},
 
+	/**
+	 * Function responsible for the creation of the game list.
+	 */
 	buildGameList: () => {
 		const instance = require('../Application')
 		const utils = require('../utils')

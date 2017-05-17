@@ -1,7 +1,11 @@
 /**
+ * Module handling the 'HOME' tab.
  * @module homeHandler
  */
 var self = module.exports = {
+	/**
+	 * Initialize everything the tab need in order to run properly.
+	 */
 	init: () => {
 		self.setAnimations()
 
@@ -12,6 +16,9 @@ var self = module.exports = {
 		}
 	},
 
+	/**
+	 * Set the animations, displayed when the tab is loaded.
+	 */
 	setAnimations: () => {
 			$('.main').animateCss('slideInDown', 0.3)
 	}

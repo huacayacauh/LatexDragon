@@ -26,7 +26,7 @@ var self = module.exports = {
 	 * Will update serverStatus and if the status change will send a 'server-status'
 	 * event to the main process.
 	 * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
+	 * @param {String} status response status from the request
 	 */
 	serverStatusReply: (response, status) => {
 		if (status != 'success') {

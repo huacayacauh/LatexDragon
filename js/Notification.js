@@ -24,8 +24,8 @@ class Notification {
 	display (element, lifeTime = 0, mode = 'replace') {
 		if (mode == 'replace')
 			$(element).children('.notif').hide('fast', () => {
-	      $(this).remove()
-	    })
+				$(this).remove()
+			})
 
 		var notif = $('<div></div>').addClass('notif alert alert-' + this.type + ' alert-dismissible').text(this.text).css('display', 'none')
 

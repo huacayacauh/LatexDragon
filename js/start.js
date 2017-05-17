@@ -30,7 +30,7 @@ $(document).ready (function () {
 
 /**
  * Called before the window close. Save everything (settings, gamestate ...).
- * And close all  the background process.
+ * And close all	the background process.
  * @listens window~event:onbeforeunload
  */
 window.onbeforeunload = () => {

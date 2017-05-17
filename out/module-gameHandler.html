@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">module containing all the function for handling the elements/event of the game tab</div>
+            <div class="description">Module containing all the function for handling the elements/event of the game tab</div>
         
 
         
@@ -176,7 +176,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line397">line 397</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line419">line 419</a>
     </li></ul></dd>
     
 
@@ -203,14 +203,14 @@
 
     
 
-    <h4 class="name" id=".displayRulesList"><span class="type-signature">(static) </span>displayRulesList<span class="signature">(rules)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".buildGameList"><span class="type-signature">(static) </span>buildGameList<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Build the rules list and displays it.
+    Function responsible for the creation of the game list.
 </div>
 
 
@@ -219,55 +219,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>rules</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">JSON object containing all the rules.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -303,7 +254,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line568">line 568</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line713">line 713</a>
     </li></ul></dd>
     
 
@@ -334,14 +285,14 @@
 
     
 
-    <h4 class="name" id=".gameOverResponse"><span class="type-signature">(static) </span>gameOverResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".canResume"><span class="type-signature">(static) </span>canResume<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Function handling the end of the game clientside, restart the window by hidingthe formula and the tools and then show the start button.
+    Response of a 'RESUME' request, if the 'RESUME' request was a success willsend a 'GAMESTATE' request to start the game.
 </div>
 
 
@@ -457,7 +408,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line261">line 261</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -478,6 +429,491 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        will throw an error if the request failed
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".deleteGame"><span class="type-signature">(static) </span>deleteGame<span class="signature">(event<span class="signature-attributes">opt</span>, index<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function sending a 'DELETE' request to delete a game.If no index specified, will delete the current game, otherwise willdelete the game index.The function will also stop any countdown and reload the 'GAME' tab.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Event</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">jQuery Event object</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">index of the game to be deleted</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line628">line 628</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".displayRulesList"><span class="type-signature">(static) </span>displayRulesList<span class="signature">(rules)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Build the rules list and displays it.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rules</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">JSON object containing all the rules.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line591">line 591</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".gameOverResponse"><span class="type-signature">(static) </span>gameOverResponse<span class="signature">(response, status)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function handling the end of the game clientside, will display a popup.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response from the request (jQuery ajax response)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">response status from the request</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line282">line 282</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        will throw an error if the request failed
+    
+    </div>
+
+
+    
 
 
 
@@ -588,7 +1024,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line222">line 222</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line243">line 243</a>
     </li></ul></dd>
     
 
@@ -626,7 +1062,7 @@
 
 
 <div class="description">
-    Response of the request to get the game state after a new game is created.Will start a timer if it's enabled and delegate the processing of the responseto gameUpdateMathResponse.
+    Response of the request to get the game state after a new game is created.Will stop any timer currently running, and start a new timer if it's a'NORMAL' game and delegate the processing of the response togameUpdateMathResponse.
 </div>
 
 
@@ -742,7 +1178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line123">line 123</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line137">line 137</a>
     </li></ul></dd>
     
 
@@ -769,7 +1205,7 @@
 
     <div class="param-desc">
     
-        Will throw an error if the countdown is already over
+        will throw an error if the request failed
     
     </div>
 
@@ -792,7 +1228,7 @@
 
 
 <div class="description">
-    Send a request to get the game state.
+    Send a request to get the game state.Stop any timer currently running and start a new one if it's a 'NORMAl'game.
 </div>
 
 
@@ -836,7 +1272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line141">line 141</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -857,18 +1293,6 @@
 
 
 
-<h5>Throws:</h5>
-
-        
-
-    <div class="param-desc">
-    
-        Will throw an error if the countdown is already over
-    
-    </div>
-
-
-    
 
 
 
@@ -886,7 +1310,7 @@
 
 
 <div class="description">
-    Function that process the response from the server containing the formula state.Will throw an error if the request failed.
+    Function that process the response from the server containing the game state.Will also check for VICTORY.
 </div>
 
 
@@ -1002,7 +1426,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line165">line 165</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line186">line 186</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1453,7 @@
 
     <div class="param-desc">
     
-        if the request fail and the function receive a status diffrent than success.
+        will throw an error if the request failed
     
     </div>
 
@@ -1178,7 +1602,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line320">line 320</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line341">line 341</a>
     </li></ul></dd>
     
 
@@ -1260,7 +1684,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line310">line 310</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line331">line 331</a>
     </li></ul></dd>
     
 
@@ -1391,7 +1815,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line385">line 385</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line407">line 407</a>
     </li></ul></dd>
     
 
@@ -1429,7 +1853,7 @@
 
 
 <div class="description">
-    Function handling the restart button.Send an OVER request then send a START request using the default handler forthose request.
+    Function handling the restart button.Send an 'DELETE' request then send a 'START' request using the default handler forthose request.
 </div>
 
 
@@ -1473,7 +1897,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line297">line 297</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line318">line 318</a>
     </li></ul></dd>
     
 
@@ -1511,7 +1935,7 @@
 
 
 <div class="description">
-    Response to the RULESLIST request.Call displayRulesList to display the rules list with the JSON Objectreceived from the request.
+    Response to the 'RULESLIST' request.Call displayRulesList to display the rules list with the JSON Objectreceived from the request.
 </div>
 
 
@@ -1627,7 +2051,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line552">line 552</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line575">line 575</a>
     </li></ul></dd>
     
 
@@ -1648,6 +2072,18 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        will throw an error if the request failed
+    
+    </div>
+
+
+    
 
 
 
@@ -1781,7 +2217,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line447">line 447</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line469">line 469</a>
     </li></ul></dd>
     
 
@@ -1819,7 +2255,7 @@
 
 
 <div class="description">
-    Send a CREATETHEOREM request then toggle off the theorem mode and hidethe popup.
+    Send a 'CREATETHEOREM' request then toggle off the theorem mode and hidethe popup.
 </div>
 
 
@@ -1863,7 +2299,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line510">line 510</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line532">line 532</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setAnimations"><span class="type-signature">(static) </span>setAnimations<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Set the animations, displayed when the tab is loaded.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -1945,12 +2463,19 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line44">line 44</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line58">line 58</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>dragNDropHandler for more informations.</li>
+        </ul>
+    </dd>
     
 
     
@@ -2027,7 +2552,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line84">line 84</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -2065,7 +2590,7 @@
 
 
 <div class="description">
-    Response of the startNewGame request.Will display an error message if the server can't create a new game.If it's a success it will register the game ID and send a request to get thegame state.
+    Response of the 'START' request.If it's a success it will register the game ID and send a request to get thegame state and start the game client side.
 </div>
 
 
@@ -2181,7 +2706,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line101">line 101</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -2202,6 +2727,18 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        will throw an error if the request failed
+    
+    </div>
+
+
+    
 
 
 
@@ -2217,6 +2754,10 @@
     
 
 
+
+<div class="description">
+    This function start a new countdown if the current game is a 'NORMAL' game.If no countdown existed will create a new one, if the countdown present wasthe serialized form, will create a new countdown using the serialized form,if a countdown was present will resume it if it's not over in which case thefunction will throw an error.
+</div>
 
 
 
@@ -2259,7 +2800,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line626">line 626</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line664">line 664</a>
     </li></ul></dd>
     
 
@@ -2302,6 +2843,88 @@
 
     
 
+    <h4 class="name" id=".synchronize"><span class="type-signature">(static) </span>synchronize<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Handler for the synchronize button onclick event.Will start a synchronization and reload the 'GAME' tab.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line613">line 613</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".timelineOnClickHandler"><span class="type-signature">(static) </span>timelineOnClickHandler<span class="signature">(event)</span><span class="type-signature"></span></h4>
 
     
@@ -2309,7 +2932,7 @@
 
 
 <div class="description">
-    Depending on if the game is in theorem mode or not the handler for theonclick event differ.
+    Handler for the 'click' event for the elements of the timeline.Depending on if the game is in theorem mode or not the handler for theonclick event differ.
 </div>
 
 
@@ -2402,7 +3025,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line374">line 374</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line396">line 396</a>
     </li></ul></dd>
     
 
@@ -2440,7 +3063,7 @@
 
 
 <div class="description">
-    Function handling the end of the countdown.When the countdown is over an OVER request is send to the serverto signal the game is over.When the request is over call gameOverResponse to handle the end of the gameclientside.
+    Function handling the end of the countdown.When the countdown is over a 'DELETE' request is send to the serverto signal the game is over.When the request is over call gameOverResponse to handle the end of the gameclientside.
 </div>
 
 
@@ -2484,7 +3107,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line242">line 242</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -2522,7 +3145,7 @@
 
 
 <div class="description">
-    Function handling the update of the countdown.Each time the countdown is updated the timer text element in the window is updated too.
+    Function handling the update of the countdown.Will update the text box.
 </div>
 
 
@@ -2615,7 +3238,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line287">line 287</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -2653,7 +3276,7 @@
 
 
 <div class="description">
-    Toggle the timeline between the theorem mode and "history" mode.When in theorem mode you can't hide the timeline and if the timeline washiddden it will be showed automatically.Will also clear theoremSelection each time this function is called.
+    Toggle the timeline between the theorem mode and 'history' mode.When in theorem mode you can't hide the timeline and if the timeline washiddden it will be showed automatically.Will also clear theoremSelection each time this function is called.
 </div>
 
 
@@ -2697,7 +3320,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line405">line 405</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line427">line 427</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".toggleGameList"><span class="type-signature">(static) </span>toggleGameList<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Toggle the display of the game list.Will call buildGameList for the creation of the list.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line695">line 695</a>
     </li></ul></dd>
     
 
@@ -2735,7 +3440,7 @@
 
 
 <div class="description">
-    Toggle the rules list.If hidden will send a request RULESLIST and display the list container.If visible will hide the list container
+    Toggle the rules list.If hidden will send a request 'RULESLIST' and display the list container.If visible will hide the list container
 </div>
 
 
@@ -2779,7 +3484,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line525">line 525</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -2861,7 +3566,89 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line330">line 330</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line351">line 351</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".unload"><span class="type-signature">(static) </span>unload<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Function called when we unload the tab.Will stop all countdowns currently running.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -2992,7 +3779,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line353">line 353</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line374">line 374</a>
     </li></ul></dd>
     
 
@@ -3074,7 +3861,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line491">line 491</a>
+        <a href="js_handlers_gameHandler.js.html">js/handlers/gameHandler.js</a>, <a href="js_handlers_gameHandler.js.html#line513">line 513</a>
     </li></ul></dd>
     
 
@@ -3122,7 +3909,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon May 15 2017 17:17:46 GMT+0200 (Paris, Madrid (heure d’été))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue May 16 2017 16:58:45 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

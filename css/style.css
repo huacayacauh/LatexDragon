@@ -1,9 +1,9 @@
 html {
-  height: 100%;
-  width: 100%;
-  background-image: linear-gradient(to bottom, #1AD6FD, #1D62F0);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+	height: 100%;
+	width: 100%;
+	background-image: linear-gradient(to bottom, #1AD6FD, #1D62F0);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
 }
 
 html::-webkit-scrollbar {
@@ -11,67 +11,67 @@ html::-webkit-scrollbar {
 }
 
 body {
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
+	height: 100%;
+	width: 100%;
+	background-color: transparent;
 }
 
 .container-fluid {
-  height: 100%;
-  padding: 0;
+	height: 100%;
+	padding: 0;
 }
 
 .col-fixed-50 {
-  width: 50px;
-  position: fixed;
-  height: 100%;
-  z-index: 100;
+	width: 50px;
+	position: fixed;
+	height: 100%;
+	z-index: 100;
 }
 
 .row {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
 }
 
 .col-offset-400 {
-  margin-left: 50px;
+	margin-left: 50px;
 }
 
 .tab-container {
-  width: calc(100% - 50px);
-  height: 100%;
-  padding: 0;
+	width: calc(100% - 50px);
+	height: 100%;
+	padding: 0;
 }
 
 .sidebar-button {
-  width: 50px;
-  height: 50px;
-  background-color: Transparent;
-  background-repeat:no-repeat;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  outline:none;
-  color: white;
+	width: 50px;
+	height: 50px;
+	background-color: Transparent;
+	background-repeat:no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline:none;
+	color: white;
 }
 
 .sidebar-button:hover {
-  background-color: #0d1318;
+	background-color: #0d1318;
 }
 
 .sidebar-button-active {
-  border-left: 5px solid #0d1318;
-  background-color: #1d2a36;
+	border-left: 5px solid #0d1318;
+	background-color: #1d2a36;
 }
 
 .sidebar-button-container {
-  margin-top: 40px;
+	margin-top: 40px;
 	margin-bottom: 50px;
 }
 
 .sidebar-container {
-  background-color: #2c3e50;
+	background-color: #2c3e50;
 }
 
 #devmode {
@@ -83,15 +83,15 @@ body {
 }
 
 .sidebar-not-a-button {
-  width: 50px;
-  height: 50px;
-  background-color: Transparent;
-  background-repeat:no-repeat;
-  border: none;
-  cursor:pointer;
-  overflow: hidden;
-  outline:none;
-  color: white;
+	width: 50px;
+	height: 50px;
+	background-color: Transparent;
+	background-repeat:no-repeat;
+	border: none;
+	cursor:pointer;
+	overflow: hidden;
+	outline:none;
+	color: white;
 }
 
 .tabulation {
@@ -157,12 +157,12 @@ body {
 /*===============================windowControl================================*/
 
 .btn-ctrl {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  float: right;
-  -webkit-app-region: no-drag;
-  font-size: 20px;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	float: right;
+	-webkit-app-region: no-drag;
+	font-size: 20px;
 }
 
 .btn-red > i {
@@ -174,35 +174,35 @@ body {
 }
 
 .btn-yellow > i{
-  color: #f39c12;
+	color: #f39c12;
 }
 
 .btn-yellow:hover > i {
-  color: #c87f0a;
+	color: #c87f0a;
 }
 
 .btn-green > i {
-  color: #18bc9c;
+	color: #18bc9c;
 }
 
 .btn-green:hover > i {
-  color: #128f76;
+	color: #128f76;
 }
 
 .win-ctrl-btn {
-  -webkit-app-region: drag;
-  position: fixed;
-  width: calc(100% - 10px);
-  height: 40px;
-  top: 0;
-  padding: 5px;
-  overflow: hidden;
-  z-index: 102;
+	-webkit-app-region: drag;
+	position: fixed;
+	width: calc(100% - 10px);
+	height: 40px;
+	top: 0;
+	padding: 5px;
+	overflow: hidden;
+	z-index: 102;
 }
 
 .content {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .jumbotron {
@@ -211,27 +211,27 @@ body {
 }
 
 .alert-info {
-  border-color: #eee;
-  background: #3498db;
-  color: #fff;
+	border-color: #eee;
+	background: #3498db;
+	color: #fff;
 }
 
 .alert-danger {
-  border-color: #eee;
-  background: #e74c3c;
-  color: #fff;
+	border-color: #eee;
+	background: #e74c3c;
+	color: #fff;
 }
 
 .alert-warning {
-  border-color: #eee;
-  background: #f39c12;
-  color: #fff;
+	border-color: #eee;
+	background: #f39c12;
+	color: #fff;
 }
 
 .alert-success {
-  border-color: #eee;
-  background: #18bc9c;
-  color: #fff;
+	border-color: #eee;
+	background: #18bc9c;
+	color: #fff;
 }
 
 .main {
@@ -260,14 +260,14 @@ body {
 /*===================================game=====================================*/
 
 .toolbar {
-  width: 50px;
-  position: fixed;
-  height: 100%;
-  z-index: 99;
+	width: 50px;
+	position: fixed;
+	height: 100%;
+	z-index: 99;
 	background-color: #1d2a36;
 	color: white;
 	text-align: center;
-  display: none;
+	display: none;
 }
 
 .nav-margin {
@@ -278,20 +278,20 @@ body {
 	padding-left: 70px;
 	padding-right: 20px;
 	padding-top: 40px;
-  display: none;
-  width: 100%;
+	display: none;
+	width: 100%;
 }
 
 #main-formule {
-  width: 100%;
-  display: inline-block;
+	width: 100%;
+	display: inline-block;
 	text-align: center;
 }
 
 #tooltip {
-  position: absolute;
-  display: hidden;
-  z-index: 101;
+	position: absolute;
+	display: none;
+	z-index: 101;
 	overflow: hidden;
 }
 
@@ -408,58 +408,58 @@ body {
 /*==================================slider====================================*/
 
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
 }
 
 .switch input {display:none;}
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #d9534f;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #d9534f;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #5cb85c;
+	background-color: #5cb85c;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #5cb85c;
+	box-shadow: 0 0 1px #5cb85c;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
 }
 
 .slider.round {
-  border-radius: 34px;
+	border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+	border-radius: 50%;
 }
 
 /*===================================home=====================================*/

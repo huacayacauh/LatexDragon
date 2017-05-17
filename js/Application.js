@@ -18,113 +18,113 @@
 class Application {
 
 	/**
-   * There can be only one instance of Application, if no instance exist a new one
-   * is created, if one instance already exist then it's the one returned.
-   */
-  constructor () {
-    if (!Application.instance) {
-			const Settings = require('./Settings')
-			const remote = require('electron').remote
+	 * There can be only one instance of Application, if no instance exist a new one
+	 * is created, if one instance already exist then it's the one returned.
+	 */
+	constructor () {
+	if (!Application.instance) {
+		const Settings = require('./Settings')
+		const remote = require('electron').remote
 
-      //Application settings
-      this.settings = Settings.initSettings()
+		//Application settings
+		this.settings = Settings.initSettings()
 
-      //Name of the tab the app is currently on (GAME by default)
-      this.currentTab = 'HOME'
+		//Name of the tab the app is currently on (GAME by default)
+		this.currentTab = 'HOME'
 
-			//Module handling the current tab
-			this.handler = null
+		//Module handling the current tab
+		this.handler = null
 
-      //Array containing the app windows (app & doc)
-      this.windows = remote.getGlobal('windowsArray')
+		//Array containing the app windows (app & doc)
+		this.windows = remote.getGlobal('windowsArray')
 
-			//Array containing all the informations on the state of the differents games
-			this.gameState = null
+		//Array containing all the informations on the state of the differents games
+		this.gameState = null
 
-			//Status of the server (true = online, false = offline)
-			this.serverStatus = false
+		//Status of the server (true = online, false = offline)
+		this.serverStatus = false
 
-			//Log of all the notifications issued since the start of the app
-			this.notifLog = []
+		//Log of all the notifications issued since the start of the app
+		this.notifLog = []
 
-      //Only instance of Application
-      Application.instance = this
-    }
+		//Only instance of Application
+		Application.instance = this
+	}
 
-    return Application.instance
-  }
+	return Application.instance
+	}
 
-  /**
-   * Send a request to get an html file, and change the active tab.
-   * Used to get the diffrent html file composing the app 'tabs'.
-   * Call loadHtml() when completed.
-   * @param {String} string Name of the request (which is also the name of the tab)
-   */
-  requestHtml (string) {
+	/**
+	 * Send a request to get an html file, and change the active tab.
+	 * Used to get the diffrent html file composing the app 'tabs'.
+	 * Call loadHtml() when completed.
+	 * @param {String} string Name of the request (which is also the name of the tab)
+	 */
+	requestHtml (string) {
 		const Request = require('./Request')
 
 		$('[data-toggle="tooltip"]').tooltip('hide')
 
-    var request = Request.buildRequest(string, this.loadHtml)
+		var request = Request.buildRequest(string, this.loadHtml)
 
-    request.send()
+		request.send()
 
-    this.currentTab = string
-  }
+		this.currentTab = string
+	}
 
-  /**
-   * Callback function of the requestHtml request.
-   * Load the html file recieved onto the main element.
-   * @param {Object} response response from the request (jQuery ajax response)
-   * @param {String} status response status from the request
-   */
-  loadHtml (response, status) {
+	/**
+	 * Callback function of the requestHtml request.
+	 * Load the html file recieved onto the main element.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 */
+	loadHtml (response, status) {
 		//Need to use this since in the context when the function is called 'this' reference the request object and not the application object
 		const instance = require('./Application')
 
-    if (status != 'success')
-      instance.displayErrorNotification('.main', 'Erreur lors du chargment de la page, status : ' + status + ' (' + response.status + ').')
+	if (status != 'success')
+		instance.displayErrorNotification('.main', 'Erreur lors du chargment de la page, status : ' + status + ' (' + response.status + ').')
 
-    var htmlpage = $(response.responseText)
+	var htmlpage = $(response.responseText)
 		//Hide precedent content
-    $('.main').hide()
+	$('.main').hide()
 		//Delete precedent content
-    $('.main').html('')
+	$('.main').html('')
 		//Append new content
-    $('.main').append(htmlpage)
+	$('.main').append(htmlpage)
 		//Load and init handler
 		instance.loadHandler()
 		//Once everything is ready display new content
 		$('.main').show()
 
-    console.log('[CLIENT]: Tab ' + instance.currentTab + ' loaded')
+	console.log('[CLIENT]: Tab ' + instance.currentTab + ' loaded')
 
-    instance.setNavbarActive()
+	instance.setNavbarActive()
 
 		$('[data-toggle="tooltip"]').tooltip()
-  }
+	}
 
-  /**
-   * Control the active tab of the navbar header.
-   * Remove the old active element and set the element with the id string to active.
-   */
-  setNavbarActive () {
+	/**
+	 * Control the active tab of the navbar header.
+	 * Remove the old active element and set the element with the id string to active.
+	 */
+	setNavbarActive () {
 		var id
 		if ((this.currentTab == 'GAMEMODE') || (this.currentTab == 'GAMERULESET'))
 			id = 'game'
 		else
-    	id = this.currentTab.toLowerCase()
+		id = this.currentTab.toLowerCase()
 
-    $('#' + id).parent().find('button').removeClass('sidebar-button-active')
-    $('#' + id).addClass('sidebar-button-active')
-  }
+	$('#' + id).parent().find('button').removeClass('sidebar-button-active')
+	$('#' + id).addClass('sidebar-button-active')
+	}
 
 	/**
-   * Called when the tab is loaded.
-   * Load the handler corresponding to the tab,
-   * init the handler and apply the settings on the newly loaded tab.
+	 * Called when the tab is loaded.
+	 * Load the handler corresponding to the tab,
+	 * init the handler and apply the settings on the newly loaded tab.
 	 * Also a tab can not have a handler.
-   */
+	 */
 	loadHandler () {
 		const EnumHelper = require('./EnumHelper')
 
@@ -151,63 +151,63 @@ class Application {
 			this.settings.applySettings()
 	}
 
-  /**
-   * Return the only instance of Application.
-   * @static
-   */
-  static getInstance () {
-    return Application.instance
-  }
+	/**
+	 * Return the only instance of Application.
+	 * @static
+	 */
+	static getInstance () {
+	return Application.instance
+	}
 
-  /**
-   * Toggle chromium dev tools on the app window.
-   */
-  toggleDevTools() {
-    this.windows['app'].webContents.toggleDevTools({mode: 'bottom'})
-  }
+	/**
+	 * Toggle chromium dev tools on the app window.
+	 */
+	toggleDevTools() {
+	this.windows['app'].webContents.toggleDevTools({mode: 'bottom'})
+	}
 
-  /**
-   * Send a message/event to the main process to display the documentation
-   */
-  displayDoc () {
+	/**
+	 * Send a message/event to the main process to display the documentation
+	 */
+	displayDoc () {
 		const {ipcRenderer} = require('electron')
 
-    ipcRenderer.send('display-doc')
-  }
+	ipcRenderer.send('display-doc')
+	}
 
-  /**
-   * Display an error notification.
-   * Call displayNotification who handle the creation and display of the
-   * notification.
-   * @param {String} [element] identifier of the dom element who will append the notification
-   * @param {String} message message to be displayed on the notification
-   */
-  displayErrorNotification (element, message) {
-    this.displayNotification(element, message, 'danger')
-  }
+	/**
+	 * Display an error notification.
+	 * Call displayNotification who handle the creation and display of the
+	 * notification.
+	 * @param {String} [element] identifier of the dom element who will append the notification
+	 * @param {String} message message to be displayed on the notification
+	 */
+	displayErrorNotification (element, message) {
+	this.displayNotification(element, message, 'danger')
+	}
 
-  /**
-   * Display a success notification.
-   * Call displayNotification who handle the creation and display of the
-   * notification.
-   * @param {String} [element] identifier of the dom element who will append the notification
-   * @param {String} message message to be displayed on the notification
-   */
-  displaySuccessNotification (element, message) {
-    this.displayNotification (element, message, 'success')
-  }
+	/**
+	 * Display a success notification.
+	 * Call displayNotification who handle the creation and display of the
+	 * notification.
+	 * @param {String} [element] identifier of the dom element who will append the notification
+	 * @param {String} message message to be displayed on the notification
+	 */
+	displaySuccessNotification (element, message) {
+	this.displayNotification (element, message, 'success')
+	}
 
-  /**
-   * Display a notification.
+	/**
+	 * Display a notification.
 	 * Create a new notification and display it, the newly created notification is
 	 * then added to the notification log list. If no element is given the notification
 	 * won't be displayed but still added to the log.
-   * @param {String} [element] identifier of the DOM element who will append the notification
-   * @param {String} message message to be displayed on the notification
-   * @param {String} type type of the notification (error, success ...) correspond to bootsrap colors (danger, warning, success, ...)
+	 * @param {String} [element] identifier of the DOM element who will append the notification
+	 * @param {String} message message to be displayed on the notification
+	 * @param {String} type type of the notification (error, success ...) correspond to bootsrap colors (danger, warning, success, ...)
 	 * @see {@link Notification}
-   */
-  displayNotification (element, message, type) {
+	 */
+	displayNotification (element, message, type) {
 		const Notification = require('./Notification')
 
 		var notif = new Notification(type, message)
@@ -216,7 +216,7 @@ class Application {
 			notif.display(element, this.settings.notifTimer)
 
 		this.notifLog.push(notif)
-  }
+	}
 
 	/**
 	 * Toggle the notification log.
@@ -292,26 +292,36 @@ class Application {
 		$('#popup').modal('show')
 	}
 
-  /**
-   * Return the memory usage of this process.
-   * Return only the memory usage of the renderer process and not the main process.
-   * @returns {Object} memory usage object
-   */
-  getMemoryUsage () {
+	/**
+	 * Return the memory usage of this process.
+	 * Return only the memory usage of the renderer process and not the main process.
+	 * @returns {Object} memory usage object
+	 */
+	getMemoryUsage () {
 		const remote = require('electron').remote
 
-    return remote.process.getProcessMemoryInfo()
-  }
+	return remote.process.getProcessMemoryInfo()
+	}
 
-  /**
-   * Return the process object (renderer process).
-   * @returns {Object} process object
-   */
-  getProcess () {
+	/**
+	 * Return the process object (renderer process).
+	 * @returns {Object} process object
+	 */
+	getProcess () {
 		const remote = require('electron').remote
 
-    return remote.process
-  }
+	return remote.process
+	}
+
+	/**
+	 * Send an event to the main process to open the url in a browser instead of
+	 * electron.
+	 * @param {String} url an url to open in a browser
+	 */
+	openLinkInBrowser (url) {
+		const {ipcRenderer} = require('electron')
+		ipcRenderer.send('open-link-in-browser', url)
+	}
 
 	/**
 	 * synchronize the client with the server.

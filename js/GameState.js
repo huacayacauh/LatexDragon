@@ -111,7 +111,7 @@ class GameState {
 
 	/**
 	 * Start the creation of a new Game soon to be added to the array (when it's
-   * completed).
+	 * completed).
 	 */
 	startCreation () {
 		this.inCreation = new Game()

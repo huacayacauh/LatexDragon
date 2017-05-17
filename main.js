@@ -5,7 +5,7 @@
  * @module main
  */
 
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, shell} = require('electron')
 
 /**
  * Global reference to the windows
@@ -150,6 +150,16 @@ ipcMain.on('close-background-process', (event, arg) => {
 ipcMain.on('boom', (event, arg) => {
 	var win = BrowserWindow.fromWebContents(event.sender)
 	win.destroy()
+})
+
+/**
+ * Handler of the boom event.
+ * Open an url using the user default browser.
+ * @method
+ * @listens event:open-link-in-browser
+ */
+ipcMain.on('open-link-in-browser', (event, arg) => {
+	shell.openExternal(arg)
 })
 
 /**

@@ -1,32 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body>
+	<head>
+	</head>
+	<body>
 		<div id="home-content" class="col-md-12">
 			<!-- Titre -->
 			<div class="page-header">
-	      <h1 class="display-2"><i class="fa fa-home" aria-hidden="true"></i> Accueil</h1>
+				<h1 class="display-2"><i class="fa fa-home" aria-hidden="true"></i> Accueil</h1>
 				<hr/>
-	    </div>
-	    <!-- Notification div -->
-	    <div id="homeNotification">
-	    </div>
+			</div>
+			<!-- Notification div -->
+			<div id="homeNotification">
+			</div>
 			<!-- Content -->
-			<div class="col-md-6">
-				<div class="jumbotron col-md-12 bg-info">
-					<h1 class="display-3">Stats a la con</h1>
+			<div class="col-md-8">
+				<div class="jumbotron col-md-12 bg-primary">
+					<h1 class="display-3">Informations</h1>
 					<p class="lead">
-						105 théorèmes
-						45 Formules
+						LatexDragon est un projet open source ayant pour but la création d'une application permettant la manipulation de formule mathématique sous la forme d'un jeu éducatif.
+					</p>
+					<p class="lead">
+						Pour plus d'information sur le projet vous pouvez consulter le wiki du projet sur Github.
+					</p>
+					<a class="btn btn-secondary" onclick="require('./js/Application').openLinkInBrowser('https://github.com/huacayacauh/LatexDragon/wiki')">Wiki <i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="jumbotron col-md-12 bg-info">
+					<h1 class="display-3">Besoin d'aide ?</h1>
+					<p class="lead">
+						Pas compris comment ça marche ? Jettez un oeil à l'aide !
+					</p>
+					<a class="btn btn-secondary" onclick="require('./js/Application').requestHtml('HELP')">Aide</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="jumbotron col-md-12 bg-danger">
+					<p class="lead">
+						LatexDragon Client utilise les bibliothèques/logiciels suivant :<br/>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('https://electron.atom.io/')">Electron</a><b>|</b>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('https://jquery.com/')">jQuery</a><b>|</b>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('https://v4-alpha.getbootstrap.com/')">Bootstrap</a><b>|</b>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('http://tether.io/')">Tether</a><b>|</b>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('http://fontawesome.io/')">Font Awesome</a><b>|</b>
+						<a class="btn btn-link" onclick="require('./js/Application').openLinkInBrowser('https://daneden.github.io/animate.css/')">Animate.css</a>
 					</p>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="jumbotron col-md-12 bg-warning">
-					<h1 class="display-3">Changer l'adresse du serveur ? Lien vers les paramètres ?</h1>
-				</div>
-			</div>
 		</div>
-  </body>
+	</body>
 </html>

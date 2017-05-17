@@ -1,25 +1,36 @@
 /**
+ * Module handling the 'GAMERULESET' tab.
  * @module gameRuleSetHandler
  */
 var self = module.exports = {
+	/**
+	 * Initialize everything the tab need in order to run properly.
+	 */
 	init: () => {
-		self.setEvents()
+		const utils = require('../utils')
+		utils.typesetMath()
+
 		self.setAnimations()
 		self.getFormulaList()
 	},
 
-	setEvents: () => {
-		const utils = require('../utils')
-
-		utils.typesetMath()
-	},
-
+	/**
+	 * Set the animations, displayed when the tab is loaded.
+	 */
 	setAnimations: () => {
 			$('.j1').animateCss('slideInDown', 0.5)
 			$('.j2').animateCss('slideInDown', 0.5, 0.1)
 			$('.j3').animateCss('slideInDown', 0.5, 0.2)
 	},
 
+	/**
+	 * Function handling the selection of the set of rules, the use of theorems,
+	 * and the formula.
+	 * Will store everyting in the currently created GameState and call
+	 * finishCreation() to finish it's creation, will then load the 'GAME' tab.
+	 * @param {int} ruleSet id of the rule set
+	 * @param {int} formule id of the formula
+	 */
 	selectRuleSet: (ruleSet, formula) => {
 		const instance = require('../Application')
 
@@ -33,13 +44,23 @@ var self = module.exports = {
 		instance.requestHtml('GAME')
 	},
 
+	/** Object containing the list of playable formulas */
 	formulaList: null,
 
+	/**
+	 * Send a 'FORMULALIST' request to get the list of playable formulas.
+	 */
 	getFormulaList: () => {
 		const Request = require('../Request')
 		Request.buildRequest('FORMULALIST', self.getFormulaListReply).send()
 	},
 
+	/**
+	 * Response of the 'FORMULALIST' request.
+	 * @param {Object} response response from the request (jQuery ajax response)
+	 * @param {String} status response status from the request
+	 * @throws will throw an error if the request failed
+	 */
 	getFormulaListReply: (response, status) => {
 		const instance = require('../Application')
 		const Request = require('../Request')
@@ -54,6 +75,9 @@ var self = module.exports = {
 		self.setFormulaList()
 	},
 
+	/**
+	 * Function handlling the creation of the list of formulas.
+	 */
 	setFormulaList: () => {
 		const utils = require('../utils')
 
