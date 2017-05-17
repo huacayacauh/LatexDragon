@@ -46,7 +46,6 @@ public class PrimaryExpression implements Expression{
 
 	@Override
 	public String generateSimpleExpression() {
-		this.id = id;
 		return Configuration.graphic.generateSimplePrimaryExpression(this, type, name);
 	}
 

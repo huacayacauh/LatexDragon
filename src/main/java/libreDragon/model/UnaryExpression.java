@@ -34,7 +34,6 @@ public class UnaryExpression implements Expression {
 
 	@Override
 	public String generateSimpleExpression() {
-		this.id = id;
 		return Configuration.graphic.generateSimpleUnaryExpression(
 					this,
 					type,

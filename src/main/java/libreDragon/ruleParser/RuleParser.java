@@ -6,6 +6,14 @@ import libreDragon.model.*;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 public class RuleParser implements RuleParserConstants {
 private static RulesConfiguration rules;
         public static void main(String args[]) throws ParseException {
@@ -38,6 +46,42 @@ public static void readRules(InputStream stream, RulesConfiguration r) throws Pa
         }
         } catch (Exception e) {
         System.out.println("Impossible de creer le fichier");
+        }
+        }
+        /**
+	* Lis les expressions jouables ainsi que les expression a atteindre pour finir la
+	* session de jeu dans le fichier config/formulas.cfg
+	*/
+        public static void readExpressionsJouables(ArrayList<Pair<Expression,Expression>> liste ){
+        String configPath = "config";
+        BufferedReader lecteurAvecBuffer = null;
+        String ligne,expression,resultat;
+        int i;
+        try {
+        lecteurAvecBuffer = new BufferedReader(new FileReader(configPath + "/formula.cfg"));
+        }
+        catch(FileNotFoundException exc){
+        System.out.println("Erreur d'ouverture");
+        }
+        try {
+        while ((ligne = lecteurAvecBuffer.readLine()) != null){
+        i = 0;
+        while (i+2 < ligne.length() && ligne.substring(i,i+2).compareTo("=>") != 0){
+        i++;
+        }
+        expression = ligne.substring(0, i-1);
+        resultat = ligne.substring(i+2);
+        try {
+        InputStream expInitial = new ByteArrayInputStream(expression.getBytes(StandardCharsets.UTF_8));
+        InputStream expFinal = new ByteArrayInputStream(resultat.getBytes(StandardCharsets.UTF_8));
+        liste.add(new Pair (RuleParser.readExpression(expInitial),RuleParser.readExpression(expFinal)));
+        } catch (libreDragon.ruleParser.ParseException e) {
+        e.printStackTrace();
+        }
+        }
+        }
+        catch (IOException e){
+        e.printStackTrace();
         }
         }
         public static Expression readExpression(InputStream stream) throws ParseException {

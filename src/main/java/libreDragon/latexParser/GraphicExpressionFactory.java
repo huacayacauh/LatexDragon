@@ -78,7 +78,7 @@ public interface GraphicExpressionFactory {
 	public String generatePrimaryExpression(Expression expression, String type, String name, String id);
 
 	/**
-	 * Génère un objet graphique.
+	 * Génère un objet graphique sans id.
 	 * @param expression : l'expression binaire à traduire
 	 * @param type : Son type
 	 * @param first : l'objet graphique correspondant au premier sous noeud

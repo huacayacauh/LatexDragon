@@ -51,7 +51,6 @@ public class BinaryExpression implements Expression {
 
 	@Override
 	public String generateSimpleExpression() {
-		this.id = id;
 		return Configuration.graphic.generateSimpleBinaryExpression(
 					this,
 					type,
