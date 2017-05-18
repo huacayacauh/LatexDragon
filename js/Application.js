@@ -22,36 +22,36 @@ class Application {
 	 * is created, if one instance already exist then it's the one returned.
 	 */
 	constructor () {
-	if (!Application.instance) {
-		const Settings = require('./Settings')
-		const remote = require('electron').remote
+		if (!Application.instance) {
+			const Settings = require('./Settings')
+			const remote = require('electron').remote
 
-		//Application settings
-		this.settings = Settings.initSettings()
+			//Application settings
+			this.settings = Settings.initSettings()
 
-		//Name of the tab the app is currently on (GAME by default)
-		this.currentTab = 'HOME'
+			//Name of the tab the app is currently on (GAME by default)
+			this.currentTab = 'HOME'
 
-		//Module handling the current tab
-		this.handler = null
+			//Module handling the current tab
+			this.handler = null
 
-		//Array containing the app windows (app & doc)
-		this.windows = remote.getGlobal('windowsArray')
+			//Array containing the app windows (app & doc)
+			this.windows = remote.getGlobal('windowsArray')
 
-		//Array containing all the informations on the state of the differents games
-		this.gameState = null
+			//Array containing all the informations on the state of the differents games
+			this.gameState = null
 
-		//Status of the server (true = online, false = offline)
-		this.serverStatus = false
+			//Status of the server (true = online, false = offline)
+			this.serverStatus = false
 
-		//Log of all the notifications issued since the start of the app
-		this.notifLog = []
+			//Log of all the notifications issued since the start of the app
+			this.notifLog = []
 
-		//Only instance of Application
-		Application.instance = this
-	}
+			//Only instance of Application
+			Application.instance = this
+		}
 
-	return Application.instance
+		return Application.instance
 	}
 
 	/**
@@ -82,24 +82,24 @@ class Application {
 		//Need to use this since in the context when the function is called 'this' reference the request object and not the application object
 		const instance = require('./Application')
 
-	if (status != 'success')
-		instance.displayErrorNotification('.main', 'Erreur lors du chargment de la page, status : ' + status + ' (' + response.status + ').')
+		if (status != 'success')
+			instance.displayErrorNotification('.main', 'Erreur lors du chargment de la page, status : ' + status + ' (' + response.status + ').')
 
-	var htmlpage = $(response.responseText)
-		//Hide precedent content
-	$('.main').hide()
-		//Delete precedent content
-	$('.main').html('')
-		//Append new content
-	$('.main').append(htmlpage)
-		//Load and init handler
-		instance.loadHandler()
-		//Once everything is ready display new content
-		$('.main').show()
+		var htmlpage = $(response.responseText)
+			//Hide precedent content
+		$('.main').hide()
+			//Delete precedent content
+		$('.main').html('')
+			//Append new content
+		$('.main').append(htmlpage)
+			//Load and init handler
+			instance.loadHandler()
+			//Once everything is ready display new content
+			$('.main').show()
 
-	console.log('[CLIENT]: Tab ' + instance.currentTab + ' loaded')
+		console.log('[CLIENT]: Tab ' + instance.currentTab + ' loaded')
 
-	instance.setNavbarActive()
+		instance.setNavbarActive()
 
 		$('[data-toggle="tooltip"]').tooltip()
 	}
@@ -113,10 +113,10 @@ class Application {
 		if ((this.currentTab == 'GAMEMODE') || (this.currentTab == 'GAMERULESET'))
 			id = 'game'
 		else
-		id = this.currentTab.toLowerCase()
+			id = this.currentTab.toLowerCase()
 
-	$('#' + id).parent().find('button').removeClass('sidebar-button-active')
-	$('#' + id).addClass('sidebar-button-active')
+		$('#' + id).parent().find('button').removeClass('sidebar-button-active')
+		$('#' + id).addClass('sidebar-button-active')
 	}
 
 	/**
@@ -152,18 +152,10 @@ class Application {
 	}
 
 	/**
-	 * Return the only instance of Application.
-	 * @static
-	 */
-	static getInstance () {
-	return Application.instance
-	}
-
-	/**
 	 * Toggle chromium dev tools on the app window.
 	 */
 	toggleDevTools() {
-	this.windows['app'].webContents.toggleDevTools({mode: 'bottom'})
+		this.windows['app'].webContents.toggleDevTools({mode: 'bottom'})
 	}
 
 	/**
@@ -172,7 +164,7 @@ class Application {
 	displayDoc () {
 		const {ipcRenderer} = require('electron')
 
-	ipcRenderer.send('display-doc')
+		ipcRenderer.send('display-doc')
 	}
 
 	/**
@@ -183,7 +175,7 @@ class Application {
 	 * @param {String} message message to be displayed on the notification
 	 */
 	displayErrorNotification (element, message) {
-	this.displayNotification(element, message, 'danger')
+		this.displayNotification(element, message, 'danger')
 	}
 
 	/**
@@ -194,7 +186,7 @@ class Application {
 	 * @param {String} message message to be displayed on the notification
 	 */
 	displaySuccessNotification (element, message) {
-	this.displayNotification (element, message, 'success')
+		this.displayNotification (element, message, 'success')
 	}
 
 	/**
@@ -246,7 +238,6 @@ class Application {
 			$('#notif-log').animateCss('slideOutUp', 0.3, 0, () => {
 				$('#notif-log').hide()
 			})
-
 		}
 	}
 
@@ -299,8 +290,7 @@ class Application {
 	 */
 	getMemoryUsage () {
 		const remote = require('electron').remote
-
-	return remote.process.getProcessMemoryInfo()
+		return remote.process.getProcessMemoryInfo()
 	}
 
 	/**
@@ -309,8 +299,7 @@ class Application {
 	 */
 	getProcess () {
 		const remote = require('electron').remote
-
-	return remote.process
+		return remote.process
 	}
 
 	/**

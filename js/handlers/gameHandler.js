@@ -211,6 +211,8 @@ var self = module.exports = {
 			self.setEvents()
 
 			instance.settings.applySettings()
+
+			self.updateTimelineSize()
 		})
 
 		//Check for VICTORY
@@ -390,6 +392,33 @@ var self = module.exports = {
 
 			$('#timeline-elements').append(elem)
 		}
+	},
+
+	/**
+	 * Update the size of the timeline.
+	 * If the desired height of the timeline is smaller than half the screen height
+	 * it will become the new size, otherwise it will be half the screen size, this
+	 * way the timeline can adapt it's size depending on the height of the MathJax
+	 * elements but never be higher than half the screen.
+	 * By default the timeline size is 90px and 60px for the elements, then there's
+	 * 32px of margin from MathJax and 30px of margin from the timeline-element
+	 * (10px top and 20px bottom)
+	 */
+	updateTimelineSize: () => {
+		var screenHeight = $(document).height()
+		var max = 0
+		$('.timeline-element > .mjx-chtml').each(function () {
+			if ($(this).height() > max)
+				max = $(this).height()
+		})
+
+		if ((max + 32 + 30 + 40) <= (screenHeight/ 2))
+			height = max + 32
+		else
+			height = (screenHeight / 2) - 40
+
+		$('.timeline-element').height(height)
+		$('#timeline-elements').height(height + 30)
 	},
 
 	/**

@@ -6,7 +6,6 @@ LatexDragon est un projet open source ayant pour but la création d'une applicat
 
 Github du projet : [Github](https://https://github.com/huacayacauh/LatexDragon/)
 
-
 Wiki : [Wiki](https://github.com/huacayacauh/LatexDragon/wiki/)
 
 Documentation du serveur : [Serveur](http://http://localhost:8080/LibreDragon/doc/)

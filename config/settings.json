@@ -1,6 +1,6 @@
 {
   "color": "linear-gradient(to bottom, #DBDDDE, #898C90)",
-  "mathSize": "100px",
+  "mathSize": "25px",
   "autoCloseNotif": true,
   "notifTimer": 2000,
   "highlighting": true,
