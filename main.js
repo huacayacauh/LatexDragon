@@ -40,7 +40,7 @@ function createMainWindow () {
   global.windowsArray.app.loadURL(`file://${__dirname}/index.html`)
 
   //Open the DevTools
-  global.windowsArray.app.webContents.openDevTools({mode: 'bottom'})
+  //global.windowsArray.app.webContents.openDevTools({mode: 'bottom'})
 
   //When the window is closed the app quit
   global.windowsArray.app.on('closed', () => {
