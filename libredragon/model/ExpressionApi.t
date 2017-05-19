@@ -33,10 +33,15 @@ public  class ExpressionApi {
            | ListPlus(Expr *)
            | ListMult(Expr *)
 
+	// Associaticvité et commutativité des opérateur.
     ListPlus : ACU(){}
-    ListMult : ACU(){}
+    ListMult : ACU(){} 
     }
-
+	
+	/** 
+	 * Transformation d'une expression binaire pour qu'elle 
+	 * soit compatible avec la grammaire du programme
+	 */
     public static Expr binaryExpressionToExpr (Expression expression, String type, Expression first, Expression second) {
       BinaryExpression bexpression = (BinaryExpression) expression;
       if(type.compareTo("PLUS") == 0)
@@ -68,6 +73,10 @@ public  class ExpressionApi {
       return `Epsilon();
     }
 
+	/** 
+	 * Transformation d'une expression unaire pour qu'elle 
+	 * soit compatible avec la grammaire du programme
+	 */
     public static Expr unaryExpressionToExpr(Expression expression, String type, Expression sub) {
       if(type.compareTo("PARENTHESIS") == 0)
         return `Parenthesis(sub.expressionToExpr());
@@ -81,13 +90,22 @@ public  class ExpressionApi {
         return `MoinsU(sub.expressionToExpr());
       return sub.expressionToExpr();
     }
-
+	
+	/** 
+	 * Transformation d'une expression primaire pour qu'elle 
+	 * soit compatible avec la grammaire du programme
+	 */
     public static Expr primaryExpressionToExpr(Expression expression, String type, String name) {
       if(type.compareTo("NOMBRE") == 0)
         return `Nombre(Integer.valueOf(name));
       return `Litteral(name);
     }
 
+	/** 
+	 * Transformation d'une expression sous la forme de la 
+	 * grammaire du programme vers une expression compréhensible 
+	 * par le reste du serveur
+	 */
     public Expression exprToExpression(Expr e){
       %match(e){
         Plus(e1, e2) -> { return new BinaryExpression("PLUS",exprToExpression(`e1), exprToExpression(`e2)); }
@@ -114,7 +132,11 @@ public  class ExpressionApi {
       }
       throw new RuntimeException("should not be there exprToExpression : " + e);
     }
-
+	
+	/** 
+	 * Génération de la liste d'élement associé à
+	 * l'opérateur *
+	 */
     private static Expr generateListMult(Expr e){
       %match(e){
         Mult(e1,e2) -> { return `ListMult(generateListMult(e1), generateListMult(e2) ); }
@@ -123,6 +145,10 @@ public  class ExpressionApi {
       throw new RuntimeException("should not be there generateListMult : " + e);
     }
 
+	/** 
+	 * Génération de la liste d'élement associé à
+	 * l'opérateur +
+	 */
     private static Expr generateListPlus(Expr e){
       %match(e){
         Plus(e1,e2) -> { return `ListPlus(generateListPlus(e1), generateListPlus(e2) ); }
@@ -131,7 +157,10 @@ public  class ExpressionApi {
       throw new RuntimeException("should not be there generateListPlus: " + e);
     }
 
-
+	/** 
+	 * Remise en sous forme d'expression les listes associé 
+	 * au different opérateur.
+	 */
     private Expr listToOp(Expr e){
       %match(e){
         ListPlus() -> { return `Epsilon(); }
@@ -145,17 +174,6 @@ public  class ExpressionApi {
       throw new RuntimeException("should not be there listToOp : " + e);
     }
 
-    /*private Expr associativite(Expr e1 Expr e2){
-      %match(e1, e2){
-        ListPlus(), _ -> { return `Epsilon();}
-        ListPlus
-        ListPlus(x,after*) -> { return `List (Plus(x, associativite(after*)), Plus(associativite(after*), x));}
-        ListPlus(x, y)-> { return `Plus(x, y);}
-        x -> { return `x; }
-      }
-      throw new RuntimeException("should not be there: " + e);
-    }*/
-
     %strategy Com() extends Fail() {
       visit Expr {
         Plus(e1, e2) -> Plus(e2, e1)
@@ -163,6 +181,11 @@ public  class ExpressionApi {
       }
     }
 
+	/** 
+	 * Fonction utilisée pour la génération a partir de liste 
+	 * des éléments associé au différent opérateur des variantes
+	 * de l'expression traité.
+	 */
     public void eval (Expr e, ArrayList list){
       Expr e1, e2, e3;
       %match(e) {
